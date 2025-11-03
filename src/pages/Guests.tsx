@@ -70,7 +70,7 @@ export default function Guests() {
         </div>
 
         {/* Segments Section */}
-        <Card className="p-6 mb-6">
+        <Card className="p-6 mb-6 bg-stone-50">
           <div className="mb-4">
             <h2 className="text-xl font-semibold mb-1">Segments</h2>
             <p className="text-sm text-muted-foreground">Filter guests by category</p>
