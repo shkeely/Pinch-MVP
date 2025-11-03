@@ -62,7 +62,7 @@ export default function Dashboard() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col gap-6 md:grid md:grid-cols-[1.2fr_0.8fr_auto] md:gap-4 md:grid-rows-[auto]">
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-[1.2fr_0.8fr_auto] md:gap-6 md:grid-rows-[auto]">
 
           {/* Your Concierge - Full width on mobile */}
           <Card className="w-full md:col-start-3 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[368px]">
