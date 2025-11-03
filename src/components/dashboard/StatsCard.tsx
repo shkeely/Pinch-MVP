@@ -24,7 +24,7 @@ export default function StatsCard({ total = 47, autoPercent = 37 }: StatsCardPro
   return (
     <section
       aria-label="Statistics"
-      className="px-8 py-5 rounded-[24px] bg-card shadow-[0_4px_12px_rgba(0,0,0,0.05)] antialiased"
+      className="px-8 py-5 rounded-[24px] bg-card antialiased"
     >
       {/* Horizontal Stats Layout */}
       <div className="flex items-center gap-8 md:gap-10">

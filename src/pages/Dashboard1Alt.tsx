@@ -23,7 +23,7 @@ export default function Dashboard1Alt() {
         <div className="mb-12">
           <div className="flex flex-col md:flex-row gap-6">
             {/* Daily Digest Content - Left Column */}
-            <div className="flex-1 space-y-6">
+            <div className="flex-1 space-y-5">
               {/* Title and Description */}
               <div>
                 <h2 className="text-3xl md:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
