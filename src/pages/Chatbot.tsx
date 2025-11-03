@@ -131,7 +131,7 @@ export default function Chatbot() {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-slate-50">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-stone-100">
                   <div className="flex items-center gap-3">
                     <MessageSquare className="w-5 h-5 text-muted-foreground" />
                     <div>
