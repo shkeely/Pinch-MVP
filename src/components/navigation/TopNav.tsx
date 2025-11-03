@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 
 const navItems = [
-  { label: 'Dashboard', path: '/dashboard1' },
+  { label: 'Dashboard', path: '/dashboard1-alt' },
   { label: 'Messages', path: '/messages' },
   { label: 'Reminders', path: '/reminders' },
   { label: 'Chatbot', path: '/chatbot' },
