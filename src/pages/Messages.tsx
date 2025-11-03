@@ -119,7 +119,7 @@ export default function Messages() {
           </Card>
 
           {/* Right Panel - Conversation Detail */}
-          <Card className="p-6 bg-card border-border shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+          <Card className="p-6 bg-card border-border shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col">
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
               <div>
@@ -153,7 +153,7 @@ export default function Messages() {
 
               {/* AI Response - Right aligned */}
               {selectedMessage.answer && <div className="flex justify-end">
-                  <div className="max-w-[80%] rounded-2xl p-5 bg-[#f4c8d8]">
+                  <div className="max-w-[80%] rounded-2xl p-5 bg-[#e8f5e9]">
                     <p className="text-foreground mb-3 leading-relaxed">
                       {selectedMessage.answer}
                     </p>
