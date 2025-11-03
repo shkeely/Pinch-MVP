@@ -163,10 +163,7 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     This question came up 8 times this week. Would you like me to draft a message?
                   </p>
-                  <Button className="rounded-full px-6 hover:bg-indigo-400" style={{
-                  backgroundColor: '#5b6850',
-                  color: 'white'
-                }}>
+                  <Button className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
                     Draft message
                   </Button>
                 </div>
@@ -189,10 +186,7 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     The question is about cancellation
                   </p>
-                  <Button className="rounded-full px-6 hover:bg-indigo-400" style={{
-                  backgroundColor: '#5b6850',
-                  color: 'white'
-                }}>
+                  <Button className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
                     Review all
                   </Button>
                 </div>
@@ -212,10 +206,7 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     Common question: 'Is there a shuttle?' — Consider adding this to your FAQ.
                   </p>
-                  <Button className="rounded-full px-6 hover:bg-indigo-400" style={{
-                  backgroundColor: '#5b6850',
-                  color: 'white'
-                }}>
+                  <Button className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
                     Add answer
                   </Button>
                 </div>
