@@ -119,14 +119,14 @@ export default function Dashboard1Alt() {
             
             <div className="space-y-3 flex-1 mb-4">
               <div className="flex justify-start">
-                <div className="bg-muted text-foreground rounded-3xl rounded-tl-md px-4 py-2.5 shadow-sm max-w-xs">
+                <div className="bg-white text-foreground rounded-3xl rounded-tl-md px-4 py-2.5 shadow-sm max-w-xs">
                   <p className="text-sm">what time is the wedding</p>
                   <p className="text-xs text-muted-foreground mt-1">01:17 PM</p>
                 </div>
               </div>
 
               <div className="flex justify-end">
-                <div className="bg-[#D8C9E3] text-foreground rounded-3xl rounded-tr-md px-4 py-2.5 shadow-sm max-w-xs">
+                <div className="bg-muted text-foreground rounded-3xl rounded-tr-md px-4 py-2.5 shadow-sm max-w-xs">
                   <p className="text-sm">We'd love to see you there! the scheduled time.</p>
                   <p className="text-xs text-muted-foreground/70 mt-1">01:17 PM</p>
                 </div>
