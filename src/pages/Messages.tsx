@@ -139,29 +139,33 @@ export default function Messages() {
 
             {/* Messages */}
             <div className="space-y-4 mb-6 flex-1">
-              {/* Guest Question */}
-              <div className="rounded-2xl p-5 bg-[#c8deb9]">
-                <p className="font-semibold text-foreground mb-2">
-                  {selectedMessage.question}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {selectedMessage.timestamp}
-                </p>
+              {/* Guest Question - Left aligned */}
+              <div className="flex justify-start">
+                <div className="max-w-[80%] rounded-2xl p-5 bg-muted/50">
+                  <p className="font-semibold text-foreground mb-2">
+                    {selectedMessage.question}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedMessage.timestamp}
+                  </p>
+                </div>
               </div>
 
-              {/* AI Response */}
-              {selectedMessage.answer && <div className="rounded-2xl p-5 bg-stone-100">
-                  <p className="text-foreground mb-3 leading-relaxed">
-                    {selectedMessage.answer}
-                  </p>
-                  {selectedMessage.confidence && <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="bg-white/60 text-xs">
-                        AI Response
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        • {selectedMessage.confidence}
-                      </span>
-                    </div>}
+              {/* AI Response - Right aligned */}
+              {selectedMessage.answer && <div className="flex justify-end">
+                  <div className="max-w-[80%] rounded-2xl p-5 bg-[#f4c8d8]">
+                    <p className="text-foreground mb-3 leading-relaxed">
+                      {selectedMessage.answer}
+                    </p>
+                    {selectedMessage.confidence && <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="bg-white/60 text-xs">
+                          AI Response
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          • {selectedMessage.confidence}
+                        </span>
+                      </div>}
+                  </div>
                 </div>}
 
               {/* No Response Yet */}
