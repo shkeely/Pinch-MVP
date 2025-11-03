@@ -72,26 +72,10 @@ export default function Chatbot() {
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Left Column - Settings */}
           <div className="space-y-6">
-            {/* Status Card */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
-                    <Zap className="w-6 h-6 text-green-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">Chatbot Status</h3>
-                    <p className="text-sm text-muted-foreground">Your AI concierge is {chatbotActive ? 'active' : 'inactive'}</p>
-                  </div>
-                </div>
-                <Switch checked={chatbotActive} onCheckedChange={setChatbotActive} />
-              </div>
-            </Card>
-
             {/* Tone Selection */}
             <div>
               <h2 className="text-xl font-semibold mb-4">Response Tone</h2>
-              <div className="grid gap-4">
+              <div className="grid md:grid-cols-3 gap-4">
                 {tones.map((tone) => {
                   const Icon = tone.icon;
                   const isSelected = selectedTone === tone.id;
@@ -186,7 +170,23 @@ export default function Chatbot() {
           </div>
 
           {/* Right Column - Chat Simulation */}
-          <div className="lg:sticky lg:top-8 h-fit">
+          <div className="lg:sticky lg:top-8 h-fit space-y-4">
+            {/* Status Card */}
+            <Card className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-green-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Chatbot Status</h3>
+                    <p className="text-xs text-muted-foreground">AI is {chatbotActive ? 'active' : 'inactive'}</p>
+                  </div>
+                </div>
+                <Switch checked={chatbotActive} onCheckedChange={setChatbotActive} />
+              </div>
+            </Card>
+
             <Card className="overflow-hidden bg-card border-border">
               <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{chatbotName}</h2>
