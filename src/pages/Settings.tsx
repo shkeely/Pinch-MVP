@@ -101,7 +101,7 @@ export default function Settings() {
 
             <Button 
               onClick={handleSaveChanges}
-              className="mt-6 bg-pink-500 hover:bg-pink-600 text-white"
+              className="mt-6 bg-purple-600 hover:bg-purple-700 text-white"
             >
               <Save className="w-4 h-4 mr-2" />
               Save Changes
@@ -139,7 +139,7 @@ export default function Settings() {
                 />
                 <Button 
                   onClick={handleInvitePlanner}
-                  className="bg-pink-500 hover:bg-pink-600 text-white"
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
                 >
                   <UserPlus className="w-4 h-4 mr-2" />
                   Invite
