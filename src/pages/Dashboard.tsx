@@ -21,7 +21,7 @@ export default function Dashboard() {
       <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
         {/* Daily Digest Section with Stats */}
         <div className="mb-12">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
             {/* Daily Digest Title and Description */}
             <div className="flex-1">
               <h2 className="text-3xl md:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
@@ -98,7 +98,7 @@ export default function Dashboard() {
           </Card>
 
           {/* Needs Your Attention - Full width on mobile */}
-          <div className="w-full md:col-start-1 md:row-start-1 md:w-auto space-y-4">
+          <div className="w-full md:col-start-1 md:row-start-1 md:w-auto md:max-w-[85%] space-y-4">
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Needs Your Attention
             </h2>
@@ -174,7 +174,7 @@ export default function Dashboard() {
           </div>
 
           {/* Quick Actions - Full width on mobile */}
-          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] md:w-auto">
+          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] md:w-auto md:max-w-[85%]">
             <h2 className="text-2xl font-serif mb-1 text-foreground">
               Quick Actions
             </h2>
