@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pinch Design System - Refined Concierge Aesthetic */
+
+@layer base {
+  :root {
+    /* Soft ivory backgrounds #FAF8F4 */
+    --background: 40 50% 98%;
+    --foreground: 30 10% 17%;
+
+    /* Card surfaces - warm ivory */
+    --card: 40 50% 98%;
+    --card-foreground: 30 10% 17%;
+
+    --popover: 40 50% 98%;
+    --popover-foreground: 30 10% 17%;
+
+    /* Primary - Olive Green #5b6850 */
+    --primary: 99 15% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Muted Lavender #ccc1dd */
+    --secondary: 265 35% 81%;
+    --secondary-foreground: 30 10% 17%;
+
+    /* Muted - Soft warm taupe */
+    --muted: 30 15% 92%;
+    --muted-foreground: 30 10% 50%;
+
+    /* Accent - Periwinkle Blue #b7c4f1 */
+    --accent: 224 65% 83%;
+    --accent-foreground: 30 10% 17%;
+
+    /* Mint green #c8deb9 */
+    --mint: 99 40% 79%;
+    --mint-foreground: 30 10% 17%;
+
+    /* Lavender gradient #ccc1dd */
+    --lavender: 265 35% 81%;
+    
+    /* Sage gradient (derived from primary) */
+    --sage: 99 15% 52%;
+
+    /* Neutral border #D9D6CA */
+    --border-subtle: 40 20% 85%;
+
+    /* Error/Alert #D96E5D */
+    --destructive: 9 55% 63%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders - subtle warm tones */
+    --border: 40 20% 85%;
+    --input: 40 20% 85%;
+    --ring: 75 20% 36%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 30 15% 12%;
+    --foreground: 40 30% 95%;
+
+    --card: 30 15% 15%;
+    --card-foreground: 40 30% 95%;
+
+    --popover: 30 15% 15%;
+    --popover-foreground: 40 30% 95%;
+
+    --primary: 75 25% 50%;
+    --primary-foreground: 30 15% 12%;
+
+    --secondary: 265 30% 60%;
+    --secondary-foreground: 40 30% 95%;
+
+    --muted: 30 15% 20%;
+    --muted-foreground: 40 20% 65%;
+
+    --accent: 230 55% 70%;
+    --accent-foreground: 30 15% 12%;
+
+    --mint: 160 35% 55%;
+    --mint-foreground: 30 15% 12%;
+
+    --lavender: 265 30% 65%;
+    --sage: 75 25% 45%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 15% 25%;
+    --input: 30 15% 25%;
+    --ring: 75 25% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .font-sans {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
