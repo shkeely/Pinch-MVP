@@ -2,7 +2,7 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UserPlus, Upload, Pencil, Settings, Plus, X } from 'lucide-react';
+import { UserPlus, Upload, Pencil, Settings, Plus, X, Download } from 'lucide-react';
 import { useState } from 'react';
 import {
   Dialog,
@@ -107,6 +107,24 @@ export default function Guests() {
     toast.success(`Renamed segment from "${editingSegment.old}" to "${editingSegment.new}"`);
     setEditingSegment(null);
   };
+
+  const handleExportCSV = () => {
+    const csvContent = [
+      ['Name', 'Phone', 'Segment', 'Status'],
+      ...filteredGuests.map(g => [g.name, g.phone, g.segment, g.status])
+    ].map(row => row.join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `guests-${selectedSegment}-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success(`Exported ${filteredGuests.length} guests`);
+  };
   return <div className="min-h-screen bg-background">
       <TopNav />
       
@@ -122,6 +140,10 @@ export default function Guests() {
             <Button variant="outline">
               <Upload className="w-4 h-4 mr-2" />
               Import CSV
+            </Button>
+            <Button variant="outline" onClick={handleExportCSV}>
+              <Download className="w-4 h-4 mr-2" />
+              Export CSV
             </Button>
             <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
               <UserPlus className="w-4 h-4 mr-2" />
