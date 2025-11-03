@@ -27,7 +27,7 @@ export default function StatsCard({ total = 47, autoPercent = 37 }: StatsCardPro
       className="antialiased"
     >
       {/* Horizontal Stats Layout */}
-      <div className="flex items-center gap-8 md:gap-10">
+      <div className="flex items-center gap-8 md:gap-10 py-[10px]">
         {/* Total Questions */}
         <div className="flex items-baseline gap-2.5">
           <div className="text-3xl md:text-4xl font-semibold text-foreground">{total}</div>
