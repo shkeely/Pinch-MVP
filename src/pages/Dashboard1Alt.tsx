@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
-export default function Dashboard() {
+export default function Dashboard1Alt() {
   const {
     wedding,
     conversations

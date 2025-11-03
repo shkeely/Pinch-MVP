@@ -11,7 +11,8 @@ import Step1C from "./pages/onboarding/Step1C";
 import Step2 from "./pages/onboarding/Step2";
 import Step3 from "./pages/onboarding/Step3";
 import Step4 from "./pages/onboarding/Step4";
-import Dashboard from "./pages/Dashboard";
+import Dashboard1 from "./pages/Dashboard1";
+import Dashboard1Alt from "./pages/Dashboard1Alt";
 import DashboardAlt from "./pages/DashboardAlt";
 import Messages from "./pages/Messages";
 import Reminders from "./pages/Reminders";
@@ -36,7 +37,8 @@ const App = () => (
             <Route path="/onboarding/step-2" element={<Step2 />} />
             <Route path="/onboarding/step-3" element={<Step3 />} />
             <Route path="/onboarding/step-4" element={<Step4 />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard1" element={<Dashboard1 />} />
+            <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
             <Route path="/dashboard-alt" element={<DashboardAlt />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/reminders" element={<Reminders />} />
