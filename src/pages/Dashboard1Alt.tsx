@@ -33,7 +33,7 @@ export default function Dashboard1Alt() {
             </div>
 
             {/* Quick Actions - Aligned to the right */}
-            <Card className="flex-shrink-0 w-full md:w-auto p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <Card className="flex-shrink-0 w-full md:w-[280px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] md:ml-auto">
               <h2 className="text-2xl font-serif mb-1 text-foreground">
                 Quick Actions
               </h2>
