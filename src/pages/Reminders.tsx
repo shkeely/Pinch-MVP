@@ -158,7 +158,7 @@ export default function Reminders() {
                     variant={reminder.done ? "outline" : "default"}
                     size="sm"
                     onClick={() => handleMarkDone(reminder.id)}
-                    className={reminder.done ? '' : 'bg-green-500 hover:bg-green-600 text-white'}
+                    className={reminder.done ? '' : 'bg-primary hover:bg-primary/90 text-primary-foreground'}
                   >
                     <Check className="w-4 h-4 mr-2" />
                     {reminder.done ? 'Undo' : 'Mark Done'}
