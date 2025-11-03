@@ -60,14 +60,6 @@ export default function Chatbot() {
                 </div>
                 <Switch defaultChecked />
               </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-medium mb-1">Smart Suggestions</h4>
-                  <p className="text-sm text-muted-foreground">Offer proactive help to guests</p>
-                </div>
-                <Switch defaultChecked />
-              </div>
             </div>
           </Card>
 
