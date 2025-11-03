@@ -75,8 +75,13 @@ export default function Dashboard1Alt() {
             </Card>
           </div>
 
+          {/* Stats Card - Compact and integrated */}
+          <div className="mt-6 w-fit">
+            <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
+          </div>
+
           {/* Trending Tags */}
-          <div className="flex flex-wrap gap-2 mt-2">
+          <div className="flex flex-wrap gap-2 mt-4">
             <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
             backgroundColor: '#b7c4f1',
             color: '#2E2B27'
@@ -95,11 +100,6 @@ export default function Dashboard1Alt() {
           }}>
             Trending: Registry
             </span>
-          </div>
-
-          {/* Stats Card - Below trends */}
-          <div className="mt-6">
-            <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
           </div>
         </div>
 
