@@ -117,9 +117,9 @@ export default function Dashboard() {
                     This question came up 8 times this week. Would you like me to draft a message?
                   </p>
                   <Button className="rounded-full px-6" style={{
-                    backgroundColor: '#5b6850',
-                    color: 'white'
-                  }}>
+                  backgroundColor: '#5b6850',
+                  color: 'white'
+                }}>
                     Draft message
                   </Button>
                 </div>
@@ -133,16 +133,14 @@ export default function Dashboard() {
                   <MessageSquare className="w-6 h-6 text-foreground" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">
-                    You received 12 new questions
-                  </h3>
+                  <h3 className="text-lg font-serif text-foreground mb-2">You received 1 escalated questions</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Most are about timing and arrival instructions.
                   </p>
                   <Button className="rounded-full px-6" style={{
-                    backgroundColor: '#5b6850',
-                    color: 'white'
-                  }}>
+                  backgroundColor: '#5b6850',
+                  color: 'white'
+                }}>
                     Review all
                   </Button>
                 </div>
@@ -163,9 +161,9 @@ export default function Dashboard() {
                     Common question: 'Is there a shuttle?' — Consider adding this to your FAQ.
                   </p>
                   <Button className="rounded-full px-6" style={{
-                    backgroundColor: '#5b6850',
-                    color: 'white'
-                  }}>
+                  backgroundColor: '#5b6850',
+                  color: 'white'
+                }}>
                     Add answer
                   </Button>
                 </div>
