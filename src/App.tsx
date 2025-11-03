@@ -18,6 +18,7 @@ import Messages from "./pages/Messages";
 import Reminders from "./pages/Reminders";
 import Chatbot from "./pages/Chatbot";
 import Guests from "./pages/Guests";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/reminders" element={<Reminders />} />
             <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/guests" element={<Guests />} />
+            <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

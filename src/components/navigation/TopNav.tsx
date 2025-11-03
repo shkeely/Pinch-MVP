@@ -101,7 +101,12 @@ export default function TopNav() {
             Import
           </Button>
           
-          <Button variant="ghost" size="icon" className="hidden md:flex rounded-full">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="hidden md:flex rounded-full"
+            onClick={() => navigate('/settings')}
+          >
             <Settings className="w-5 h-5" />
           </Button>
           
