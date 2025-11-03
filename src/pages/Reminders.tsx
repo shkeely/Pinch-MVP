@@ -155,13 +155,6 @@ export default function Reminders() {
                     <Pencil className="w-4 h-4" />
                   </Button>
                   <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => setDeleteId(reminder.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                  <Button 
                     variant={reminder.done ? "outline" : "default"}
                     size="sm"
                     onClick={() => handleMarkDone(reminder.id)}
@@ -236,13 +229,25 @@ export default function Reminders() {
                   />
                 </div>
                 
-                <div className="flex justify-end gap-2 pt-4">
-                  <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-                    Cancel
+                <div className="flex justify-between pt-4">
+                  <Button 
+                    variant="destructive" 
+                    onClick={() => {
+                      setDeleteId(editingReminder.id);
+                      setIsEditDialogOpen(false);
+                    }}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
                   </Button>
-                  <Button onClick={handleSaveEdit} className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                    Save Changes
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSaveEdit} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                      Save Changes
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
