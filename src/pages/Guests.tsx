@@ -4,65 +4,49 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { UserPlus, Upload, Pencil } from 'lucide-react';
 import { useState } from 'react';
-
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
-
 export default function Guests() {
   const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
-
-  const guests = [
-    {
-      id: 1,
-      name: 'Emily Thompson',
-      phone: '+1 555-0101',
-      segment: 'Wedding Party' as Segment,
-      status: 'Active',
-    },
-    {
-      id: 2,
-      name: 'Michael Chen',
-      phone: '+1 555-0102',
-      segment: 'Out-of-Towners' as Segment,
-      status: 'Active',
-    },
-    {
-      id: 3,
-      name: 'Jessica Martinez',
-      phone: '+1 555-0103',
-      segment: 'All' as Segment,
-      status: 'Active',
-    },
-    {
-      id: 4,
-      name: 'David Park',
-      phone: '+1 555-0104',
-      segment: 'Wedding Party' as Segment,
-      status: 'Active',
-    },
-    {
-      id: 5,
-      name: 'Rachel Green',
-      phone: '+1 555-0105',
-      segment: 'Out-of-Towners' as Segment,
-      status: 'Active',
-    },
-    {
-      id: 6,
-      name: 'Tom Anderson',
-      phone: '+1 555-0106',
-      segment: 'Parents' as Segment,
-      status: 'Active',
-    },
-  ];
-
+  const guests = [{
+    id: 1,
+    name: 'Emily Thompson',
+    phone: '+1 555-0101',
+    segment: 'Wedding Party' as Segment,
+    status: 'Active'
+  }, {
+    id: 2,
+    name: 'Michael Chen',
+    phone: '+1 555-0102',
+    segment: 'Out-of-Towners' as Segment,
+    status: 'Active'
+  }, {
+    id: 3,
+    name: 'Jessica Martinez',
+    phone: '+1 555-0103',
+    segment: 'All' as Segment,
+    status: 'Active'
+  }, {
+    id: 4,
+    name: 'David Park',
+    phone: '+1 555-0104',
+    segment: 'Wedding Party' as Segment,
+    status: 'Active'
+  }, {
+    id: 5,
+    name: 'Rachel Green',
+    phone: '+1 555-0105',
+    segment: 'Out-of-Towners' as Segment,
+    status: 'Active'
+  }, {
+    id: 6,
+    name: 'Tom Anderson',
+    phone: '+1 555-0106',
+    segment: 'Parents' as Segment,
+    status: 'Active'
+  }];
   const segments: Segment[] = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
-  
-  const filteredGuests = selectedSegment === 'All' 
-    ? guests 
-    : guests.filter(g => g.segment === selectedSegment);
-
-  return (
-    <div className="min-h-screen bg-background">
+  const filteredGuests = selectedSegment === 'All' ? guests : guests.filter(g => g.segment === selectedSegment);
+  return <div className="min-h-screen bg-background">
       <TopNav />
       
       <main className="container mx-auto px-4 py-8 max-w-6xl">
@@ -93,34 +77,25 @@ export default function Guests() {
           </div>
           
           <div className="flex flex-wrap gap-2">
-            {segments.map((segment) => (
-              <Button
-                key={segment}
-                variant={selectedSegment === segment ? "default" : "outline"}
-                onClick={() => setSelectedSegment(segment)}
-                className={selectedSegment === segment ? "bg-accent hover:bg-accent/90 text-accent-foreground" : ""}
-              >
+            {segments.map(segment => <Button key={segment} variant={selectedSegment === segment ? "default" : "outline"} onClick={() => setSelectedSegment(segment)} className={selectedSegment === segment ? "bg-accent hover:bg-accent/90 text-accent-foreground" : ""}>
                 {segment}
-                {segment === 'All' && (
-                  <Badge variant="secondary" className="ml-2 bg-background/50">
+                {segment === 'All' && <Badge variant="secondary" className="ml-2 bg-background/50">
                     {guests.length}
-                  </Badge>
-                )}
-              </Button>
-            ))}
+                  </Badge>}
+              </Button>)}
           </div>
         </Card>
 
         {/* Action Buttons */}
         <div className="bg-accent/5 rounded-lg p-4 mb-6 border border-accent/10">
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="bg-background">
+            <Button variant="outline" size="sm" className="bg-violet-100">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
               Send Announcement
             </Button>
-            <Button variant="outline" size="sm" className="bg-background">
+            <Button variant="outline" size="sm" className="bg-violet-100">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
@@ -143,8 +118,7 @@ export default function Guests() {
                 </tr>
               </thead>
               <tbody>
-                {filteredGuests.map((guest) => (
-                  <tr key={guest.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
+                {filteredGuests.map(guest => <tr key={guest.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
                     <td className="py-4 px-4 font-medium">{guest.name}</td>
                     <td className="py-4 px-4 text-muted-foreground">{guest.phone}</td>
                     <td className="py-4 px-4">
@@ -163,13 +137,11 @@ export default function Guests() {
                         <Pencil className="w-4 h-4" />
                       </Button>
                     </td>
-                  </tr>
-                ))}
+                  </tr>)}
               </tbody>
             </table>
           </div>
         </Card>
       </main>
-    </div>
-  );
+    </div>;
 }
