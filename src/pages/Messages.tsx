@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import TopNav from '@/components/navigation/TopNav';
 interface Message {
   id: string;
@@ -134,6 +135,8 @@ export default function Messages() {
               </Badge>
             </div>
 
+            <Separator className="mb-6" />
+
             {/* Messages */}
             <div className="space-y-4 mb-6">
               {/* Guest Question */}
@@ -169,6 +172,22 @@ export default function Messages() {
                 </div>}
             </div>
 
+            {/* Draft Response */}
+            {!selectedMessage.answer && <div className="mb-6">
+                <h3 className="font-semibold text-foreground mb-3">Draft Response</h3>
+                <div className="flex gap-2 items-end">
+                  <Input placeholder="Type your response..." className="flex-1 rounded-full border-border" />
+                  <Button size="icon" className="rounded-full h-10 w-10 flex-shrink-0" style={{
+                backgroundColor: '#5b6850',
+                color: 'white'
+              }}>
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>}
+
+            <Separator className="mb-6" />
+
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3">
               <Button variant="outline" className="rounded-full px-6 hover:bg-muted/50">
@@ -181,20 +200,6 @@ export default function Messages() {
                 Mark as Reviewed
               </Button>
             </div>
-
-            {/* Draft Response */}
-            {!selectedMessage.answer && <div className="mt-6 pt-6 border-t border-border">
-                <h3 className="font-semibold text-foreground mb-3">Draft Response</h3>
-                <div className="flex gap-2 items-end">
-                  <Input placeholder="Type your response..." className="flex-1 rounded-full border-border" />
-                  <Button size="icon" className="rounded-full h-10 w-10 flex-shrink-0" style={{
-                backgroundColor: '#5b6850',
-                color: 'white'
-              }}>
-                    <Send className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>}
           </Card>
         </div>
       </div>
