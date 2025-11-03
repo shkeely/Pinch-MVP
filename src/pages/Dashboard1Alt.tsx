@@ -21,7 +21,7 @@ export default function Dashboard1Alt() {
       <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
         {/* Daily Digest Section with Stats */}
         <div className="mb-12">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
+          <div className="flex flex-col md:flex-row gap-6 md:items-start">
             {/* Daily Digest Content - Left Column */}
             <div className="flex-1 space-y-5">
               {/* Title and Description */}
@@ -63,7 +63,7 @@ export default function Dashboard1Alt() {
             </div>
 
             {/* Quick Actions - Right Column */}
-            <Card className="flex-shrink-0 w-full md:w-[423px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <Card className="flex-shrink-0 w-full md:w-[500px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif mb-1 text-foreground">
                 Quick Actions
               </h2>
