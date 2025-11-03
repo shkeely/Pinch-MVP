@@ -18,7 +18,7 @@ export default function Dashboard1Alt() {
   return <div className="min-h-screen bg-background">
       <TopNav />
 
-      <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
+      <div className="container mx-auto md:px-6 py-6 md:py-8 max-w-7xl px-[20px]">
         {/* Daily Digest Section with Stats */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row gap-6 md:items-start">
