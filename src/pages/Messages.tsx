@@ -75,7 +75,7 @@ export default function Messages() {
               Guest conversations & AI responses
             </p>
           </div>
-          <Button className="rounded-full px-6 bg-purple-600 hover:bg-purple-700 text-white">
+          <Button className="rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300">
             Message All
           </Button>
         </div>
