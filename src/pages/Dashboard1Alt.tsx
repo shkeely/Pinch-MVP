@@ -73,30 +73,21 @@ export default function Dashboard1Alt() {
               </p>
               
               <div className="space-y-1.5">
-                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
-                  backgroundColor: 'white',
-                  color: '#2E2B27'
-                }}>
+                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
                   <div className="flex items-center gap-3">
                     <Bell className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Send a Message to Guests</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
-                  backgroundColor: 'white',
-                  color: '#2E2B27'
-                }}>
+                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
                   <div className="flex items-center gap-3">
                     <Eye className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Schedule Follow-up</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
-                  backgroundColor: 'white',
-                  color: '#2E2B27'
-                }}>
+                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
                   <div className="flex items-center gap-3">
                     <Download className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Export Guest List</span>
