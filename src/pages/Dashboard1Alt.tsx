@@ -180,7 +180,7 @@ export default function Dashboard1Alt() {
                   <MessageSquare className="w-6 h-6 text-foreground" />
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center justify-between mb-2">
                     <h3 className="text-lg font-serif text-foreground">You received 1 escalated questions</h3>
                     <Badge className="bg-[#e85d5d] hover:bg-[#e85d5d] text-white px-3 py-1 text-xs rounded-full">
                       Escalated
