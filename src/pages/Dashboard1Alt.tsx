@@ -22,7 +22,7 @@ export default function Dashboard1Alt() {
         {/* Daily Digest Section with Stats */}
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
-            {/* Daily Digest Title and Description */}
+          {/* Daily Digest Title and Description */}
             <div className="flex-1">
               <h2 className="text-3xl md:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
                 Daily Digest
@@ -32,10 +32,47 @@ export default function Dashboard1Alt() {
               </p>
             </div>
 
-            {/* Stats Card - Aligned to the right */}
-            <div className="flex-shrink-0">
-              <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
-            </div>
+            {/* Quick Actions - Aligned to the right */}
+            <Card className="flex-shrink-0 w-full md:w-auto p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+              <h2 className="text-2xl font-serif mb-1 text-foreground">
+                Quick Actions
+              </h2>
+              <p className="text-sm text-muted-foreground mb-4">
+                Manage things efficiently
+              </p>
+              
+              <div className="space-y-1.5">
+                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
+                backgroundColor: 'white',
+                color: '#2E2B27'
+              }}>
+                  <div className="flex items-center gap-3">
+                    <Bell className="w-5 h-5" />
+                    <span className="text-[15px] font-medium">Send a Message to Guests</span>
+                  </div>
+                </Button>
+                
+                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
+                backgroundColor: 'white',
+                color: '#2E2B27'
+              }}>
+                  <div className="flex items-center gap-3">
+                    <Eye className="w-5 h-5" />
+                    <span className="text-[15px] font-medium">Schedule Follow-up</span>
+                  </div>
+                </Button>
+                
+                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
+                backgroundColor: 'white',
+                color: '#2E2B27'
+              }}>
+                  <div className="flex items-center gap-3">
+                    <Download className="w-5 h-5" />
+                    <span className="text-[15px] font-medium">Export Guest List</span>
+                  </div>
+                </Button>
+              </div>
+            </Card>
           </div>
 
           {/* Trending Tags */}
@@ -56,16 +93,21 @@ export default function Dashboard1Alt() {
             backgroundColor: '#c8deb9',
             color: '#2E2B27'
           }}>
-              Trending: Registry
+            Trending: Registry
             </span>
+          </div>
+
+          {/* Stats Card - Below trends */}
+          <div className="mt-6">
+            <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
           </div>
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col gap-6 md:grid md:grid-cols-[1.18fr_0.84fr_auto] md:gap-6 md:grid-rows-[auto]">
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-[1fr_auto] md:gap-6 md:grid-rows-[auto]">
 
           {/* Your Concierge - Full width on mobile */}
-          <Card className="w-full md:col-start-3 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[368px]">
+          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[368px]">
             <h2 className="font-sans mb-4 text-white text-xl font-medium">
               Your Concierge
             </h2>
@@ -98,7 +140,7 @@ export default function Dashboard1Alt() {
           </Card>
 
           {/* Needs Your Attention - Full width on mobile */}
-          <div className="w-full md:col-start-1 md:row-start-1 md:w-auto space-y-4">
+          <div className="w-full md:col-start-1 md:row-start-1 space-y-4">
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Needs Your Attention
             </h2>
@@ -175,48 +217,6 @@ export default function Dashboard1Alt() {
               </div>
             </Card>
           </div>
-
-          {/* Quick Actions - Full width on mobile */}
-          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] md:w-auto">
-            <h2 className="text-2xl font-serif mb-1 text-foreground">
-              Quick Actions
-            </h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Manage things efficiently
-            </p>
-            
-            <div className="space-y-1.5">
-              <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
-              backgroundColor: 'white',
-              color: '#2E2B27'
-            }}>
-                <div className="flex items-center gap-3">
-                  <Bell className="w-5 h-5" />
-                  <span className="text-[15px] font-medium">Send a Message to Guests</span>
-                </div>
-              </Button>
-              
-              <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
-              backgroundColor: 'white',
-              color: '#2E2B27'
-            }}>
-                <div className="flex items-center gap-3">
-                  <Eye className="w-5 h-5" />
-                  <span className="text-[15px] font-medium">Schedule Follow-up</span>
-                </div>
-              </Button>
-              
-              <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors hover:bg-muted/50 border-border" style={{
-              backgroundColor: 'white',
-              color: '#2E2B27'
-            }}>
-                <div className="flex items-center gap-3">
-                  <Download className="w-5 h-5" />
-                  <span className="text-[15px] font-medium">Export Guest List</span>
-                </div>
-              </Button>
-            </div>
-          </Card>
         </div>
       </div>
     </div>;
