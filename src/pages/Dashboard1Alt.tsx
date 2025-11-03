@@ -21,19 +21,49 @@ export default function Dashboard1Alt() {
       <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
         {/* Daily Digest Section with Stats */}
         <div className="mb-12">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
-          {/* Daily Digest Title and Description */}
-            <div className="flex-1">
-              <h2 className="text-3xl md:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
-                Daily Digest
-              </h2>
-              <p className="text-foreground leading-relaxed text-base md:text-[1.15rem]">
-                <span className="font-semibold">{newMessages} new messages today.</span> {generalQuestions} general questions (parking, timing).
-              </p>
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Daily Digest Content - Left Column */}
+            <div className="flex-1 space-y-6">
+              {/* Title and Description */}
+              <div>
+                <h2 className="text-3xl md:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
+                  Daily Digest
+                </h2>
+                <p className="text-foreground leading-relaxed text-base md:text-[1.15rem]">
+                  <span className="font-semibold">{newMessages} new messages today.</span> {generalQuestions} general questions (parking, timing).
+                </p>
+              </div>
+
+              {/* Stats Card - Compact and integrated */}
+              <div className="w-fit">
+                <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
+              </div>
+
+              {/* Trending Tags */}
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
+                backgroundColor: '#b7c4f1',
+                color: '#2E2B27'
+              }}>
+                  Trending: Parking
+                </span>
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
+                backgroundColor: '#ccc1dd',
+                color: '#2E2B27'
+              }}>
+                  Trending: Kids Policy
+                </span>
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
+                backgroundColor: '#c8deb9',
+                color: '#2E2B27'
+              }}>
+                  Trending: Registry
+                </span>
+              </div>
             </div>
 
-            {/* Quick Actions - Aligned to the right */}
-            <Card className="flex-shrink-0 w-full md:w-[280px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] md:ml-auto">
+            {/* Quick Actions - Right Column */}
+            <Card className="flex-shrink-0 w-full md:w-[280px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif mb-1 text-foreground">
                 Quick Actions
               </h2>
@@ -73,33 +103,6 @@ export default function Dashboard1Alt() {
                 </Button>
               </div>
             </Card>
-          </div>
-
-          {/* Stats Card - Compact and integrated */}
-          <div className="mt-6 w-fit">
-            <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
-          </div>
-
-          {/* Trending Tags */}
-          <div className="flex flex-wrap gap-2 mt-4">
-            <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
-            backgroundColor: '#b7c4f1',
-            color: '#2E2B27'
-          }}>
-              Trending: Parking
-            </span>
-            <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
-            backgroundColor: '#ccc1dd',
-            color: '#2E2B27'
-          }}>
-              Trending: Kids Policy
-            </span>
-            <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
-            backgroundColor: '#c8deb9',
-            color: '#2E2B27'
-          }}>
-            Trending: Registry
-            </span>
           </div>
         </div>
 
