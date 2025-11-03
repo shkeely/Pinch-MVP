@@ -1,9 +1,10 @@
-import { Upload, Settings, Bell, ChevronDown, Menu } from 'lucide-react';
+import { Upload, Settings, ChevronDown, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
+import NotificationsPopover from './NotificationsPopover';
 
 const navItems = [
   { label: 'Dashboard', path: '/dashboard1-alt' },
@@ -110,10 +111,7 @@ export default function TopNav() {
             <Settings className="w-5 h-5" />
           </Button>
           
-          <Button variant="ghost" size="icon" className="rounded-full relative">
-            <Bell className="w-4 h-4 md:w-5 md:h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-destructive rounded-full" />
-          </Button>
+          <NotificationsPopover />
           
           <button className="flex items-center gap-2 rounded-full hover:opacity-80 transition-opacity">
             <Avatar className="w-8 h-8 md:w-9 md:h-9 ring-2 ring-accent/30">
