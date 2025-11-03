@@ -2,11 +2,25 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UserPlus, Upload, Pencil } from 'lucide-react';
+import { UserPlus, Upload, Pencil, Settings, Plus, X } from 'lucide-react';
 import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
 export default function Guests() {
   const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
+  const [segments, setSegments] = useState<Segment[]>(['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors']);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [newSegmentName, setNewSegmentName] = useState('');
+  const [editingSegment, setEditingSegment] = useState<{ old: Segment; new: string } | null>(null);
   const guests = [{
     id: 1,
     name: 'Emily Thompson',
@@ -44,8 +58,55 @@ export default function Guests() {
     segment: 'Parents' as Segment,
     status: 'Active'
   }];
-  const segments: Segment[] = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
+
   const filteredGuests = selectedSegment === 'All' ? guests : guests.filter(g => g.segment === selectedSegment);
+
+  const handleAddSegment = () => {
+    if (!newSegmentName.trim()) {
+      toast.error("Segment name cannot be empty");
+      return;
+    }
+    if (segments.includes(newSegmentName as Segment)) {
+      toast.error("Segment already exists");
+      return;
+    }
+    setSegments([...segments, newSegmentName as Segment]);
+    setNewSegmentName('');
+    toast.success(`Added segment: ${newSegmentName}`);
+  };
+
+  const handleRemoveSegment = (segment: Segment) => {
+    if (segment === 'All') {
+      toast.error("Cannot remove 'All' segment");
+      return;
+    }
+    setSegments(segments.filter(s => s !== segment));
+    if (selectedSegment === segment) {
+      setSelectedSegment('All');
+    }
+    toast.success(`Removed segment: ${segment}`);
+  };
+
+  const handleRenameSegment = () => {
+    if (!editingSegment || !editingSegment.new.trim()) {
+      toast.error("Segment name cannot be empty");
+      return;
+    }
+    if (editingSegment.old === 'All') {
+      toast.error("Cannot rename 'All' segment");
+      return;
+    }
+    if (segments.includes(editingSegment.new as Segment) && editingSegment.new !== editingSegment.old) {
+      toast.error("Segment name already exists");
+      return;
+    }
+    setSegments(segments.map(s => s === editingSegment.old ? editingSegment.new as Segment : s));
+    if (selectedSegment === editingSegment.old) {
+      setSelectedSegment(editingSegment.new as Segment);
+    }
+    toast.success(`Renamed segment from "${editingSegment.old}" to "${editingSegment.new}"`);
+    setEditingSegment(null);
+  };
   return <div className="min-h-screen bg-background">
       <TopNav />
       
@@ -71,9 +132,100 @@ export default function Guests() {
 
         {/* Segments Section */}
         <Card className="p-6 mb-6 bg-stone-50">
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-1">Segments</h2>
-            <p className="text-sm text-muted-foreground">Filter guests by category</p>
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold mb-1">Segments</h2>
+              <p className="text-sm text-muted-foreground">Filter guests by category</p>
+            </div>
+            
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Edit Segments
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px] bg-card">
+                <DialogHeader>
+                  <DialogTitle>Manage Segments</DialogTitle>
+                  <DialogDescription>
+                    Add, remove, or rename guest segments
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <div className="space-y-6 py-4">
+                  {/* Add New Segment */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Add New Segment</label>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Enter segment name"
+                        value={newSegmentName}
+                        onChange={(e) => setNewSegmentName(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleAddSegment()}
+                      />
+                      <Button onClick={handleAddSegment} size="sm">
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Existing Segments */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Existing Segments</label>
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                      {segments.map(segment => (
+                        <div key={segment} className="flex items-center gap-2 p-2 rounded-md border bg-background">
+                          {editingSegment?.old === segment ? (
+                            <>
+                              <Input
+                                value={editingSegment.new}
+                                onChange={(e) => setEditingSegment({ old: segment, new: e.target.value })}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') handleRenameSegment();
+                                  if (e.key === 'Escape') setEditingSegment(null);
+                                }}
+                                className="flex-1"
+                                autoFocus
+                              />
+                              <Button size="sm" onClick={handleRenameSegment}>
+                                Save
+                              </Button>
+                              <Button size="sm" variant="ghost" onClick={() => setEditingSegment(null)}>
+                                Cancel
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <span className="flex-1 font-medium">{segment}</span>
+                              {segment !== 'All' && (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => setEditingSegment({ old: segment, new: segment })}
+                                  >
+                                    <Pencil className="w-4 h-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => handleRemoveSegment(segment)}
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </Button>
+                                </>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
           
           <div className="flex flex-wrap gap-2">
