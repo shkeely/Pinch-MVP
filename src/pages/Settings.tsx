@@ -139,7 +139,7 @@ export default function Settings() {
                 />
                 <Button 
                   onClick={handleInvitePlanner}
-                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                  className="bg-indigo-400 hover:bg-indigo-500 text-white"
                 >
                   <UserPlus className="w-4 h-4 mr-2" />
                   Invite
