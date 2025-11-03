@@ -87,7 +87,7 @@ export default function Guests() {
         </Card>
 
         {/* Action Buttons */}
-        <div className="bg-accent/5 rounded-lg p-4 mb-6 border border-accent/10">
+        <div className="rounded-lg p-4 mb-6 border border-accent/10 bg-white/[0.31]">
           <div className="flex gap-2">
             <Button variant="outline" size="sm" className="bg-violet-100">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
