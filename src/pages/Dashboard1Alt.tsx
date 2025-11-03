@@ -143,7 +143,7 @@ export default function Dashboard1Alt() {
           </Card>
 
           {/* Needs Your Attention - Full width on mobile */}
-          <div className="w-full md:col-start-1 md:row-start-1 space-y-4 md:max-w-[85%]">
+          <div className="w-full md:col-start-1 md:row-start-1 space-y-4 md:max-w-[90%]">
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Needs Your Attention
             </h2>
