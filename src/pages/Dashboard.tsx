@@ -133,9 +133,14 @@ export default function Dashboard() {
                   <MessageSquare className="w-6 h-6 text-foreground" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">You received 1 escalated questions</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-lg font-serif text-foreground">You received 1 escalated questions</h3>
+                    <Badge className="bg-[#e85d5d] hover:bg-[#e85d5d] text-white px-3 py-1 text-xs rounded-full">
+                      Escalated
+                    </Badge>
+                  </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Most are about timing and arrival instructions.
+                    The question is about cancellation
                   </p>
                   <Button className="rounded-full px-6" style={{
                   backgroundColor: '#5b6850',
