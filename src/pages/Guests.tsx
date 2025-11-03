@@ -92,7 +92,7 @@ export default function Guests() {
             <p className="text-sm text-muted-foreground">Filter guests by category</p>
           </div>
           
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-2">
             {segments.map((segment) => (
               <Button
                 key={segment}
@@ -109,22 +109,25 @@ export default function Guests() {
               </Button>
             ))}
           </div>
+        </Card>
 
+        {/* Action Buttons */}
+        <div className="bg-accent/5 rounded-lg p-4 mb-6 border border-accent/10">
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="bg-background">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
               Send Announcement
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="bg-background">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
               Copy Chatbot Link
             </Button>
           </div>
-        </Card>
+        </div>
 
         {/* Guests Table */}
         <Card>
