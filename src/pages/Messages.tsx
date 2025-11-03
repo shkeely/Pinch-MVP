@@ -138,9 +138,9 @@ export default function Messages() {
             <Separator className="mb-6" />
 
             {/* Messages */}
-            <div className="space-y-4 mb-6">
+            <div className="space-y-4 mb-6 flex-1">
               {/* Guest Question */}
-              <div>
+              <div className="rounded-2xl p-5 bg-[#c8deb9]">
                 <p className="font-semibold text-foreground mb-2">
                   {selectedMessage.question}
                 </p>
@@ -186,19 +186,22 @@ export default function Messages() {
                 </div>
               </div>}
 
-            <Separator className="mb-6" />
+            {/* Bottom Section */}
+            <div className="mt-auto">
+              <Separator className="mb-6" />
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3">
-              <Button variant="outline" className="rounded-full px-6 hover:bg-muted/50">
-                Edit Response
-              </Button>
-              <Button className="rounded-full px-6" style={{
-              backgroundColor: '#5b6850',
-              color: 'white'
-            }}>
-                Mark as Reviewed
-              </Button>
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-3">
+                <Button variant="outline" className="rounded-full px-6 hover:bg-muted/50">
+                  Edit Response
+                </Button>
+                <Button className="rounded-full px-6" style={{
+                backgroundColor: '#5b6850',
+                color: 'white'
+              }}>
+                  Mark as Reviewed
+                </Button>
+              </div>
             </div>
           </Card>
         </div>
