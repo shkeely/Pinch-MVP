@@ -101,7 +101,7 @@ export default function Settings() {
 
             <Button 
               onClick={handleSaveChanges}
-              className="mt-6 bg-purple-600 hover:bg-purple-700 text-white"
+              className="mt-6 bg-indigo-400 hover:bg-indigo-500 text-white"
             >
               <Save className="w-4 h-4 mr-2" />
               Save Changes
