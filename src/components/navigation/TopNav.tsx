@@ -1,10 +1,10 @@
-import { Upload, Settings, ChevronDown, Menu } from 'lucide-react';
+import { Upload, Settings, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 import NotificationsPopover from './NotificationsPopover';
+import AccountPopover from './AccountPopover';
 
 const navItems = [
   { label: 'Dashboard', path: '/dashboard1-alt' },
@@ -113,14 +113,7 @@ export default function TopNav() {
           
           <NotificationsPopover />
           
-          <button className="flex items-center gap-2 rounded-full hover:opacity-80 transition-opacity">
-            <Avatar className="w-8 h-8 md:w-9 md:h-9 ring-2 ring-accent/30">
-              <AvatarFallback className="bg-accent/20 text-accent-foreground font-medium text-xs md:text-sm">
-                SP
-              </AvatarFallback>
-            </Avatar>
-            <ChevronDown className="hidden md:block w-4 h-4 text-muted-foreground" />
-          </button>
+          <AccountPopover />
         </div>
       </div>
     </header>
