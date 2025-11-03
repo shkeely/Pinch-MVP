@@ -63,7 +63,7 @@ export default function Dashboard1Alt() {
             </div>
 
             {/* Quick Actions - Right Column */}
-            <Card className="flex-shrink-0 w-full md:w-[280px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <Card className="flex-shrink-0 w-full md:w-[423px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif mb-1 text-foreground">
                 Quick Actions
               </h2>
@@ -110,7 +110,7 @@ export default function Dashboard1Alt() {
         <div className="flex flex-col gap-6 md:grid md:grid-cols-[1fr_auto] md:gap-6 md:grid-rows-[auto]">
 
           {/* Your Concierge - Full width on mobile */}
-          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[368px]">
+          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[423px]">
             <h2 className="font-sans mb-4 text-white text-xl font-medium">
               Your Concierge
             </h2>
@@ -143,7 +143,7 @@ export default function Dashboard1Alt() {
           </Card>
 
           {/* Needs Your Attention - Full width on mobile */}
-          <div className="w-full md:col-start-1 md:row-start-1 space-y-4">
+          <div className="w-full md:col-start-1 md:row-start-1 space-y-4 md:max-w-[85%]">
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Needs Your Attention
             </h2>
