@@ -20,7 +20,7 @@ export default function Dashboard() {
 
       <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
         {/* Daily Digest Section with Stats */}
-        <div className="mb-8">
+        <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-6">
             {/* Daily Digest Title and Description */}
             <div className="flex-1">
@@ -39,7 +39,7 @@ export default function Dashboard() {
           </div>
 
           {/* Trending Tags */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-2">
             <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
             backgroundColor: '#b7c4f1',
             color: '#2E2B27'
