@@ -2,7 +2,7 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UserPlus, Upload } from 'lucide-react';
+import { UserPlus, Upload, Pencil } from 'lucide-react';
 import { useState } from 'react';
 
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
@@ -136,6 +136,7 @@ export default function Guests() {
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Phone</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Segment</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Status</th>
+                  <th className="w-16"></th>
                 </tr>
               </thead>
               <tbody>
@@ -153,6 +154,11 @@ export default function Guests() {
                         <div className="w-2 h-2 rounded-full bg-green-500"></div>
                         <span className="text-green-600 font-medium">{guest.status}</span>
                       </div>
+                    </td>
+                    <td className="py-4 px-4">
+                      <Button variant="ghost" size="icon">
+                        <Pencil className="w-4 h-4" />
+                      </Button>
                     </td>
                   </tr>
                 ))}
