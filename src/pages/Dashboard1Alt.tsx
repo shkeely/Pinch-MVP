@@ -102,40 +102,7 @@ export default function Dashboard1Alt() {
         {/* Main Content Grid */}
         <div className="flex flex-col gap-6 md:grid md:grid-cols-[1fr_auto] md:gap-5 md:grid-rows-[auto]">
 
-          {/* Your Concierge - Full width on mobile */}
-          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[500px]">
-            <h2 className="text-2xl font-serif text-foreground mb-4">
-              Your Concierge
-            </h2>
-            
-            <div className="space-y-3 flex-1 mb-4">
-              <div className="flex justify-start">
-                <div className="bg-white text-foreground rounded-3xl rounded-tl-md px-4 py-2.5 shadow-sm max-w-xs">
-                  <p className="text-sm">what time is the wedding</p>
-                  <p className="text-xs text-muted-foreground mt-1">01:17 PM</p>
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <div className="text-foreground rounded-3xl rounded-tr-md px-4 py-2.5 shadow-sm max-w-xs bg-blue-50">
-                  <p className="text-sm">We'd love to see you there! the scheduled time.</p>
-                  <p className="text-xs text-muted-foreground/70 mt-1">01:17 PM</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-2 items-center p-2 bg-white rounded-full">
-              <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0">
-                <span className="text-lg">+</span>
-              </Button>
-              <Input placeholder="Type your message..." className="flex-1 border-0 bg-transparent text-foreground placeholder:text-muted-foreground h-10 focus-visible:ring-0 focus-visible:ring-offset-0" />
-              <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0" aria-label="Send message">
-                <Send className="w-4 h-4" />
-              </Button>
-            </div>
-          </Card>
-
-          {/* Needs Your Attention - Full width on mobile */}
+          {/* Needs Your Attention - Full width on mobile, left column on desktop */}
           <div className="w-full md:col-start-1 md:row-start-1 space-y-4">
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Needs Your Attention
@@ -204,6 +171,39 @@ export default function Dashboard1Alt() {
               </div>
             </Card>
           </div>
+
+          {/* Your Concierge - Full width on mobile, right column on desktop */}
+          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[500px]">
+            <h2 className="text-2xl font-serif text-foreground mb-4">
+              Your Concierge
+            </h2>
+            
+            <div className="space-y-3 flex-1 mb-4">
+              <div className="flex justify-start">
+                <div className="bg-white text-foreground rounded-3xl rounded-tl-md px-4 py-2.5 shadow-sm max-w-xs">
+                  <p className="text-sm">what time is the wedding</p>
+                  <p className="text-xs text-muted-foreground mt-1">01:17 PM</p>
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <div className="text-foreground rounded-3xl rounded-tr-md px-4 py-2.5 shadow-sm max-w-xs bg-blue-50">
+                  <p className="text-sm">We'd love to see you there! the scheduled time.</p>
+                  <p className="text-xs text-muted-foreground/70 mt-1">01:17 PM</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-2 items-center p-2 bg-white rounded-full">
+              <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0">
+                <span className="text-lg">+</span>
+              </Button>
+              <Input placeholder="Type your message..." className="flex-1 border-0 bg-transparent text-foreground placeholder:text-muted-foreground h-10 focus-visible:ring-0 focus-visible:ring-offset-0" />
+              <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0" aria-label="Send message">
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
+          </Card>
         </div>
       </div>
     </div>;
