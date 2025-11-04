@@ -1,4 +1,5 @@
-import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles } from 'lucide-react';
+import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles, Calendar, Clock, Users } from 'lucide-react';
+import { format } from 'date-fns';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,24 +9,33 @@ import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { AIAssistButton } from "@/components/ai/AIAssistButton";
+
 export default function Dashboard1Alt() {
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const {
     wedding,
     conversations
   } = useWedding();
+  
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [followUpDialogOpen, setFollowUpDialogOpen] = useState(false);
   const [draftMessageDialogOpen, setDraftMessageDialogOpen] = useState(false);
   const [addAnswerDialogOpen, setAddAnswerDialogOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
-  const [draftContent, setDraftContent] = useState("Hi everyone! Just wanted to address the parking situation. There's a parking lot available at the venue with plenty of spaces. Street parking is also available nearby. Looking forward to seeing you all!");
+  const [draftContent, setDraftContent] = useState('');
+  const [faqAnswer, setFaqAnswer] = useState('');
   const totalQuestions = 47;
   const autoAnswerRate = 37;
   const newMessages = 12;
@@ -77,9 +87,8 @@ export default function Dashboard1Alt() {
               </div>
             </div>
 
-            {/* Quick Actions - Right Column */}
-            <div className="flex-shrink-0 w-full lg:w-[500px] flex lg:justify-center">
-              <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            {/* Quick Actions Card - Right Column */}
+            <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
                 Quick Actions
               </h2>
@@ -88,29 +97,47 @@ export default function Dashboard1Alt() {
               </p>
               
               <div className="space-y-1.5">
-                <Button variant="outline" onClick={() => setMessageDialogOpen(true)} className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
-                  <div className="flex items-center gap-3 bg-[#f6f6f6]">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setMessageDialogOpen(true)}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
+                  <div className="flex items-center gap-3">
                     <Bell className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Send a Message to Guests</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" onClick={() => setFollowUpDialogOpen(true)} className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    const chatbotUrl = `${window.location.origin}/chatbot-embed`;
+                    navigator.clipboard.writeText(chatbotUrl);
+                    toast({
+                      title: "Link copied!",
+                      description: "Chatbot link has been copied to clipboard.",
+                    });
+                  }}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Eye className="w-5 h-5" />
-                    <span className="text-[15px] font-medium">Schedule Follow-up</span>
+                    <span className="text-[15px] font-medium">Share Chatbot</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" onClick={() => navigate('/guests')} className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/guests')}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Download className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Export Guest List</span>
                   </div>
                 </Button>
               </div>
-              </Card>
-            </div>
+            </Card>
           </div>
         </div>
 
@@ -123,27 +150,7 @@ export default function Dashboard1Alt() {
               Needs Your Attention
             </h2>
             
-            {/* Card 1: Guests asking about parking */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">
-                    Guests are asking about parking
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    This question came up 8 times this week. Would you like me to draft a message?
-                  </p>
-                  <Button onClick={() => setDraftMessageDialogOpen(true)} className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
-                    Draft message
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
-            {/* Card 2: New questions */}
+            {/* Card 1: Escalated questions */}
             <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
@@ -159,8 +166,34 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     The question is about cancellation
                   </p>
-                  <Button onClick={() => navigate('/messages')} className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => navigate('/messages')}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Review all
+                  </Button>
+                </div>
+              </div>
+            </Card>
+
+            {/* Card 2: Guests asking about parking */}
+            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-foreground" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-serif text-foreground mb-2">
+                    Guests are asking about parking
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    This question came up 8 times this week. Would you like me to draft a message?
+                  </p>
+                  <Button 
+                    onClick={() => setDraftMessageDialogOpen(true)}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
+                    Draft message
                   </Button>
                 </div>
               </div>
@@ -179,7 +212,10 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     Common question: 'Is there a shuttle?' — Consider adding this to your FAQ.
                   </p>
-                  <Button onClick={() => setAddAnswerDialogOpen(true)} className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => setAddAnswerDialogOpen(true)}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Add answer
                   </Button>
                 </div>
@@ -187,43 +223,93 @@ export default function Dashboard1Alt() {
             </Card>
           </div>
 
-          {/* Your Concierge - Full width on mobile/tablet, right column on desktop */}
-          <Card className="w-full lg:col-start-2 lg:row-start-1 overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] lg:min-h-0 lg:justify-self-end lg:w-[500px] p-0">
-            {/* Header Section */}
-            <div className="bg-card px-5 pt-5 pb-4">
-              <h2 className="text-2xl font-serif font-medium text-foreground">
-                Your Concierge
-              </h2>
-            </div>
+          {/* Right Column - Reminders */}
+          <Card className="w-full lg:col-start-2 lg:row-start-1 lg:justify-self-end lg:w-[500px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
+              Upcoming Reminders
+            </h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Next scheduled messages
+            </p>
             
-            {/* Chat Area with Gradient */}
-            <div className="bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] flex-1 px-5 pt-4 pb-4 flex flex-col">
-              <div className="space-y-3 flex-1 mb-4">
-                <div className="flex justify-start">
-                  <div className="bg-white text-foreground rounded-3xl rounded-tl-md px-4 py-2.5 shadow-sm max-w-xs">
-                    <p className="text-sm">what time is the wedding</p>
-                    <p className="text-xs text-muted-foreground mt-1">01:17 PM</p>
-                  </div>
+            <div className="space-y-3">
+              {/* Reminder 1 */}
+              <div className="border border-border rounded-lg p-3">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-sm font-medium text-foreground">RSVP Deadline Reminder</h3>
+                  <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 text-xs">RSVP</Badge>
                 </div>
-
-                <div className="flex justify-end">
-                  <div className="text-foreground rounded-3xl rounded-tr-md px-4 py-2.5 shadow-sm max-w-xs bg-blue-50">
-                    <p className="text-sm">We'd love to see you there! the scheduled time.</p>
-                    <p className="text-xs text-muted-foreground/70 mt-1">01:17 PM</p>
+                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-2">Scheduled</Badge>
+                <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    <span>{format(new Date(2025, 10, 15), 'MMM d, yyyy')}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>9:00 AM</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users className="w-3 h-3" />
+                    <span>120 guests</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-2 items-center p-2 bg-white rounded-full">
-                <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0">
-                  <span className="text-lg">+</span>
-                </Button>
-                <Input placeholder="Type your message..." className="flex-1 border-0 bg-transparent text-foreground placeholder:text-muted-foreground h-10 focus-visible:ring-0 focus-visible:ring-offset-0" />
-                <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0" aria-label="Send message">
-                  <Send className="w-4 h-4" />
-                </Button>
+              {/* Reminder 2 */}
+              <div className="border border-border rounded-lg p-3">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-sm font-medium text-foreground">Wedding Day Details</h3>
+                  <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Attendance</Badge>
+                </div>
+                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-2">Scheduled</Badge>
+                <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    <span>{format(new Date(2025, 11, 1), 'MMM d, yyyy')}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>10:00 AM</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users className="w-3 h-3" />
+                    <span>95 guests</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Reminder 3 */}
+              <div className="border border-border rounded-lg p-3">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="text-sm font-medium text-foreground">Thank You Messages</h3>
+                  <Badge className="bg-green-100 text-green-700 hover:bg-green-100 text-xs">Follow-up</Badge>
+                </div>
+                <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 text-xs mb-2">Draft</Badge>
+                <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    <span>{format(new Date(2025, 11, 10), 'MMM d, yyyy')}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>12:00 PM</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users className="w-3 h-3" />
+                    <span>All guests</span>
+                  </div>
+                </div>
               </div>
             </div>
+
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/reminders')}
+              className="w-full mt-4 rounded-full"
+            >
+              View All Reminders
+            </Button>
           </Card>
         </div>
       </div>
@@ -238,20 +324,35 @@ export default function Dashboard1Alt() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <Textarea placeholder="Type your message here..." value={messageContent} onChange={e => setMessageContent(e.target.value)} className="min-h-[150px]" />
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">Message</label>
+              <AIAssistButton 
+                currentText={messageContent}
+                onAIGenerate={setMessageContent}
+                context="regarding your upcoming wedding celebration"
+              />
+            </div>
+            <Textarea 
+              placeholder="Type your message here..."
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
+              className="min-h-[150px]"
+            />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setMessageDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Message sent!",
-              description: "Your message has been sent to all guests."
-            });
-            setMessageDialogOpen(false);
-            setMessageContent('');
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Message sent!",
+                  description: "Your message has been sent to all guests.",
+                });
+                setMessageDialogOpen(false);
+                setMessageContent('');
+              }}
+            >
               Send Message
             </Button>
           </DialogFooter>
@@ -270,7 +371,10 @@ export default function Dashboard1Alt() {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Follow-up message</label>
-              <Textarea placeholder="What would you like to follow up about?" className="min-h-[100px]" />
+              <Textarea 
+                placeholder="What would you like to follow up about?"
+                className="min-h-[100px]"
+              />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">When?</label>
@@ -281,13 +385,15 @@ export default function Dashboard1Alt() {
             <Button variant="outline" onClick={() => setFollowUpDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Follow-up scheduled!",
-              description: "We'll remind you to follow up at the scheduled time."
-            });
-            setFollowUpDialogOpen(false);
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Follow-up scheduled!",
+                  description: "We'll remind you to follow up at the scheduled time.",
+                });
+                setFollowUpDialogOpen(false);
+              }}
+            >
               Schedule
             </Button>
           </DialogFooter>
@@ -304,19 +410,33 @@ export default function Dashboard1Alt() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <Textarea value={draftContent} onChange={e => setDraftContent(e.target.value)} className="min-h-[150px]" />
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">Message about parking</label>
+              <AIAssistButton 
+                currentText={draftContent}
+                onAIGenerate={setDraftContent}
+                context="There's a parking lot at the venue with plenty of spaces"
+              />
+            </div>
+            <Textarea 
+              value={draftContent}
+              onChange={(e) => setDraftContent(e.target.value)}
+              className="min-h-[150px]"
+            />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDraftMessageDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Message sent!",
-              description: "Your message about parking has been sent to guests."
-            });
-            setDraftMessageDialogOpen(false);
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Message sent!",
+                  description: "Your message about parking has been sent to guests.",
+                });
+                setDraftMessageDialogOpen(false);
+              }}
+            >
               Send to Guests
             </Button>
           </DialogFooter>
@@ -333,19 +453,34 @@ export default function Dashboard1Alt() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <Textarea placeholder="Type your answer here..." className="min-h-[150px]" />
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">Your answer</label>
+              <AIAssistButton 
+                currentText={faqAnswer}
+                onAIGenerate={setFaqAnswer}
+                context="regarding shuttle service availability at the wedding venue"
+              />
+            </div>
+            <Textarea 
+              placeholder="Type your answer here..."
+              value={faqAnswer}
+              onChange={(e) => setFaqAnswer(e.target.value)}
+              className="min-h-[150px]"
+            />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddAnswerDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Answer added!",
-              description: "The answer has been added to your FAQ."
-            });
-            setAddAnswerDialogOpen(false);
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Answer added!",
+                  description: "The answer has been added to your FAQ.",
+                });
+                setAddAnswerDialogOpen(false);
+              }}
+            >
               Add to FAQ
             </Button>
           </DialogFooter>
