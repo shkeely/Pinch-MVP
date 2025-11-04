@@ -39,7 +39,7 @@ export default function WeddingDetails() {
     <div className="min-h-screen bg-background">
       <TopNav />
       
-      <main className="container mx-auto px-4 md:px-6 py-8 max-w-6xl">
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-serif font-semibold mb-2">Wedding Details</h1>

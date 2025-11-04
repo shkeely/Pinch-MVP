@@ -50,7 +50,7 @@ export default function HelpSupport() {
     <div className="min-h-screen bg-background">
       <TopNav />
       
-      <main className="container mx-auto px-4 md:px-6 py-8 max-w-6xl">
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-serif font-semibold mb-2">Help & Support</h1>
           <p className="text-muted-foreground">Get answers and assistance for your wedding planning</p>

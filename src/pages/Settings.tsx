@@ -53,7 +53,7 @@ export default function Settings() {
     <div className="min-h-screen bg-background">
       <TopNav />
       
-      <main className="container mx-auto px-4 md:px-6 py-8 max-w-6xl">
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-serif font-semibold mb-2">Settings</h1>
           <p className="text-muted-foreground">Manage your wedding details and preferences</p>
