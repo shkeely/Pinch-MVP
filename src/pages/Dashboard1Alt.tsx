@@ -87,7 +87,7 @@ export default function Dashboard1Alt() {
             {/* Quick Actions - Right Column */}
             <div className="flex-shrink-0 w-full lg:w-[500px] flex lg:justify-center">
               <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <h2 className="text-2xl font-serif mb-1 text-foreground">
+              <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
                 Quick Actions
               </h2>
               <p className="text-sm text-muted-foreground mb-4">
@@ -138,7 +138,7 @@ export default function Dashboard1Alt() {
 
           {/* Needs Your Attention - Full width on mobile/tablet, left column on desktop */}
           <div className="w-full lg:col-start-1 lg:row-start-1 space-y-4">
-            <h2 className="text-2xl font-serif text-foreground mb-4">
+            <h2 className="text-2xl font-serif font-medium text-foreground mb-4">
               Needs Your Attention
             </h2>
             
@@ -217,7 +217,7 @@ export default function Dashboard1Alt() {
 
           {/* Your Concierge - Full width on mobile/tablet, right column on desktop */}
           <Card className="w-full lg:col-start-2 lg:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] lg:min-h-0 lg:justify-self-end lg:w-[500px]">
-            <h2 className="text-2xl font-serif text-foreground mb-4">
+            <h2 className="text-2xl font-serif font-medium text-foreground mb-4">
               Your Concierge
             </h2>
             
