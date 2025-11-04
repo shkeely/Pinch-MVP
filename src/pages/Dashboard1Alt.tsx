@@ -251,35 +251,35 @@ export default function Dashboard1Alt() {
               {/* Reminder 2 */}
               <div className="border border-border rounded-lg p-3 border-l-4 border-l-blue-500">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-sm font-medium text-foreground">Wedding Day Details</h3>
+                  <h3 className="text-sm font-medium text-foreground">Day-Of Reminder</h3>
                 </div>
                 <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-2">Scheduled</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
-                    <span>{format(new Date(2025, 11, 1), 'MMM d, yyyy')}</span>
+                    <span>{format(new Date(2025, 3, 15), 'MMM d, yyyy')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    <span>10:00 AM</span>
+                    <span>9:00 AM</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Users className="w-3 h-3" />
-                    <span>95 guests</span>
+                    <span>127 guests</span>
                   </div>
                 </div>
               </div>
 
               {/* Reminder 3 */}
-              <div className="border border-border rounded-lg p-3 border-l-4 border-l-green-500">
+              <div className="border border-border rounded-lg p-3 border-l-4 border-l-orange-500">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-sm font-medium text-foreground">Thank You Messages</h3>
+                  <h3 className="text-sm font-medium text-foreground">Thank You Message</h3>
                 </div>
                 <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 text-xs mb-2">Draft</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
-                    <span>{format(new Date(2025, 11, 10), 'MMM d, yyyy')}</span>
+                    <span>{format(new Date(2025, 3, 20), 'MMM d, yyyy')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
@@ -287,7 +287,7 @@ export default function Dashboard1Alt() {
                   </div>
                   <div className="flex items-center gap-1">
                     <Users className="w-3 h-3" />
-                    <span>All guests</span>
+                    <span>127 guests</span>
                   </div>
                 </div>
               </div>
