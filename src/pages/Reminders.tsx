@@ -157,10 +157,11 @@ export default function Reminders() {
           {reminders.map((reminder) => (
             <Card key={reminder.id} className={`border-l-4 ${categoryColors[reminder.category]} hover:shadow-lg transition-all`}>
               <div className="p-6">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                {/* Main Content: Left (Message) + Right (Schedule/Target) */}
+                <div className="flex flex-col lg:flex-row gap-6 mb-6">
+                  {/* Left Side: Message Content */}
                   <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
                       <h3 className="text-xl font-semibold">{reminder.title}</h3>
                       <Badge className={categoryBadgeColors[reminder.category]}>
                         {reminder.category}
@@ -169,45 +170,44 @@ export default function Reminders() {
                         {reminder.status}
                       </Badge>
                     </div>
-                  </div>
-                </div>
-
-                {/* Message Preview */}
-                <div className="bg-muted/50 rounded-lg p-4 mb-4">
-                  <div className="flex items-start gap-2 mb-2">
-                    <MessageSquare className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <span className="text-xs font-medium text-muted-foreground uppercase">Message Preview</span>
-                  </div>
-                  <p className="text-sm leading-relaxed">{reminder.message}</p>
-                </div>
-
-                {/* Details Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                    <div>
-                      <span className="text-muted-foreground">Scheduled: </span>
-                      <span className="font-medium">{reminder.scheduledDate}</span>
+                    <div className="bg-muted/50 rounded-lg p-4">
+                      <div className="flex items-start gap-2 mb-2">
+                        <MessageSquare className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                        <span className="text-xs font-medium text-muted-foreground uppercase">Message Preview</span>
+                      </div>
+                      <p className="text-sm leading-relaxed">{reminder.message}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                    <div>
-                      <span className="text-muted-foreground">Time: </span>
-                      <span className="font-medium">{reminder.scheduledTime}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Users className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                    <div>
-                      <span className="text-muted-foreground">Recipients: </span>
-                      <span className="font-medium">{reminder.recipientCount}</span>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="text-sm text-muted-foreground mb-4">
-                  <span className="font-medium">Target:</span> {reminder.recipientSegment}
+                  {/* Right Side: Schedule & Target Settings */}
+                  <div className="lg:w-64 space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <div>
+                          <span className="text-muted-foreground">Scheduled: </span>
+                          <span className="font-medium">{reminder.scheduledDate}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <div>
+                          <span className="text-muted-foreground">Time: </span>
+                          <span className="font-medium">{reminder.scheduledTime}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Users className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <div>
+                          <span className="text-muted-foreground">Recipients: </span>
+                          <span className="font-medium">{reminder.recipientCount}</span>
+                        </div>
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        <span className="font-medium">Target:</span> {reminder.recipientSegment}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Actions */}
