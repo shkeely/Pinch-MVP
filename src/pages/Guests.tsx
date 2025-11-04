@@ -256,7 +256,7 @@ export default function Guests() {
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Phone</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Segment</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Status</th>
-                  <th className="w-16"></th>
+                  <th className="w-16 bg-[#f7f5f3]"></th>
                 </tr>
               </thead>
               <tbody>
