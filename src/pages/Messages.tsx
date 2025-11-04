@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Send } from 'lucide-react';
+import { Search, Send, MessageSquare } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -216,14 +216,9 @@ export default function Messages() {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-3">
-                <Button variant="outline" className="rounded-full px-6 hover:bg-muted/50">
-                  Edit Response
-                </Button>
-                <Button className="rounded-full px-6" style={{
-                backgroundColor: '#5b6850',
-                color: 'white'
-              }}>
-                  Mark as Reviewed
+                <Button variant="outline" className="rounded-full px-6 gap-2 hover:bg-muted/50">
+                  <MessageSquare className="w-4 h-4" />
+                  Give Feedback
                 </Button>
               </div>
             </div>
