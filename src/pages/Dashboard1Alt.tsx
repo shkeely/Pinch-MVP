@@ -48,7 +48,7 @@ export default function Dashboard1Alt() {
             <div className="flex-1 space-y-5">
               {/* Title and Description */}
               <div>
-                <h2 className="text-3xl lg:text-[2.6rem] font-serif font-semibold mb-4 text-foreground leading-tight">
+                <h2 className="text-3xl lg:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
                   Daily Digest
                 </h2>
                 <p className="text-foreground leading-relaxed text-base lg:text-[1.15rem]">
