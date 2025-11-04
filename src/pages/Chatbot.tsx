@@ -113,7 +113,7 @@ export default function Chatbot() {
             </Card>
 
             {/* Auto-Reply */}
-            <Card className="p-6">
+            <Card className="p-6 bg-[#f7f5f3]">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="font-medium mb-1">Auto-Reply</h4>
