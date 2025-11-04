@@ -4,13 +4,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Save, UserPlus } from 'lucide-react';
+import { Save, UserPlus, Database } from 'lucide-react';
 import { useWedding } from '@/contexts/WeddingContext';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
 
 export default function Settings() {
   const { wedding, updateWedding } = useWedding();
+  const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
   
   const [coupleNames, setCoupleNames] = useState(`${wedding.couple1} & ${wedding.couple2}` || '');
   const [weddingDate, setWeddingDate] = useState(wedding.date || '');
@@ -52,9 +54,19 @@ export default function Settings() {
         <div className="space-y-6">
           {/* Wedding Details */}
           <Card className="p-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-serif font-semibold mb-1">Wedding Details</h2>
-              <p className="text-sm text-muted-foreground">Basic information about your celebration</p>
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-serif font-semibold mb-1">Wedding Details</h2>
+                <p className="text-sm text-muted-foreground">Basic information about your celebration</p>
+              </div>
+              <Button 
+                onClick={() => setKnowledgeBaseOpen(true)}
+                variant="outline"
+                className="gap-2"
+              >
+                <Database className="w-4 h-4" />
+                Knowledge Base
+              </Button>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -192,6 +204,11 @@ export default function Settings() {
           </Card>
         </div>
       </main>
+
+      <KnowledgeBaseDialog 
+        open={knowledgeBaseOpen} 
+        onOpenChange={setKnowledgeBaseOpen}
+      />
     </div>
   );
 }

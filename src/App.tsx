@@ -20,6 +20,9 @@ import Reminders from "./pages/Reminders";
 import Chatbot from "./pages/Chatbot";
 import Guests from "./pages/Guests";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
+import WeddingDetails from "./pages/WeddingDetails";
+import HelpSupport from "./pages/HelpSupport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +50,9 @@ const App = () => (
             <Route path="/chatbot" element={<Chatbot />} />
             <Route path="/guests" element={<Guests />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/wedding-details" element={<WeddingDetails />} />
+            <Route path="/help-support" element={<HelpSupport />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

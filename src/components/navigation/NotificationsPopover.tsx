@@ -7,8 +7,22 @@ import {
 } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
-const notifications = [
+interface Notification {
+  id: number;
+  type: string;
+  icon: any;
+  title: string;
+  description: string;
+  time: string;
+  unread: boolean;
+  route: string;
+}
+
+const initialNotifications: Notification[] = [
   {
     id: 1,
     type: 'message',
@@ -17,6 +31,7 @@ const notifications = [
     description: 'Question about parking arrangements',
     time: '5 min ago',
     unread: true,
+    route: '/messages',
   },
   {
     id: 2,
@@ -26,6 +41,7 @@ const notifications = [
     description: '3 guests waiting for dietary confirmation',
     time: '1 hour ago',
     unread: true,
+    route: '/reminders',
   },
   {
     id: 3,
@@ -35,6 +51,7 @@ const notifications = [
     description: 'All guests confirmed attendance',
     time: '3 hours ago',
     unread: false,
+    route: '/guests',
   },
   {
     id: 4,
@@ -44,14 +61,28 @@ const notifications = [
     description: 'Shuttle information added',
     time: '1 day ago',
     unread: false,
+    route: '/chatbot',
   },
 ];
 
 export default function NotificationsPopover() {
+  const navigate = useNavigate();
+  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const [isOpen, setIsOpen] = useState(false);
   const unreadCount = notifications.filter(n => n.unread).length;
 
+  const handleNotificationClick = (notification: Notification) => {
+    navigate(notification.route);
+    setIsOpen(false);
+  };
+
+  const handleMarkAllRead = () => {
+    setNotifications(notifications.map(n => ({ ...n, unread: false })));
+    toast.success('All notifications marked as read');
+  };
+
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full relative">
           <Bell className="w-4 h-4 md:w-5 md:h-5" />
@@ -74,7 +105,12 @@ export default function NotificationsPopover() {
               </Badge>
             )}
           </div>
-          <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground h-auto p-0">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-xs text-muted-foreground hover:text-foreground h-auto p-0"
+            onClick={handleMarkAllRead}
+          >
             Mark all read
           </Button>
         </div>
@@ -86,6 +122,7 @@ export default function NotificationsPopover() {
               return (
                 <button
                   key={notification.id}
+                  onClick={() => handleNotificationClick(notification)}
                   className={`w-full px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
                     notification.unread ? 'bg-muted/20' : ''
                   }`}

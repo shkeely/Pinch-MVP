@@ -7,7 +7,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { User, Heart, HelpCircle, Moon, LogOut, ChevronDown } from "lucide-react";
+import { User, Heart, HelpCircle, LogOut, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useWedding } from "@/contexts/WeddingContext";
 import { toast } from "sonner";
@@ -43,12 +43,12 @@ export default function AccountPopover() {
     {
       icon: Heart,
       label: "Wedding Details",
-      onClick: () => navigate("/settings"),
+      onClick: () => navigate("/wedding-details"),
     },
     {
       icon: HelpCircle,
       label: "Help & Support",
-      onClick: () => navigate("/help"),
+      onClick: () => navigate("/help-support"),
     },
   ];
 
@@ -102,18 +102,6 @@ export default function AccountPopover() {
               })}
             </div>
           </ScrollArea>
-
-          <Separator />
-
-          {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 hover:bg-indigo-400 hover:text-white transition-colors"
-            onClick={() => toast.info("Theme toggle coming soon")}
-          >
-            <Moon className="h-4 w-4" />
-            <span className="text-sm">Switch Theme</span>
-          </Button>
 
           <Separator />
 
