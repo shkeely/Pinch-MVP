@@ -252,7 +252,7 @@ export default function Guests() {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Name</th>
+                  <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Name</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Phone</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Segment</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground">Status</th>
