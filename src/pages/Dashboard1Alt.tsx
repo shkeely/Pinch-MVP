@@ -6,11 +6,33 @@ import { Badge } from '@/components/ui/badge';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+
 export default function Dashboard1Alt() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const {
     wedding,
     conversations
   } = useWedding();
+  
+  const [messageDialogOpen, setMessageDialogOpen] = useState(false);
+  const [followUpDialogOpen, setFollowUpDialogOpen] = useState(false);
+  const [draftMessageDialogOpen, setDraftMessageDialogOpen] = useState(false);
+  const [addAnswerDialogOpen, setAddAnswerDialogOpen] = useState(false);
+  const [messageContent, setMessageContent] = useState('');
+  const [draftContent, setDraftContent] = useState("Hi everyone! Just wanted to address the parking situation. There's a parking lot available at the venue with plenty of spaces. Street parking is also available nearby. Looking forward to seeing you all!");
   const totalQuestions = 47;
   const autoAnswerRate = 37;
   const newMessages = 12;
@@ -73,21 +95,33 @@ export default function Dashboard1Alt() {
               </p>
               
               <div className="space-y-1.5">
-                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setMessageDialogOpen(true)}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Bell className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Send a Message to Guests</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setFollowUpDialogOpen(true)}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Eye className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Schedule Follow-up</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/guests')}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Download className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Export Guest List</span>
@@ -121,7 +155,10 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     This question came up 8 times this week. Would you like me to draft a message?
                   </p>
-                  <Button className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => setDraftMessageDialogOpen(true)}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Draft message
                   </Button>
                 </div>
@@ -144,7 +181,10 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     The question is about cancellation
                   </p>
-                  <Button className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => navigate('/messages')}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Review all
                   </Button>
                 </div>
@@ -164,7 +204,10 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     Common question: 'Is there a shuttle?' — Consider adding this to your FAQ.
                   </p>
-                  <Button className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => setAddAnswerDialogOpen(true)}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Add answer
                   </Button>
                 </div>
@@ -206,5 +249,152 @@ export default function Dashboard1Alt() {
           </Card>
         </div>
       </div>
+
+      {/* Send Message Dialog */}
+      <Dialog open={messageDialogOpen} onOpenChange={setMessageDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Send Message to Guests</DialogTitle>
+            <DialogDescription>
+              Compose a message to send to all your guests
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <Textarea 
+              placeholder="Type your message here..."
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
+              className="min-h-[150px]"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setMessageDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Message sent!",
+                  description: "Your message has been sent to all guests.",
+                });
+                setMessageDialogOpen(false);
+                setMessageContent('');
+              }}
+            >
+              Send Message
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Schedule Follow-up Dialog */}
+      <Dialog open={followUpDialogOpen} onOpenChange={setFollowUpDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Schedule Follow-up</DialogTitle>
+            <DialogDescription>
+              Set a reminder to follow up with guests
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Follow-up message</label>
+              <Textarea 
+                placeholder="What would you like to follow up about?"
+                className="min-h-[100px]"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">When?</label>
+              <Input type="date" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setFollowUpDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Follow-up scheduled!",
+                  description: "We'll remind you to follow up at the scheduled time.",
+                });
+                setFollowUpDialogOpen(false);
+              }}
+            >
+              Schedule
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Draft Message Dialog */}
+      <Dialog open={draftMessageDialogOpen} onOpenChange={setDraftMessageDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Draft Message About Parking</DialogTitle>
+            <DialogDescription>
+              AI-generated message based on your wedding details
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <Textarea 
+              value={draftContent}
+              onChange={(e) => setDraftContent(e.target.value)}
+              className="min-h-[150px]"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDraftMessageDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Message sent!",
+                  description: "Your message about parking has been sent to guests.",
+                });
+                setDraftMessageDialogOpen(false);
+              }}
+            >
+              Send to Guests
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Answer Dialog */}
+      <Dialog open={addAnswerDialogOpen} onOpenChange={setAddAnswerDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Add FAQ Answer</DialogTitle>
+            <DialogDescription>
+              Question: "Is there a shuttle?"
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <Textarea 
+              placeholder="Type your answer here..."
+              className="min-h-[150px]"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddAnswerDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Answer added!",
+                  description: "The answer has been added to your FAQ.",
+                });
+                setAddAnswerDialogOpen(false);
+              }}
+            >
+              Add to FAQ
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>;
 }
