@@ -19,8 +19,10 @@ import {
   Users, 
   Plus,
   Edit2,
-  Trash2
+  Trash2,
+  Settings
 } from 'lucide-react';
+import { KnowledgeBaseEditor } from './KnowledgeBaseEditor';
 
 interface KnowledgeBase {
   id: string;
@@ -89,6 +91,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
   const [showAddNew, setShowAddNew] = useState(false);
   const [newKBName, setNewKBName] = useState('');
   const [newKBDescription, setNewKBDescription] = useState('');
+  const [editingKB, setEditingKB] = useState<{ id: string; name: string } | null>(null);
 
   const toggleKnowledgeBase = (id: string) => {
     setKnowledgeBases(prev =>
@@ -190,25 +193,33 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
                             {kb.itemCount} {kb.itemCount === 1 ? 'item' : 'items'}
                           </p>
                           
-                          {kb.type === 'custom' && (
-                            <div className="flex gap-2">
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                className="h-8 px-2"
-                              >
-                                <Edit2 className="w-3 h-3" />
-                              </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              className="h-8 px-2"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingKB({ id: kb.id, name: kb.name });
+                              }}
+                            >
+                              <Settings className="w-3 h-3 mr-1" />
+                              <span className="text-xs">Edit Items</span>
+                            </Button>
+                            {kb.type === 'custom' && (
                               <Button 
                                 variant="ghost" 
                                 size="sm"
                                 className="h-8 px-2 text-destructive hover:text-destructive"
-                                onClick={() => handleDelete(kb.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(kb.id);
+                                }}
                               >
                                 <Trash2 className="w-3 h-3" />
                               </Button>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -270,6 +281,16 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
           </div>
         </div>
       </DialogContent>
+
+      {/* Knowledge Base Editor Dialog */}
+      {editingKB && (
+        <KnowledgeBaseEditor
+          open={!!editingKB}
+          onOpenChange={(open) => !open && setEditingKB(null)}
+          knowledgeBaseName={editingKB.name}
+          knowledgeBaseId={editingKB.id}
+        />
+      )}
     </Dialog>
   );
 }
