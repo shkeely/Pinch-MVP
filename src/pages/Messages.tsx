@@ -226,7 +226,7 @@ export default function Messages() {
               <Separator className="mb-6" />
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3 mb-4">
+              <div className="flex flex-wrap gap-3">
                 <Button 
                   variant="outline" 
                   className="rounded-full px-6 gap-2 hover:bg-muted/50"
@@ -234,32 +234,6 @@ export default function Messages() {
                 >
                   <Send className="w-4 h-4" />
                   Give Feedback
-                </Button>
-              </div>
-              
-              {/* Chat Input */}
-              <div className="flex gap-2">
-                <Input 
-                  placeholder="Type a message..." 
-                  className="flex-1"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-                      toast.success('Message sent!');
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                />
-                <Button 
-                  size="icon"
-                  onClick={(e) => {
-                    const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                    if (input?.value.trim()) {
-                      toast.success('Message sent!');
-                      input.value = '';
-                    }
-                  }}
-                >
-                  <Send className="w-4 h-4" />
                 </Button>
               </div>
             </div>

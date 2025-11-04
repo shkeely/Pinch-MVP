@@ -66,13 +66,13 @@ export default function Dashboard1Alt() {
 
               {/* Trending Tags */}
               <div className="flex flex-wrap gap-2">
-              <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-purple-100 text-purple-700">
+              <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-purple-100 text-foreground">
                   Trending: Parking
                 </span>
-                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-blue-100 text-blue-700">
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-blue-100 text-foreground">
                   Trending: Kids Policy
                 </span>
-                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-green-100 text-green-700">
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-green-100 text-foreground">
                   Trending: Registry
                 </span>
               </div>
@@ -80,7 +80,7 @@ export default function Dashboard1Alt() {
 
             {/* Right Column - Quick Actions (centered) */}
             <div className="w-full lg:w-[326px] flex justify-center">
-              <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+              <Card className="w-full lg:w-[326px] p-5 bg-muted/40 border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
                 Quick Actions
               </h2>
@@ -230,7 +230,6 @@ export default function Dashboard1Alt() {
               <div className="border border-border rounded-lg p-3">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-sm font-medium text-foreground">RSVP Deadline Reminder</h3>
-                  <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 text-xs">RSVP</Badge>
                 </div>
                 <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-2">Scheduled</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
@@ -253,7 +252,6 @@ export default function Dashboard1Alt() {
               <div className="border border-border rounded-lg p-3">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-sm font-medium text-foreground">Wedding Day Details</h3>
-                  <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Attendance</Badge>
                 </div>
                 <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-2">Scheduled</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
@@ -276,7 +274,6 @@ export default function Dashboard1Alt() {
               <div className="border border-border rounded-lg p-3">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-sm font-medium text-foreground">Thank You Messages</h3>
-                  <Badge className="bg-green-100 text-green-700 hover:bg-green-100 text-xs">Follow-up</Badge>
                 </div>
                 <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 text-xs mb-2">Draft</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
