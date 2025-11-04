@@ -170,7 +170,7 @@ export default function Reminders() {
                         {reminder.status}
                       </Badge>
                     </div>
-                    <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="bg-muted/50 rounded-lg p-4 max-w-[85%]">
                       <div className="flex items-start gap-2 mb-2">
                         <MessageSquare className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                         <span className="text-xs font-medium text-muted-foreground uppercase">Message Preview</span>
