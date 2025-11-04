@@ -45,10 +45,10 @@ export default function Dashboard1Alt() {
         <div className="mb-12">
           <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
             {/* Daily Digest Content - Left Column */}
-            <div className="flex-1 space-y-5">
+            <div className="flex-1 space-y-6">
               {/* Title and Description */}
               <div>
-                <h2 className="text-3xl lg:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
+                <h2 className="text-3xl lg:text-[2.6rem] font-serif font-bold mb-2 text-foreground leading-tight">
                   Daily Digest
                 </h2>
                 <p className="text-foreground leading-relaxed text-base lg:text-[1.15rem]">
