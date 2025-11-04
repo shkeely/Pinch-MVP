@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 import { Wedding, SimulatedMessage } from '@/types/wedding';
 
 interface WeddingContextType {
@@ -36,7 +36,7 @@ const defaultWedding: Wedding = {
 
 const WeddingContext = createContext<WeddingContextType | undefined>(undefined);
 
-export function WeddingProvider({ children }: { children: React.ReactNode }) {
+export function WeddingProvider({ children }: { children: ReactNode }) {
   const [wedding, setWedding] = useState<Wedding>(defaultWedding);
   const [conversations, setConversations] = useState<SimulatedMessage[]>([]);
 
