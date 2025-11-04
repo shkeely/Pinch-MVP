@@ -230,10 +230,10 @@ export default function Chatbot() {
             </Card>
 
             <Card className="overflow-hidden bg-card border-border">
-              <div className="p-4 border-b bg-gradient-to-r from-purple-500/10 to-pink-500/10 flex items-center justify-between">
+              <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{chatbotName}</h2>
                 <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-semibold px-4 py-1.5 text-sm">
-                  🎭 Simulation Mode
+                  Simulation Mode
                 </Badge>
               </div>
 

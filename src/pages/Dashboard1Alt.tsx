@@ -110,12 +110,19 @@ export default function Dashboard1Alt() {
                 
                 <Button 
                   variant="outline" 
-                  onClick={() => setFollowUpDialogOpen(true)}
+                  onClick={() => {
+                    const chatbotUrl = `${window.location.origin}/chatbot-embed`;
+                    navigator.clipboard.writeText(chatbotUrl);
+                    toast({
+                      title: "Link copied!",
+                      description: "Chatbot link has been copied to clipboard.",
+                    });
+                  }}
                   className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
                 >
                   <div className="flex items-center gap-3">
                     <Eye className="w-5 h-5" />
-                    <span className="text-[15px] font-medium">Schedule Follow-up</span>
+                    <span className="text-[15px] font-medium">Share Chatbot</span>
                   </div>
                 </Button>
                 

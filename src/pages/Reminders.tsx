@@ -114,6 +114,7 @@ export default function Reminders() {
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const formatDateDisplay = (dateString: string) => {
     try {
@@ -173,12 +174,15 @@ export default function Reminders() {
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-2">SMS Reminders</h1>
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-2">Guest Reminders</h1>
             <p className="text-muted-foreground">
               Schedule and manage automated text reminders for your guests
             </p>
           </div>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
+          <Button 
+            className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto"
+            onClick={() => setIsCreateDialogOpen(true)}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Schedule Reminder
           </Button>
@@ -387,6 +391,17 @@ export default function Reminders() {
           onOpenChange={setIsEditDialogOpen}
           reminder={editingReminder}
           onSave={handleSaveReminder}
+        />
+        
+        {/* Create Reminder Dialog */}
+        <EditReminderDialog
+          open={isCreateDialogOpen}
+          onOpenChange={setIsCreateDialogOpen}
+          reminder={null}
+          onSave={(newReminder) => {
+            setReminders([...reminders, { ...newReminder, id: Math.max(...reminders.map(r => r.id)) + 1 }]);
+            toast.success('Reminder created successfully');
+          }}
         />
       </main>
     </div>
