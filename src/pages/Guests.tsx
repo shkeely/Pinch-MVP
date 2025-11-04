@@ -175,7 +175,7 @@ export default function Guests() {
         </div>
 
         {/* Segments Section */}
-        <Card className="p-6 mb-6 bg-[#f7f5f3]">
+        <Card className="p-6 mb-6 bg-white dark:bg-card">
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold mb-1">Segments</h2>
