@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import EditGuestDialog from '@/components/guests/EditGuestDialog';
 import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
+import SendMessageDialog from '@/components/messages/SendMessageDialog';
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors' | string;
 
 interface Guest {
@@ -25,6 +26,7 @@ export default function Guests() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isEditGuestDialogOpen, setIsEditGuestDialogOpen] = useState(false);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
+  const [isSendMessageDialogOpen, setIsSendMessageDialogOpen] = useState(false);
   const [newSegmentName, setNewSegmentName] = useState('');
   const [editingSegment, setEditingSegment] = useState<{
     old: Segment;
@@ -262,11 +264,16 @@ export default function Guests() {
         {/* Action Buttons */}
         <div className="rounded-lg p-4 mb-6 border border-accent/10 bg-white/[0.31]">
           <div className="flex flex-col sm:flex-row gap-2">
-            <Button variant="outline" size="sm" className="bg-violet-100 w-full sm:w-auto">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="bg-violet-100 w-full sm:w-auto"
+              onClick={() => setIsSendMessageDialogOpen(true)}
+            >
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
-              Send Announcement
+              Send Message to Guests
             </Button>
             <Button variant="outline" size="sm" className="bg-violet-100 w-full sm:w-auto">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -329,6 +336,12 @@ export default function Guests() {
         open={isImportDialogOpen}
         onOpenChange={setIsImportDialogOpen}
         onImport={handleImportGuests}
+      />
+
+      <SendMessageDialog
+        open={isSendMessageDialogOpen}
+        onOpenChange={setIsSendMessageDialogOpen}
+        segments={segments}
       />
     </div>;
 }

@@ -4,8 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Switch } from '@/components/ui/switch';
-import { Save, Upload, Mail, Phone, MapPin, Plus, Trash2 } from 'lucide-react';
+import { Save, Upload, Mail, Phone, Plus, Trash2 } from 'lucide-react';
 import { useWedding } from '@/contexts/WeddingContext';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -20,7 +19,6 @@ interface PartnerAccount {
 
 export default function Profile() {
   const { wedding } = useWedding();
-  const [location, setLocation] = useState('San Francisco, CA');
   const [partnerAccounts, setPartnerAccounts] = useState<PartnerAccount[]>([
     {
       id: '1',
@@ -189,36 +187,9 @@ export default function Profile() {
                         />
                       </div>
                     </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor={`planner-${partner.id}`}>Wedding Planner Access</Label>
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-background">
-                        <span className="text-sm">
-                          {partner.plannerAccess ? 'Enabled' : 'Disabled'}
-                        </span>
-                        <Switch
-                          id={`planner-${partner.id}`}
-                          checked={partner.plannerAccess}
-                          onCheckedChange={(checked) => handleUpdatePartner(partner.id, 'plannerAccess', checked)}
-                        />
-                      </div>
-                    </div>
                   </div>
                 </div>
               ))}
-
-              <div className="space-y-2">
-                <Label htmlFor="location">Wedding Location</Label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
             </div>
 
             <Button 

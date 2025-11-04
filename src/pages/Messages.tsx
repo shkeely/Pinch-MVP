@@ -8,6 +8,8 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import TopNav from '@/components/navigation/TopNav';
 import { AIAssistButton } from '@/components/ai/AIAssistButton';
+import GiveFeedbackDialog from '@/components/feedback/GiveFeedbackDialog';
+import SendMessageDialog from '@/components/messages/SendMessageDialog';
 interface Message {
   id: string;
   guestName: string;
@@ -59,6 +61,10 @@ export default function Messages() {
   const [selectedMessage, setSelectedMessage] = useState<Message>(mockMessages[0]);
   const [searchQuery, setSearchQuery] = useState('');
   const [draftResponse, setDraftResponse] = useState('');
+  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false);
+  const [isSendMessageDialogOpen, setIsSendMessageDialogOpen] = useState(false);
+  const segments = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
+  
   const filteredMessages = mockMessages.filter(msg => {
     const matchesFilter = activeFilter === 'all' || msg.status === activeFilter;
     const matchesSearch = msg.guestName.toLowerCase().includes(searchQuery.toLowerCase()) || msg.question.toLowerCase().includes(searchQuery.toLowerCase());
@@ -78,8 +84,12 @@ export default function Messages() {
               Guest conversations & AI responses
             </p>
           </div>
-          <Button className="rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300">
-            Message All
+          <Button 
+            className="rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300"
+            onClick={() => setIsSendMessageDialogOpen(true)}
+          >
+            <Send className="w-4 h-4 mr-2" />
+            Send Message to Guests
           </Button>
         </div>
 
@@ -216,7 +226,11 @@ export default function Messages() {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-3">
-                <Button variant="outline" className="rounded-full px-6 gap-2 hover:bg-muted/50">
+                <Button 
+                  variant="outline" 
+                  className="rounded-full px-6 gap-2 hover:bg-muted/50"
+                  onClick={() => setIsFeedbackDialogOpen(true)}
+                >
                   <MessageSquare className="w-4 h-4" />
                   Give Feedback
                 </Button>
@@ -225,5 +239,17 @@ export default function Messages() {
           </Card>
         </div>
       </div>
+
+      <GiveFeedbackDialog 
+        open={isFeedbackDialogOpen}
+        onOpenChange={setIsFeedbackDialogOpen}
+        messageContext={selectedMessage.question}
+      />
+
+      <SendMessageDialog
+        open={isSendMessageDialogOpen}
+        onOpenChange={setIsSendMessageDialogOpen}
+        segments={segments}
+      />
     </div>;
 }

@@ -104,7 +104,7 @@ export default function EditGuestDialog({ open, onOpenChange, guest, segments, o
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
+            <Label htmlFor="status">Cellphone Status</Label>
             <Select 
               value={formData.status} 
               onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -114,9 +114,7 @@ export default function EditGuestDialog({ open, onOpenChange, guest, segments, o
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Invited">Invited</SelectItem>
-                <SelectItem value="Confirmed">Confirmed</SelectItem>
-                <SelectItem value="Declined">Declined</SelectItem>
+                <SelectItem value="Inactive">Inactive</SelectItem>
               </SelectContent>
             </Select>
           </div>

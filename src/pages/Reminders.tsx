@@ -2,8 +2,10 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Plus, MessageSquare, Send, Copy, Trash2, Users, ChevronDown, ChevronUp } from 'lucide-react';
+import { Calendar, Clock, Plus, MessageSquare, Send, Copy, Trash2, Users, ChevronDown, ChevronUp, Pencil } from 'lucide-react';
 import { useState } from 'react';
+import { format, parse } from 'date-fns';
+import EditReminderDialog from '@/components/reminders/EditReminderDialog';
 import {
   Dialog,
   DialogContent,
@@ -110,6 +112,17 @@ export default function Reminders() {
 
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+
+  const formatDateDisplay = (dateString: string) => {
+    try {
+      const date = parse(dateString, 'yyyy-MM-dd', new Date());
+      return format(date, 'MMMM d yyyy');
+    } catch {
+      return dateString;
+    }
+  };
 
   const toggleExpand = (id: number) => {
     setExpandedIds(prev => {
@@ -139,7 +152,12 @@ export default function Reminders() {
   };
 
   const handleEdit = (reminder: Reminder) => {
-    toast.info('Edit functionality coming soon');
+    setEditingReminder(reminder);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveReminder = (updatedReminder: Reminder) => {
+    setReminders(reminders.map(r => r.id === updatedReminder.id ? updatedReminder : r));
   };
 
   const handleDelete = (id: number) => {
@@ -191,7 +209,7 @@ export default function Reminders() {
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5" />
-                          {reminder.scheduledDate}
+                          {formatDateDisplay(reminder.scheduledDate)}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5" />
@@ -240,7 +258,7 @@ export default function Reminders() {
                               <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                               <div>
                                 <span className="text-muted-foreground">Scheduled: </span>
-                                <span className="font-medium">{reminder.scheduledDate}</span>
+                                <span className="font-medium">{formatDateDisplay(reminder.scheduledDate)}</span>
                               </div>
                             </div>
                             <div className="flex items-center gap-2 text-sm">
@@ -274,6 +292,7 @@ export default function Reminders() {
                             handleEdit(reminder);
                           }}
                         >
+                          <Pencil className="w-4 h-4 mr-2" />
                           Edit
                         </Button>
                         <Button 
@@ -361,6 +380,14 @@ export default function Reminders() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        {/* Edit Reminder Dialog */}
+        <EditReminderDialog
+          open={isEditDialogOpen}
+          onOpenChange={setIsEditDialogOpen}
+          reminder={editingReminder}
+          onSave={handleSaveReminder}
+        />
       </main>
     </div>
   );
