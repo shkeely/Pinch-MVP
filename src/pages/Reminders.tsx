@@ -2,7 +2,7 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Plus, MessageSquare, Send, Copy, Trash2, Users } from 'lucide-react';
+import { Calendar, Clock, Plus, MessageSquare, Send, Copy, Trash2, Users, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import {
   Dialog,
@@ -109,6 +109,19 @@ export default function Reminders() {
   ]);
 
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+
+  const toggleExpand = (id: number) => {
+    setExpandedIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
   const handleSendTest = (reminder: Reminder) => {
     toast.success(`Test message sent for "${reminder.title}"`);
@@ -153,103 +166,159 @@ export default function Reminders() {
           </Button>
         </div>
 
-        <div className="grid gap-6">
-          {reminders.map((reminder) => (
-            <Card key={reminder.id} className={`border-l-4 ${categoryColors[reminder.category]} hover:shadow-lg transition-all`}>
-              <div className="p-6">
-                {/* Main Content: Left (Message) + Right (Schedule/Target) */}
-                <div className="flex flex-col lg:flex-row gap-6 mb-6">
-                  {/* Left Side: Message Content */}
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <h3 className="text-xl font-semibold">{reminder.title}</h3>
-                      <Badge className={categoryBadgeColors[reminder.category]}>
-                        {reminder.category}
-                      </Badge>
-                      <Badge className={statusColors[reminder.status]}>
-                        {reminder.status}
-                      </Badge>
-                    </div>
-                    <div className="bg-muted/50 rounded-lg p-4 max-w-[85%]">
-                      <div className="flex items-start gap-2 mb-2">
-                        <MessageSquare className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                        <span className="text-xs font-medium text-muted-foreground uppercase">Message Preview</span>
+        <div className="grid gap-4">
+          {reminders.map((reminder) => {
+            const isExpanded = expandedIds.has(reminder.id);
+            
+            return (
+              <Card key={reminder.id} className={`border-l-4 ${categoryColors[reminder.category]} hover:shadow-md transition-all`}>
+                <div className="p-5">
+                  {/* Collapsed View */}
+                  <div 
+                    className="flex items-center justify-between gap-4 cursor-pointer"
+                    onClick={() => toggleExpand(reminder.id)}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <h3 className="text-lg font-semibold truncate">{reminder.title}</h3>
+                        <Badge className={categoryBadgeColors[reminder.category]}>
+                          {reminder.category}
+                        </Badge>
+                        <Badge className={statusColors[reminder.status]}>
+                          {reminder.status}
+                        </Badge>
                       </div>
-                      <p className="text-sm leading-relaxed">{reminder.message}</p>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {reminder.scheduledDate}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" />
+                          {reminder.scheduledTime}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Users className="w-3.5 h-3.5" />
+                          {reminder.recipientCount} recipients
+                        </span>
+                      </div>
                     </div>
+                    <button 
+                      className="flex-shrink-0 p-2 hover:bg-muted rounded-lg transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleExpand(reminder.id);
+                      }}
+                    >
+                      {isExpanded ? (
+                        <ChevronUp className="w-5 h-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                      )}
+                    </button>
                   </div>
 
-                  {/* Right Side: Schedule & Target Settings */}
-                  <div className="lg:w-64 space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                        <div>
-                          <span className="text-muted-foreground">Scheduled: </span>
-                          <span className="font-medium">{reminder.scheduledDate}</span>
+                  {/* Expanded View */}
+                  {isExpanded && (
+                    <div className="mt-6 animate-accordion-down">
+                      <div className="flex flex-col lg:flex-row gap-6 mb-6">
+                        {/* Left Side: Message Content */}
+                        <div className="flex-1">
+                          <div className="bg-muted/50 rounded-lg p-4 max-w-[85%]">
+                            <div className="flex items-start gap-2 mb-2">
+                              <MessageSquare className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                              <span className="text-xs font-medium text-muted-foreground uppercase">Message Preview</span>
+                            </div>
+                            <p className="text-sm leading-relaxed">{reminder.message}</p>
+                          </div>
+                        </div>
+
+                        {/* Right Side: Schedule & Target Settings */}
+                        <div className="lg:w-64 space-y-4">
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2 text-sm">
+                              <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                              <div>
+                                <span className="text-muted-foreground">Scheduled: </span>
+                                <span className="font-medium">{reminder.scheduledDate}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                              <div>
+                                <span className="text-muted-foreground">Time: </span>
+                                <span className="font-medium">{reminder.scheduledTime}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <Users className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                              <div>
+                                <span className="text-muted-foreground">Recipients: </span>
+                                <span className="font-medium">{reminder.recipientCount}</span>
+                              </div>
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              <span className="font-medium">Target:</span> {reminder.recipientSegment}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                        <div>
-                          <span className="text-muted-foreground">Time: </span>
-                          <span className="font-medium">{reminder.scheduledTime}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Users className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                        <div>
-                          <span className="text-muted-foreground">Recipients: </span>
-                          <span className="font-medium">{reminder.recipientCount}</span>
-                        </div>
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        <span className="font-medium">Target:</span> {reminder.recipientSegment}
+
+                      {/* Actions */}
+                      <div className="flex flex-wrap gap-2 pt-4 border-t">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEdit(reminder);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSendTest(reminder);
+                          }}
+                          disabled={reminder.status === 'Sent'}
+                        >
+                          <Send className="w-4 h-4 mr-2" />
+                          Send Test
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDuplicate(reminder);
+                          }}
+                        >
+                          <Copy className="w-4 h-4 mr-2" />
+                          Duplicate
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteId(reminder.id);
+                          }}
+                          className="text-destructive hover:text-destructive ml-auto"
+                          disabled={reminder.status === 'Sent'}
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          {reminder.status === 'Scheduled' ? 'Cancel' : 'Delete'}
+                        </Button>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
-
-                {/* Actions */}
-                <div className="flex flex-wrap gap-2 pt-4 border-t">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => handleEdit(reminder)}
-                  >
-                    Edit
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => handleSendTest(reminder)}
-                    disabled={reminder.status === 'Sent'}
-                  >
-                    <Send className="w-4 h-4 mr-2" />
-                    Send Test
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => handleDuplicate(reminder)}
-                  >
-                    <Copy className="w-4 h-4 mr-2" />
-                    Duplicate
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => setDeleteId(reminder.id)}
-                    className="text-destructive hover:text-destructive ml-auto"
-                    disabled={reminder.status === 'Sent'}
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    {reminder.status === 'Scheduled' ? 'Cancel' : 'Delete'}
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
 
         {reminders.length === 0 && (
