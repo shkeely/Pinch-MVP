@@ -124,7 +124,7 @@ export default function Chatbot() {
             </Card>
 
             {/* Knowledge Base Card */}
-            <Card className="p-6">
+            <Card className="p-6 bg-[#f7f5f3]">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
                 <h2 className="text-xl font-semibold">Knowledge Base</h2>
