@@ -142,30 +142,7 @@ export default function Dashboard1Alt() {
               Needs Your Attention
             </h2>
             
-            {/* Card 1: Guests asking about parking */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">
-                    Guests are asking about parking
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    This question came up 8 times this week. Would you like me to draft a message?
-                  </p>
-                  <Button 
-                    onClick={() => setDraftMessageDialogOpen(true)}
-                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
-                  >
-                    Draft message
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
-            {/* Card 2: New questions */}
+            {/* Card 1: Escalated questions */}
             <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
@@ -186,6 +163,29 @@ export default function Dashboard1Alt() {
                     className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
                   >
                     Review all
+                  </Button>
+                </div>
+              </div>
+            </Card>
+
+            {/* Card 2: Guests asking about parking */}
+            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-foreground" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-serif text-foreground mb-2">
+                    Guests are asking about parking
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    This question came up 8 times this week. Would you like me to draft a message?
+                  </p>
+                  <Button 
+                    onClick={() => setDraftMessageDialogOpen(true)}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
+                    Draft message
                   </Button>
                 </div>
               </div>
