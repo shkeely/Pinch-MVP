@@ -11,6 +11,7 @@ import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Se
 import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
 import { ShareChatbotDialog } from '@/components/chatbot/ShareChatbotDialog';
 import { MessageHandlingDialog } from '@/components/chatbot/MessageHandlingDialog';
+import { FeedbackDialog } from '@/components/chatbot/FeedbackDialog';
 const tones = [{
   id: 'warm',
   name: 'Warm',
@@ -39,6 +40,9 @@ export default function Chatbot() {
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
   const [shareChatbotOpen, setShareChatbotOpen] = useState(false);
   const [messageHandlingOpen, setMessageHandlingOpen] = useState(false);
+  const [feedbackDialogOpen, setFeedbackDialogOpen] = useState(false);
+  const [selectedMessageForFeedback, setSelectedMessageForFeedback] = useState('');
+  const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
   const [chatMessages, setChatMessages] = useState([{
     role: 'user',
     content: 'What time is the wedding?',
@@ -226,10 +230,10 @@ export default function Chatbot() {
             </Card>
 
             <Card className="overflow-hidden bg-card border-border">
-              <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
+              <div className="p-4 border-b bg-gradient-to-r from-purple-500/10 to-pink-500/10 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{chatbotName}</h2>
-                <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
-                  Simulation Mode
+                <Badge variant="secondary" className="bg-purple-600 text-white font-semibold px-4 py-1.5 text-sm">
+                  🎭 Simulation Mode
                 </Badge>
               </div>
 
@@ -239,7 +243,23 @@ export default function Chatbot() {
                       <div className={`rounded-2xl p-4 ${msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
                         <p className="text-sm leading-relaxed">{msg.content}</p>
                       </div>
-                      <p className="text-xs text-muted-foreground px-2">{msg.timestamp}</p>
+                      <div className="flex items-center justify-between px-2">
+                        <p className="text-xs text-muted-foreground">{msg.timestamp}</p>
+                        {msg.role === 'assistant' && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto py-1 px-2 text-xs"
+                            onClick={() => {
+                              setSelectedMessageForFeedback(msg.content);
+                              setSelectedMessageIndex(idx);
+                              setFeedbackDialogOpen(true);
+                            }}
+                          >
+                            Give Feedback
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>)}
               </div>
@@ -269,6 +289,21 @@ export default function Chatbot() {
       <MessageHandlingDialog
         open={messageHandlingOpen}
         onOpenChange={setMessageHandlingOpen}
+      />
+      <FeedbackDialog
+        open={feedbackDialogOpen}
+        onOpenChange={setFeedbackDialogOpen}
+        messageContent={selectedMessageForFeedback}
+        onApplyChanges={(newContent, tone) => {
+          if (selectedMessageIndex !== null) {
+            const updatedMessages = [...chatMessages];
+            updatedMessages[selectedMessageIndex] = {
+              ...updatedMessages[selectedMessageIndex],
+              content: newContent
+            };
+            setChatMessages(updatedMessages);
+          }
+        }}
       />
     </div>
   );

@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { AIAssistButton } from "@/components/ai/AIAssistButton";
+import { Plus } from "lucide-react";
 
 type ReminderCategory = 'RSVP' | 'Attendance' | 'Info' | 'Thank You' | 'Custom';
 
@@ -30,6 +32,21 @@ interface EditReminderDialogProps {
 
 export default function EditReminderDialog({ open, onOpenChange, reminder, onSave }: EditReminderDialogProps) {
   const [formData, setFormData] = useState<Reminder | null>(null);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
+  const [categories, setCategories] = useState<string[]>(['RSVP', 'Attendance', 'Info', 'Thank You', 'Custom']);
+  const guestSegments = ['All Guests', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors', 'Family', 'Friends'];
+  
+  // Mock recipient counts per segment
+  const segmentCounts: Record<string, number> = {
+    'All Guests': 150,
+    'Wedding Party': 12,
+    'Out-of-Towners': 45,
+    'Parents': 4,
+    'Vendors': 8,
+    'Family': 35,
+    'Friends': 60
+  };
 
   useEffect(() => {
     if (reminder) {
@@ -53,6 +70,25 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
     onSave(formData);
     onOpenChange(false);
     toast.success("Reminder updated successfully");
+  };
+
+  const handleSaveDraft = () => {
+    if (!formData) return;
+    
+    const draftReminder = { ...formData, status: 'Draft' as const };
+    onSave(draftReminder);
+    onOpenChange(false);
+    toast.success("Draft saved successfully");
+  };
+
+  const handleAddCategory = () => {
+    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
+      setCategories([...categories, newCategory.trim()]);
+      setFormData({ ...formData!, category: newCategory.trim() as ReminderCategory });
+      setNewCategory('');
+      setIsAddingCategory(false);
+      toast.success("Category added");
+    }
   };
 
   if (!formData) return null;
@@ -79,7 +115,30 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="category">Category</Label>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsAddingCategory(!isAddingCategory)}
+                className="h-auto py-1"
+              >
+                <Plus className="w-4 h-4 mr-1" />
+                Add Category
+              </Button>
+            </div>
+            {isAddingCategory && (
+              <div className="flex gap-2">
+                <Input
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  placeholder="New category name"
+                  onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+                />
+                <Button type="button" size="sm" onClick={handleAddCategory}>Add</Button>
+              </div>
+            )}
             <Select 
               value={formData.category} 
               onValueChange={(value) => setFormData({ ...formData, category: value as ReminderCategory })}
@@ -88,17 +147,22 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="RSVP">RSVP</SelectItem>
-                <SelectItem value="Attendance">Attendance</SelectItem>
-                <SelectItem value="Info">Info</SelectItem>
-                <SelectItem value="Thank You">Thank You</SelectItem>
-                <SelectItem value="Custom">Custom</SelectItem>
+                {categories.map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="message">Message</Label>
+              <AIAssistButton
+                currentText={formData.message}
+                onAIGenerate={(text) => setFormData({ ...formData, message: text })}
+                context={`reminder for ${formData.recipientSegment}`}
+              />
+            </div>
             <Textarea
               id="message"
               value={formData.message}
@@ -139,12 +203,24 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
 
           <div className="space-y-2">
             <Label htmlFor="segment">Recipient Segment</Label>
-            <Input
-              id="segment"
+            <Select
               value={formData.recipientSegment}
-              onChange={(e) => setFormData({ ...formData, recipientSegment: e.target.value })}
-              placeholder="e.g., All guests, Wedding Party"
-            />
+              onValueChange={(value) => {
+                const count = segmentCounts[value] || 0;
+                setFormData({ ...formData, recipientSegment: value, recipientCount: count });
+              }}
+            >
+              <SelectTrigger id="segment">
+                <SelectValue placeholder="Select segment" />
+              </SelectTrigger>
+              <SelectContent>
+                {guestSegments.map(segment => (
+                  <SelectItem key={segment} value={segment}>
+                    {segment} ({segmentCounts[segment] || 0} guests)
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
@@ -153,14 +229,19 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
               id="count"
               type="number"
               value={formData.recipientCount}
-              onChange={(e) => setFormData({ ...formData, recipientCount: parseInt(e.target.value) || 0 })}
+              disabled
+              className="bg-muted"
             />
+            <p className="text-xs text-muted-foreground">Auto-filled based on segment</p>
           </div>
         </div>
 
         <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
+          </Button>
+          <Button variant="outline" onClick={handleSaveDraft}>
+            Save Draft
           </Button>
           <Button onClick={handleSave} className="bg-accent hover:bg-accent/90 text-accent-foreground">
             Save Changes

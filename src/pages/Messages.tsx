@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Search, Send, MessageSquare } from 'lucide-react';
+import { Search, Send, Share2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -229,10 +230,14 @@ export default function Messages() {
                 <Button 
                   variant="outline" 
                   className="rounded-full px-6 gap-2 hover:bg-muted/50"
-                  onClick={() => setIsFeedbackDialogOpen(true)}
+                  onClick={() => {
+                    const chatbotLink = `${window.location.origin}/chatbot-embed`;
+                    navigator.clipboard.writeText(chatbotLink);
+                    toast.success('Chatbot link copied to clipboard!');
+                  }}
                 >
-                  <MessageSquare className="w-4 h-4" />
-                  Give Feedback
+                  <Share2 className="w-4 h-4" />
+                  Share Chatbot
                 </Button>
               </div>
             </div>
