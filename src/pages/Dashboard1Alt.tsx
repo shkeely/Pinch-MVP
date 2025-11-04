@@ -175,7 +175,7 @@ export default function Dashboard1Alt() {
           {/* Right Column - Quick Actions and Reminders */}
           <div className="w-full lg:col-start-2 lg:row-start-1 lg:justify-self-end lg:w-[500px] flex flex-col gap-6 items-center lg:items-start">
             {/* Quick Actions Card */}
-            <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <Card className="w-full p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
                 Quick Actions
               </h2>
@@ -227,7 +227,7 @@ export default function Dashboard1Alt() {
             </Card>
 
             {/* Reminders Card */}
-            <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <Card className="w-full p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
                 Upcoming Reminders
               </h2>
