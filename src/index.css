@@ -8,8 +8,8 @@
 
 @layer base {
   :root {
-    /* Soft ivory backgrounds #FAF8F4 */
-    --background: 40 50% 98%;
+    /* Soft ivory backgrounds #FCFAF8 */
+    --background: 30 33% 98%;
     --foreground: 30 10% 17%;
 
     /* Card surfaces - warm ivory */
