@@ -94,10 +94,10 @@ export default function Chatbot() {
           </div>
           <Button 
             onClick={() => setShareChatbotOpen(true)}
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             <Share2 className="w-4 h-4 mr-2" />
-            Share Chatbot Link
+            Share Chatbot
           </Button>
         </div>
 
@@ -130,13 +130,13 @@ export default function Chatbot() {
             </div>
 
             {/* Chatbot Name */}
-            <Card className="p-6 bg-[#f7f5f3]">
+            <Card className="p-6 bg-muted/30">
               <h3 className="font-semibold mb-3">Chatbot Name</h3>
               <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter chatbot name" />
             </Card>
 
             {/* Reply Mode */}
-            <Card className="p-6 bg-[#f7f5f3]">
+            <Card className="p-6 bg-muted/30">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium">Message Handling</h4>
                 <Button
@@ -167,7 +167,7 @@ export default function Chatbot() {
             </Card>
 
             {/* Knowledge Base Card */}
-            <Card className="p-6 bg-[#f7f5f3]">
+            <Card className="p-6 bg-muted/30">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
                 <h2 className="text-xl font-semibold">Knowledge Base</h2>
@@ -232,7 +232,7 @@ export default function Chatbot() {
             <Card className="overflow-hidden bg-card border-border">
               <div className="p-4 border-b bg-gradient-to-r from-purple-500/10 to-pink-500/10 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{chatbotName}</h2>
-                <Badge variant="secondary" className="bg-purple-600 text-white font-semibold px-4 py-1.5 text-sm">
+                <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-semibold px-4 py-1.5 text-sm">
                   🎭 Simulation Mode
                 </Badge>
               </div>
