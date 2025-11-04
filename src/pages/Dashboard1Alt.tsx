@@ -227,7 +227,7 @@ export default function Dashboard1Alt() {
             
             <div className="space-y-3">
               {/* Reminder 1 */}
-              <div className="border border-border rounded-lg p-3">
+              <div className="border border-border rounded-lg p-3 border-l-4 border-l-purple-500">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-sm font-medium text-foreground">RSVP Deadline Reminder</h3>
                 </div>
@@ -249,7 +249,7 @@ export default function Dashboard1Alt() {
               </div>
 
               {/* Reminder 2 */}
-              <div className="border border-border rounded-lg p-3">
+              <div className="border border-border rounded-lg p-3 border-l-4 border-l-blue-500">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-sm font-medium text-foreground">Wedding Day Details</h3>
                 </div>
@@ -271,7 +271,7 @@ export default function Dashboard1Alt() {
               </div>
 
               {/* Reminder 3 */}
-              <div className="border border-border rounded-lg p-3">
+              <div className="border border-border rounded-lg p-3 border-l-4 border-l-green-500">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="text-sm font-medium text-foreground">Thank You Messages</h3>
                 </div>
