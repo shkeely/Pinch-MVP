@@ -5,6 +5,8 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 import NotificationsPopover from './NotificationsPopover';
 import AccountPopover from './AccountPopover';
+import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
+import { toast } from 'sonner';
 
 const navItems = [
   { label: 'Dashboard', path: '/dashboard1-alt' },
@@ -18,10 +20,16 @@ export default function TopNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
 
   const handleNavigation = (path: string) => {
     navigate(path);
     setIsOpen(false);
+  };
+
+  const handleImport = (guests: any[]) => {
+    toast.success(`Successfully imported ${guests.length} guests`);
+    navigate('/guests');
   };
 
   return (
@@ -57,7 +65,10 @@ export default function TopNav() {
                 })}
                 <div className="border-t border-border my-2" />
                 <button
-                  onClick={() => handleNavigation('/import')}
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsImportDialogOpen(true);
+                  }}
                   className="px-4 py-3 text-base font-medium rounded-lg transition-colors text-left text-foreground hover:bg-foreground/10"
                 >
                   <Upload className="w-4 h-4 inline mr-2" />
@@ -97,7 +108,12 @@ export default function TopNav() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-          <Button variant="outline" size="sm" className="hidden lg:flex rounded-full">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="hidden lg:flex rounded-full"
+            onClick={() => setIsImportDialogOpen(true)}
+          >
             <Upload className="w-4 h-4 mr-2" />
             Import
           </Button>
@@ -116,6 +132,12 @@ export default function TopNav() {
           <AccountPopover />
         </div>
       </div>
+
+      <ImportGuestsDialog
+        open={isImportDialogOpen}
+        onOpenChange={setIsImportDialogOpen}
+        onImport={handleImport}
+      />
     </header>
   );
 }

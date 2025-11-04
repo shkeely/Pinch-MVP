@@ -7,54 +7,68 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
+import EditGuestDialog from '@/components/guests/EditGuestDialog';
+import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
+type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors' | string;
+
+interface Guest {
+  id: number;
+  name: string;
+  phone: string;
+  segment: Segment;
+  status: string;
+}
+
 export default function Guests() {
   const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
   const [segments, setSegments] = useState<Segment[]>(['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors']);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isEditGuestDialogOpen, setIsEditGuestDialogOpen] = useState(false);
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const [newSegmentName, setNewSegmentName] = useState('');
   const [editingSegment, setEditingSegment] = useState<{
     old: Segment;
     new: string;
   } | null>(null);
-  const guests = [{
+  const [editingGuest, setEditingGuest] = useState<Guest | null>(null);
+  const [guestsList, setGuestsList] = useState<Guest[]>([{
     id: 1,
     name: 'Emily Thompson',
     phone: '+1 555-0101',
-    segment: 'Wedding Party' as Segment,
+    segment: 'Wedding Party',
     status: 'Active'
   }, {
     id: 2,
     name: 'Michael Chen',
     phone: '+1 555-0102',
-    segment: 'Out-of-Towners' as Segment,
+    segment: 'Out-of-Towners',
     status: 'Active'
   }, {
     id: 3,
     name: 'Jessica Martinez',
     phone: '+1 555-0103',
-    segment: 'All' as Segment,
+    segment: 'All',
     status: 'Active'
   }, {
     id: 4,
     name: 'David Park',
     phone: '+1 555-0104',
-    segment: 'Wedding Party' as Segment,
+    segment: 'Wedding Party',
     status: 'Active'
   }, {
     id: 5,
     name: 'Rachel Green',
     phone: '+1 555-0105',
-    segment: 'Out-of-Towners' as Segment,
+    segment: 'Out-of-Towners',
     status: 'Active'
   }, {
     id: 6,
     name: 'Tom Anderson',
     phone: '+1 555-0106',
-    segment: 'Parents' as Segment,
+    segment: 'Parents',
     status: 'Active'
-  }];
-  const filteredGuests = selectedSegment === 'All' ? guests : guests.filter(g => g.segment === selectedSegment);
+  }]);
+  const filteredGuests = selectedSegment === 'All' ? guestsList : guestsList.filter(g => g.segment === selectedSegment);
   const handleAddSegment = () => {
     if (!newSegmentName.trim()) {
       toast.error("Segment name cannot be empty");
@@ -114,6 +128,23 @@ export default function Guests() {
     document.body.removeChild(link);
     toast.success(`Exported ${filteredGuests.length} guests`);
   };
+
+  const handleEditGuest = (guest: Guest) => {
+    setEditingGuest(guest);
+    setIsEditGuestDialogOpen(true);
+  };
+
+  const handleSaveGuest = (updatedGuest: Guest) => {
+    setGuestsList(guestsList.map(g => g.id === updatedGuest.id ? updatedGuest : g));
+  };
+
+  const handleImportGuests = (importedGuests: Omit<Guest, 'id'>[]) => {
+    const newGuests = importedGuests.map((g, index) => ({
+      ...g,
+      id: Math.max(...guestsList.map(guest => guest.id), 0) + index + 1
+    }));
+    setGuestsList([...guestsList, ...newGuests]);
+  };
   return <div className="min-h-screen bg-background">
       <TopNav />
       
@@ -122,11 +153,11 @@ export default function Guests() {
           <div>
             <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-2">Guest Management</h1>
             <p className="text-muted-foreground">
-              {guests.length} guests • {filteredGuests.length} in current view
+              {guestsList.length} guests • {filteredGuests.length} in current view
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button variant="outline" className="w-full sm:w-auto">
+            <Button variant="outline" onClick={() => setIsImportDialogOpen(true)} className="w-full sm:w-auto">
               <Upload className="w-4 h-4 mr-2" />
               Import CSV
             </Button>
@@ -222,7 +253,7 @@ export default function Guests() {
             {segments.map(segment => <Button key={segment} variant={selectedSegment === segment ? "default" : "outline"} onClick={() => setSelectedSegment(segment)} className={selectedSegment === segment ? "bg-accent hover:bg-accent/90 text-accent-foreground" : ""}>
                 {segment}
                 {segment === 'All' && <Badge variant="secondary" className="ml-2 bg-background/50">
-                    {guests.length}
+                    {guestsList.length}
                   </Badge>}
               </Button>)}
           </div>
@@ -275,7 +306,7 @@ export default function Guests() {
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" onClick={() => handleEditGuest(guest)}>
                         <Pencil className="w-4 h-4" />
                       </Button>
                     </td>
@@ -285,5 +316,19 @@ export default function Guests() {
           </div>
         </Card>
       </main>
+
+      <EditGuestDialog
+        open={isEditGuestDialogOpen}
+        onOpenChange={setIsEditGuestDialogOpen}
+        guest={editingGuest}
+        segments={segments}
+        onSave={handleSaveGuest}
+      />
+
+      <ImportGuestsDialog
+        open={isImportDialogOpen}
+        onOpenChange={setIsImportDialogOpen}
+        onImport={handleImportGuests}
+      />
     </div>;
 }
