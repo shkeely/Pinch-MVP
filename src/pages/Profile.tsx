@@ -136,7 +136,7 @@ export default function Profile() {
             
             <div className="space-y-6">
               {partnerAccounts.map((partner, index) => (
-                <div key={partner.id} className="p-4 rounded-lg bg-muted/30 space-y-4">
+                <div key={partner.id} className="p-4 rounded-lg border border-border space-y-4">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold">Partner {index + 1}</h3>
                     {partnerAccounts.length > 1 && (
