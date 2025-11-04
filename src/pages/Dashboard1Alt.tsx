@@ -18,18 +18,18 @@ export default function Dashboard1Alt() {
   return <div className="min-h-screen bg-background">
       <TopNav />
 
-      <div className="container mx-auto md:px-6 py-6 md:py-8 max-w-7xl px-[20px]">
+      <div className="container mx-auto lg:px-6 py-6 lg:py-8 max-w-7xl px-[20px]">
         {/* Daily Digest Section with Stats */}
         <div className="mb-12">
-          <div className="flex flex-col md:flex-row gap-6 md:items-start">
+          <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
             {/* Daily Digest Content - Left Column */}
             <div className="flex-1 space-y-5">
               {/* Title and Description */}
               <div>
-                <h2 className="text-3xl md:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
+                <h2 className="text-3xl lg:text-[2.6rem] font-serif font-bold mb-4 text-foreground leading-tight">
                   Daily Digest
                 </h2>
-                <p className="text-foreground leading-relaxed text-base md:text-[1.15rem]">
+                <p className="text-foreground leading-relaxed text-base lg:text-[1.15rem]">
                   <span className="font-semibold">{newMessages} new messages today.</span> {generalQuestions} general questions (parking, timing).
                 </p>
               </div>
@@ -63,8 +63,8 @@ export default function Dashboard1Alt() {
             </div>
 
             {/* Quick Actions - Right Column */}
-            <div className="flex-shrink-0 w-full md:w-[500px] flex md:justify-center">
-              <Card className="w-full md:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <div className="flex-shrink-0 w-full lg:w-[500px] flex lg:justify-center">
+              <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
               <h2 className="text-2xl font-serif mb-1 text-foreground">
                 Quick Actions
               </h2>
@@ -100,10 +100,10 @@ export default function Dashboard1Alt() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col gap-6 md:grid md:grid-cols-[1fr_auto] md:gap-5 md:grid-rows-[auto]">
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_auto] lg:gap-5 lg:grid-rows-[auto]">
 
-          {/* Needs Your Attention - Full width on mobile, left column on desktop */}
-          <div className="w-full md:col-start-1 md:row-start-1 space-y-4">
+          {/* Needs Your Attention - Full width on mobile/tablet, left column on desktop */}
+          <div className="w-full lg:col-start-1 lg:row-start-1 space-y-4">
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Needs Your Attention
             </h2>
@@ -172,8 +172,8 @@ export default function Dashboard1Alt() {
             </Card>
           </div>
 
-          {/* Your Concierge - Full width on mobile, right column on desktop */}
-          <Card className="w-full md:col-start-2 md:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] md:min-h-0 md:justify-self-end md:w-[500px]">
+          {/* Your Concierge - Full width on mobile/tablet, right column on desktop */}
+          <Card className="w-full lg:col-start-2 lg:row-start-1 p-5 bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] text-primary-foreground shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] lg:min-h-0 lg:justify-self-end lg:w-[500px]">
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Your Concierge
             </h2>
