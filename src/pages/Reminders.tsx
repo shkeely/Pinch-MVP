@@ -38,10 +38,26 @@ type Reminder = {
   status: ReminderStatus;
 };
 
+const categoryColors: Record<ReminderCategory, string> = {
+  'RSVP': 'border-l-purple-500',
+  'Attendance': 'border-l-blue-500',
+  'Info': 'border-l-green-500',
+  'Thank You': 'border-l-orange-500',
+  'Custom': 'border-l-pink-500',
+};
+
+const categoryBadgeColors: Record<ReminderCategory, string> = {
+  'RSVP': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
+  'Attendance': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
+  'Info': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
+  'Thank You': 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300',
+  'Custom': 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
+};
+
 const statusColors: Record<ReminderStatus, string> = {
-  'Scheduled': 'text-blue-600 dark:text-blue-400',
-  'Sent': 'text-green-600 dark:text-green-400',
-  'Draft': 'text-muted-foreground',
+  'Scheduled': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
+  'Sent': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
+  'Draft': 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
 };
 
 export default function Reminders() {
@@ -137,79 +153,97 @@ export default function Reminders() {
           </Button>
         </div>
 
-        <div className="space-y-6">
+        <div className="grid gap-6">
           {reminders.map((reminder) => (
-            <Card key={reminder.id} className="hover:shadow-md transition-shadow">
-              <div className="p-6 space-y-6">
+            <Card key={reminder.id} className={`border-l-4 ${categoryColors[reminder.category]} hover:shadow-lg transition-all`}>
+              <div className="p-6">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-medium">{reminder.title}</h3>
-                    <div className="flex items-center gap-3 text-sm">
-                      <span className="text-muted-foreground">{reminder.category}</span>
-                      <span className="text-muted-foreground">•</span>
-                      <span className={`font-medium ${statusColors[reminder.status]}`}>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <h3 className="text-xl font-semibold">{reminder.title}</h3>
+                      <Badge className={categoryBadgeColors[reminder.category]}>
+                        {reminder.category}
+                      </Badge>
+                      <Badge className={statusColors[reminder.status]}>
                         {reminder.status}
-                      </span>
+                      </Badge>
                     </div>
                   </div>
                 </div>
 
-                {/* Message */}
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {reminder.message}
-                  </p>
+                {/* Message Preview */}
+                <div className="bg-muted/50 rounded-lg p-4 mb-4">
+                  <div className="flex items-start gap-2 mb-2">
+                    <MessageSquare className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <span className="text-xs font-medium text-muted-foreground uppercase">Message Preview</span>
+                  </div>
+                  <p className="text-sm leading-relaxed">{reminder.message}</p>
                 </div>
 
-                {/* Details */}
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>{reminder.scheduledDate} at {reminder.scheduledTime}</span>
+                {/* Details Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <div>
+                      <span className="text-muted-foreground">Scheduled: </span>
+                      <span className="font-medium">{reminder.scheduledDate}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    <span>{reminder.recipientCount} recipients</span>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <div>
+                      <span className="text-muted-foreground">Time: </span>
+                      <span className="font-medium">{reminder.scheduledTime}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Users className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <div>
+                      <span className="text-muted-foreground">Recipients: </span>
+                      <span className="font-medium">{reminder.recipientCount}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="text-sm text-muted-foreground">
-                  {reminder.recipientSegment}
+                <div className="text-sm text-muted-foreground mb-4">
+                  <span className="font-medium">Target:</span> {reminder.recipientSegment}
                 </div>
 
                 {/* Actions */}
                 <div className="flex flex-wrap gap-2 pt-4 border-t">
                   <Button 
-                    variant="ghost" 
+                    variant="outline" 
                     size="sm"
                     onClick={() => handleEdit(reminder)}
                   >
                     Edit
                   </Button>
                   <Button 
-                    variant="ghost" 
+                    variant="outline" 
                     size="sm"
                     onClick={() => handleSendTest(reminder)}
                     disabled={reminder.status === 'Sent'}
                   >
+                    <Send className="w-4 h-4 mr-2" />
                     Send Test
                   </Button>
                   <Button 
-                    variant="ghost" 
+                    variant="outline" 
                     size="sm"
                     onClick={() => handleDuplicate(reminder)}
                   >
+                    <Copy className="w-4 h-4 mr-2" />
                     Duplicate
                   </Button>
-                  <div className="flex-1"></div>
                   <Button 
-                    variant="ghost" 
+                    variant="outline" 
                     size="sm"
                     onClick={() => setDeleteId(reminder.id)}
-                    className="text-muted-foreground hover:text-destructive"
+                    className="text-destructive hover:text-destructive ml-auto"
                     disabled={reminder.status === 'Sent'}
                   >
+                    <Trash2 className="w-4 h-4 mr-2" />
                     {reminder.status === 'Scheduled' ? 'Cancel' : 'Delete'}
                   </Button>
                 </div>
