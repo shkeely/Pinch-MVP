@@ -1,4 +1,5 @@
-import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles } from 'lucide-react';
+import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles, Calendar, Clock, Users } from 'lucide-react';
+import { format } from 'date-fns';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -86,59 +87,6 @@ export default function Dashboard1Alt() {
               </div>
             </div>
 
-            {/* Quick Actions - Right Column */}
-            <div className="flex-shrink-0 w-full lg:w-[500px] flex lg:justify-center">
-              <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
-                Quick Actions
-              </h2>
-              <p className="text-sm text-muted-foreground mb-4">
-                Manage things efficiently
-              </p>
-              
-              <div className="space-y-1.5">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setMessageDialogOpen(true)}
-                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
-                >
-                  <div className="flex items-center gap-3">
-                    <Bell className="w-5 h-5" />
-                    <span className="text-[15px] font-medium">Send a Message to Guests</span>
-                  </div>
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  onClick={() => {
-                    const chatbotUrl = `${window.location.origin}/chatbot-embed`;
-                    navigator.clipboard.writeText(chatbotUrl);
-                    toast({
-                      title: "Link copied!",
-                      description: "Chatbot link has been copied to clipboard.",
-                    });
-                  }}
-                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
-                >
-                  <div className="flex items-center gap-3">
-                    <Eye className="w-5 h-5" />
-                    <span className="text-[15px] font-medium">Share Chatbot</span>
-                  </div>
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  onClick={() => navigate('/guests')}
-                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
-                >
-                  <div className="flex items-center gap-3">
-                    <Download className="w-5 h-5" />
-                    <span className="text-[15px] font-medium">Export Guest List</span>
-                  </div>
-                </Button>
-              </div>
-              </Card>
-            </div>
           </div>
         </div>
 
@@ -224,44 +172,149 @@ export default function Dashboard1Alt() {
             </Card>
           </div>
 
-          {/* Your Concierge - Full width on mobile/tablet, right column on desktop */}
-          <Card className="w-full lg:col-start-2 lg:row-start-1 overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col min-h-[400px] lg:min-h-0 lg:justify-self-end lg:w-[500px] p-0">
-            {/* Header Section */}
-            <div className="bg-card px-5 pt-5 pb-4">
-              <h2 className="text-2xl font-serif font-medium text-foreground">
-                Your Concierge
+          {/* Right Column - Quick Actions and Reminders */}
+          <div className="w-full lg:col-start-2 lg:row-start-1 lg:justify-self-end lg:w-[500px] flex flex-col gap-6 items-center lg:items-start">
+            {/* Quick Actions Card */}
+            <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+              <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
+                Quick Actions
               </h2>
-            </div>
-            
-            {/* Chat Area with Gradient */}
-            <div className="bg-gradient-to-b from-[#ccc1dd] via-[#b7c4f1] to-[#c8deb9] flex-1 px-5 pt-4 pb-4 flex flex-col">
-              <div className="space-y-3 flex-1 mb-4">
-                <div className="flex justify-start">
-                  <div className="bg-white text-foreground rounded-3xl rounded-tl-md px-4 py-2.5 shadow-sm max-w-xs">
-                    <p className="text-sm">what time is the wedding</p>
-                    <p className="text-xs text-muted-foreground mt-1">01:17 PM</p>
+              <p className="text-sm text-muted-foreground mb-4">
+                Manage things efficiently
+              </p>
+              
+              <div className="space-y-1.5">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setMessageDialogOpen(true)}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
+                  <div className="flex items-center gap-3">
+                    <Bell className="w-5 h-5" />
+                    <span className="text-[15px] font-medium">Send a Message to Guests</span>
+                  </div>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    const chatbotUrl = `${window.location.origin}/chatbot-embed`;
+                    navigator.clipboard.writeText(chatbotUrl);
+                    toast({
+                      title: "Link copied!",
+                      description: "Chatbot link has been copied to clipboard.",
+                    });
+                  }}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
+                  <div className="flex items-center gap-3">
+                    <Eye className="w-5 h-5" />
+                    <span className="text-[15px] font-medium">Share Chatbot</span>
+                  </div>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/guests')}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
+                  <div className="flex items-center gap-3">
+                    <Download className="w-5 h-5" />
+                    <span className="text-[15px] font-medium">Export Guest List</span>
+                  </div>
+                </Button>
+              </div>
+            </Card>
+
+            {/* Reminders Card */}
+            <Card className="w-full lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+              <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
+                Upcoming Reminders
+              </h2>
+              <p className="text-sm text-muted-foreground mb-4">
+                Next scheduled messages
+              </p>
+              
+              <div className="space-y-3">
+                {/* Reminder 1 */}
+                <div className="border border-border rounded-lg p-3">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-sm font-medium text-foreground">RSVP Deadline Reminder</h3>
+                    <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 text-xs">RSVP</Badge>
+                  </div>
+                  <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-2">Scheduled</Badge>
+                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>{format(new Date(2025, 10, 15), 'MMM d, yyyy')}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      <span>9:00 AM</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="w-3 h-3" />
+                      <span>120 guests</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex justify-end">
-                  <div className="text-foreground rounded-3xl rounded-tr-md px-4 py-2.5 shadow-sm max-w-xs bg-blue-50">
-                    <p className="text-sm">We'd love to see you there! the scheduled time.</p>
-                    <p className="text-xs text-muted-foreground/70 mt-1">01:17 PM</p>
+                {/* Reminder 2 */}
+                <div className="border border-border rounded-lg p-3">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-sm font-medium text-foreground">Wedding Day Details</h3>
+                    <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Attendance</Badge>
+                  </div>
+                  <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-2">Scheduled</Badge>
+                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>{format(new Date(2025, 11, 1), 'MMM d, yyyy')}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      <span>10:00 AM</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="w-3 h-3" />
+                      <span>95 guests</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Reminder 3 */}
+                <div className="border border-border rounded-lg p-3">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-sm font-medium text-foreground">Thank You Messages</h3>
+                    <Badge className="bg-green-100 text-green-700 hover:bg-green-100 text-xs">Follow-up</Badge>
+                  </div>
+                  <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 text-xs mb-2">Draft</Badge>
+                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>{format(new Date(2025, 11, 10), 'MMM d, yyyy')}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      <span>12:00 PM</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="w-3 h-3" />
+                      <span>All guests</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex gap-2 items-center p-2 bg-white rounded-full">
-                <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0">
-                  <span className="text-lg">+</span>
-                </Button>
-                <Input placeholder="Type your message..." className="flex-1 border-0 bg-transparent text-foreground placeholder:text-muted-foreground h-10 focus-visible:ring-0 focus-visible:ring-offset-0" />
-                <Button size="icon" variant="ghost" className="rounded-full h-9 w-9 text-muted-foreground hover:bg-muted flex-shrink-0" aria-label="Send message">
-                  <Send className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </Card>
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/reminders')}
+                className="w-full mt-4 rounded-full"
+              >
+                View All Reminders
+              </Button>
+            </Card>
+          </div>
         </div>
       </div>
 
