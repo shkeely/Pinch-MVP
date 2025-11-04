@@ -88,7 +88,7 @@ export default function Chatbot() {
                 {tones.map(tone => {
                 const Icon = tone.icon;
                 const isSelected = selectedTone === tone.id;
-                return <Card key={tone.id} className={`p-4 cursor-pointer transition-all ${isSelected ? 'border-accent border-2 bg-accent/5' : 'hover:border-accent/50'}`} onClick={() => setSelectedTone(tone.id)}>
+                return <Card key={tone.id} className={`p-4 cursor-pointer transition-all ${isSelected ? 'border-accent border-2 bg-stone-100' : 'bg-stone-50 hover:border-accent/50'}`} onClick={() => setSelectedTone(tone.id)}>
                       <div className="flex items-start gap-3 mb-3">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isSelected ? 'bg-accent/20' : 'bg-muted'}`}>
                           <Icon className={`w-5 h-5 ${isSelected ? 'text-accent' : 'text-muted-foreground'}`} />
@@ -107,13 +107,13 @@ export default function Chatbot() {
             </div>
 
             {/* Chatbot Name */}
-            <Card className="p-6">
+            <Card className="p-6 bg-stone-50">
               <h3 className="font-semibold mb-3">Chatbot Name</h3>
               <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter chatbot name" />
             </Card>
 
             {/* Auto-Reply */}
-            <Card className="p-6">
+            <Card className="p-6 bg-stone-50">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="font-medium mb-1">Auto-Reply</h4>
@@ -124,7 +124,7 @@ export default function Chatbot() {
             </Card>
 
             {/* Knowledge Base Card */}
-            <Card className="p-6">
+            <Card className="p-6 bg-stone-50">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
                 <h2 className="text-xl font-semibold">Knowledge Base</h2>
@@ -182,7 +182,7 @@ export default function Chatbot() {
               </div>
             </Card>
 
-            <Card className="overflow-hidden bg-card border-border">
+            <Card className="overflow-hidden bg-card border-border shadow-lg ring-2 ring-accent/20">
               <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{chatbotName}</h2>
                 <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
