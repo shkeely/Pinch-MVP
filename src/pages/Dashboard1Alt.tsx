@@ -66,22 +66,13 @@ export default function Dashboard1Alt() {
 
               {/* Trending Tags */}
               <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
-                backgroundColor: '#b7c4f1',
-                color: '#2E2B27'
-              }}>
+              <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-purple-100 text-purple-700">
                   Trending: Parking
                 </span>
-                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
-                backgroundColor: '#ccc1dd',
-                color: '#2E2B27'
-              }}>
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-blue-100 text-blue-700">
                   Trending: Kids Policy
                 </span>
-                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium" style={{
-                backgroundColor: '#c8deb9',
-                color: '#2E2B27'
-              }}>
+                <span className="inline-flex items-center rounded-full px-4 py-1.5 text-[0.86rem] font-medium bg-green-100 text-green-700">
                   Trending: Registry
                 </span>
               </div>
