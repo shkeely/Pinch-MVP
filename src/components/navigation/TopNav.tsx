@@ -69,12 +69,12 @@ export default function TopNav() {
         </div>
 
         {/* Logo - Centered on mobile, left on desktop */}
-        <h1 className="absolute left-1/2 -translate-x-1/2 md:relative md:left-0 md:translate-x-0 text-2xl md:text-2xl font-serif font-semibold tracking-tight">
+        <h1 className="absolute left-1/2 -translate-x-1/2 md:relative md:left-0 md:translate-x-0 text-xl md:text-2xl font-serif font-semibold tracking-tight flex-shrink-0">
           PINCH.
         </h1>
 
         {/* Desktop Navigation Pills - Hidden on mobile */}
-        <nav className="hidden md:flex items-center gap-1 rounded-full bg-muted/50 p-1.5 shadow-sm">
+        <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 rounded-full bg-muted/50 p-1 lg:p-1.5 shadow-sm flex-shrink">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
@@ -82,7 +82,7 @@ export default function TopNav() {
                 key={item.path}
                 onClick={() => navigate(item.path)}
                 className={`
-                  px-6 py-2 text-sm font-medium rounded-full transition-all duration-200
+                  px-3 lg:px-6 py-1.5 lg:py-2 text-xs lg:text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
                   ${isActive 
                     ? 'bg-foreground text-background shadow-md' 
                     : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
@@ -96,8 +96,8 @@ export default function TopNav() {
         </nav>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2 md:gap-3">
-          <Button variant="outline" size="sm" className="hidden md:flex rounded-full">
+        <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+          <Button variant="outline" size="sm" className="hidden lg:flex rounded-full">
             <Upload className="w-4 h-4 mr-2" />
             Import
           </Button>
