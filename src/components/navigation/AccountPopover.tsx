@@ -41,11 +41,6 @@ export default function AccountPopover() {
       onClick: () => navigate("/profile"),
     },
     {
-      icon: Heart,
-      label: "Wedding Details",
-      onClick: () => navigate("/wedding-details"),
-    },
-    {
       icon: HelpCircle,
       label: "Help & Support",
       onClick: () => navigate("/help-support"),

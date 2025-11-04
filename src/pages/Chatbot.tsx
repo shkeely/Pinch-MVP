@@ -7,8 +7,10 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send } from 'lucide-react';
+import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2 } from 'lucide-react';
 import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
+import { ShareChatbotDialog } from '@/components/chatbot/ShareChatbotDialog';
+import { MessageHandlingDialog } from '@/components/chatbot/MessageHandlingDialog';
 const tones = [{
   id: 'warm',
   name: 'Warm',
@@ -35,6 +37,8 @@ export default function Chatbot() {
   const [chatbotActive, setChatbotActive] = useState(true);
   const [testMessage, setTestMessage] = useState('');
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
+  const [shareChatbotOpen, setShareChatbotOpen] = useState(false);
+  const [messageHandlingOpen, setMessageHandlingOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([{
     role: 'user',
     content: 'What time is the wedding?',
@@ -71,15 +75,26 @@ export default function Chatbot() {
       setChatMessages(prev => [...prev, aiMsg]);
     }, 800);
   };
-  return <div className="min-h-screen bg-background">
+  
+  return (
+    <div className="min-h-screen bg-background">
       <TopNav />
       
       <main className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-serif font-bold mb-2">AI Chatbot</h1>
-          <p className="text-muted-foreground">
-            Configure your AI wedding concierge
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-serif font-bold mb-2">AI Chatbot</h1>
+            <p className="text-muted-foreground">
+              Configure your AI wedding concierge
+            </p>
+          </div>
+          <Button 
+            onClick={() => setShareChatbotOpen(true)}
+            className="bg-purple-600 hover:bg-purple-700 text-white"
+          >
+            <Share2 className="w-4 h-4 mr-2" />
+            Share Chatbot Link
+          </Button>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6">
@@ -118,7 +133,17 @@ export default function Chatbot() {
 
             {/* Reply Mode */}
             <Card className="p-6 bg-[#f7f5f3]">
-              <h4 className="font-medium mb-4">Message Handling</h4>
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="font-medium">Message Handling</h4>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setMessageHandlingOpen(true)}
+                >
+                  <Settings2 className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+              </div>
               <RadioGroup value={replyMode} onValueChange={(value) => setReplyMode(value as 'auto' | 'approval')}>
                 <div className="flex items-start space-x-3 mb-4">
                   <RadioGroupItem value="auto" id="auto" className="mt-0.5" />
@@ -177,12 +202,6 @@ export default function Chatbot() {
               </Button>
             </Card>
 
-            {/* Knowledge Base Dialog */}
-            <KnowledgeBaseDialog 
-              open={knowledgeBaseOpen} 
-              onOpenChange={setKnowledgeBaseOpen}
-            />
-
             <Button className="w-full" size="lg">
               Save Changes
             </Button>
@@ -237,5 +256,20 @@ export default function Chatbot() {
           </div>
         </div>
       </main>
-    </div>;
+
+      {/* Dialogs */}
+      <KnowledgeBaseDialog 
+        open={knowledgeBaseOpen} 
+        onOpenChange={setKnowledgeBaseOpen}
+      />
+      <ShareChatbotDialog
+        open={shareChatbotOpen}
+        onOpenChange={setShareChatbotOpen}
+      />
+      <MessageHandlingDialog
+        open={messageHandlingOpen}
+        onOpenChange={setMessageHandlingOpen}
+      />
+    </div>
+  );
 }

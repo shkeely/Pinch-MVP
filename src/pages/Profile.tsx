@@ -4,16 +4,39 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Save, Upload, Mail, Phone, MapPin } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Save, Upload, Mail, Phone, MapPin, Plus, Trash2 } from 'lucide-react';
 import { useWedding } from '@/contexts/WeddingContext';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+interface PartnerAccount {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  plannerAccess: boolean;
+}
+
 export default function Profile() {
   const { wedding } = useWedding();
-  const [email, setEmail] = useState('account@wedding.app');
-  const [phone, setPhone] = useState('+1 (555) 123-4567');
   const [location, setLocation] = useState('San Francisco, CA');
+  const [partnerAccounts, setPartnerAccounts] = useState<PartnerAccount[]>([
+    {
+      id: '1',
+      name: wedding.couple1,
+      email: `${wedding.couple1.toLowerCase().replace(' ', '.')}@wedding.app`,
+      phone: '+1 (555) 123-4567',
+      plannerAccess: true
+    },
+    {
+      id: '2',
+      name: wedding.couple2,
+      email: `${wedding.couple2.toLowerCase().replace(' ', '.')}@wedding.app`,
+      phone: '+1 (555) 987-6543',
+      plannerAccess: false
+    }
+  ]);
 
   const getInitials = () => {
     const first = wedding.couple1.charAt(0).toUpperCase();
@@ -27,6 +50,33 @@ export default function Profile() {
 
   const handleChangePhoto = () => {
     toast.info('Photo upload coming soon');
+  };
+
+  const handleUpdatePartner = (id: string, field: keyof PartnerAccount, value: string | boolean) => {
+    setPartnerAccounts(prev => prev.map(partner => 
+      partner.id === id ? { ...partner, [field]: value } : partner
+    ));
+  };
+
+  const handleAddPartner = () => {
+    const newPartner: PartnerAccount = {
+      id: Date.now().toString(),
+      name: '',
+      email: '',
+      phone: '',
+      plannerAccess: false
+    };
+    setPartnerAccounts(prev => [...prev, newPartner]);
+    toast.success('New partner account added');
+  };
+
+  const handleRemovePartner = (id: string) => {
+    if (partnerAccounts.length <= 1) {
+      toast.error('You must have at least one partner account');
+      return;
+    }
+    setPartnerAccounts(prev => prev.filter(partner => partner.id !== id));
+    toast.success('Partner account removed');
   };
 
   return (
@@ -67,63 +117,98 @@ export default function Profile() {
             </div>
           </Card>
 
-          {/* Personal Information */}
+          {/* Partner Accounts */}
           <Card className="p-6">
-            <h2 className="text-2xl font-serif font-semibold mb-6">Personal Information</h2>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-serif font-semibold">Partner Accounts</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Manage partner profiles and wedding planner access
+                </p>
+              </div>
+              <Button 
+                onClick={handleAddPartner}
+                variant="outline"
+                size="sm"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Partner
+              </Button>
+            </div>
             
-            <div className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="couple1">First Name</Label>
-                  <Input
-                    id="couple1"
-                    value={wedding.couple1}
-                    readOnly
-                    className="bg-muted/30"
-                  />
-                </div>
+            <div className="space-y-6">
+              {partnerAccounts.map((partner, index) => (
+                <div key={partner.id} className="p-4 rounded-lg bg-muted/30 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">Partner {index + 1}</h3>
+                    {partnerAccounts.length > 1 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemovePartner(partner.id)}
+                      >
+                        <Trash2 className="w-4 h-4 text-destructive" />
+                      </Button>
+                    )}
+                  </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="couple2">Partner Name</Label>
-                  <Input
-                    id="couple2"
-                    value={wedding.couple2}
-                    readOnly
-                    className="bg-muted/30"
-                  />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor={`name-${partner.id}`}>Name</Label>
+                      <Input
+                        id={`name-${partner.id}`}
+                        value={partner.name}
+                        onChange={(e) => handleUpdatePartner(partner.id, 'name', e.target.value)}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor={`email-${partner.id}`}>Email</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id={`email-${partner.id}`}
+                          type="email"
+                          value={partner.email}
+                          onChange={(e) => handleUpdatePartner(partner.id, 'email', e.target.value)}
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor={`phone-${partner.id}`}>Phone</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id={`phone-${partner.id}`}
+                          type="tel"
+                          value={partner.phone}
+                          onChange={(e) => handleUpdatePartner(partner.id, 'phone', e.target.value)}
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor={`planner-${partner.id}`}>Wedding Planner Access</Label>
+                      <div className="flex items-center justify-between p-3 rounded-lg bg-background">
+                        <span className="text-sm">
+                          {partner.plannerAccess ? 'Enabled' : 'Disabled'}
+                        </span>
+                        <Switch
+                          id={`planner-${partner.id}`}
+                          checked={partner.plannerAccess}
+                          onCheckedChange={(checked) => handleUpdatePartner(partner.id, 'plannerAccess', checked)}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
+                <Label htmlFor="location">Wedding Location</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input

@@ -4,15 +4,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Save, UserPlus, Database } from 'lucide-react';
+import { Save, UserPlus, Database, Settings2 } from 'lucide-react';
 import { useWedding } from '@/contexts/WeddingContext';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
+import { NotificationPreferencesDialog } from '@/components/settings/NotificationPreferencesDialog';
 
 export default function Settings() {
   const { wedding, updateWedding } = useWedding();
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
+  const [notificationDialogOpen, setNotificationDialogOpen] = useState(false);
+  const [selectedNotificationType, setSelectedNotificationType] = useState<'escalated' | 'daily' | 'reminders'>('escalated');
   
   const [coupleNames, setCoupleNames] = useState(`${wedding.couple1} & ${wedding.couple2}` || '');
   const [weddingDate, setWeddingDate] = useState(wedding.date || '');
@@ -24,6 +27,11 @@ export default function Settings() {
   const [escalatedMessages, setEscalatedMessages] = useState(true);
   const [dailyDigest, setDailyDigest] = useState(true);
   const [reminderConfirmations, setReminderConfirmations] = useState(true);
+
+  const handleEditNotification = (type: 'escalated' | 'daily' | 'reminders') => {
+    setSelectedNotificationType(type);
+    setNotificationDialogOpen(true);
+  };
 
   const handleSaveChanges = () => {
     const [couple1, couple2] = coupleNames.split('&').map(name => name.trim());
@@ -169,36 +177,63 @@ export default function Settings() {
 
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30">
-                <div>
+                <div className="flex-1">
                   <h3 className="font-medium mb-1">Escalated Messages</h3>
                   <p className="text-sm text-muted-foreground">Get notified when a message needs your attention</p>
                 </div>
-                <Switch
-                  checked={escalatedMessages}
-                  onCheckedChange={setEscalatedMessages}
-                />
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEditNotification('escalated')}
+                  >
+                    <Settings2 className="w-4 h-4" />
+                  </Button>
+                  <Switch
+                    checked={escalatedMessages}
+                    onCheckedChange={setEscalatedMessages}
+                  />
+                </div>
               </div>
 
               <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30">
-                <div>
+                <div className="flex-1">
                   <h3 className="font-medium mb-1">Daily Digest</h3>
                   <p className="text-sm text-muted-foreground">Morning summary of new questions</p>
                 </div>
-                <Switch
-                  checked={dailyDigest}
-                  onCheckedChange={setDailyDigest}
-                />
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEditNotification('daily')}
+                  >
+                    <Settings2 className="w-4 h-4" />
+                  </Button>
+                  <Switch
+                    checked={dailyDigest}
+                    onCheckedChange={setDailyDigest}
+                  />
+                </div>
               </div>
 
               <div className="flex items-center justify-between p-4 rounded-lg bg-muted/30">
-                <div>
+                <div className="flex-1">
                   <h3 className="font-medium mb-1">Reminder Confirmations</h3>
                   <p className="text-sm text-muted-foreground">Confirm when automated reminders are sent</p>
                 </div>
-                <Switch
-                  checked={reminderConfirmations}
-                  onCheckedChange={setReminderConfirmations}
-                />
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleEditNotification('reminders')}
+                  >
+                    <Settings2 className="w-4 h-4" />
+                  </Button>
+                  <Switch
+                    checked={reminderConfirmations}
+                    onCheckedChange={setReminderConfirmations}
+                  />
+                </div>
               </div>
             </div>
           </Card>
@@ -208,6 +243,12 @@ export default function Settings() {
       <KnowledgeBaseDialog 
         open={knowledgeBaseOpen} 
         onOpenChange={setKnowledgeBaseOpen}
+      />
+      
+      <NotificationPreferencesDialog
+        open={notificationDialogOpen}
+        onOpenChange={setNotificationDialogOpen}
+        notificationType={selectedNotificationType}
       />
     </div>
   );
