@@ -99,14 +99,14 @@ export default function Reminders() {
       <TopNav />
       
       <main className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-4xl font-serif font-bold mb-2">Reminders</h1>
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-2">Reminders</h1>
             <p className="text-muted-foreground">
               Stay on top of your wedding timeline
             </p>
           </div>
-          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
+          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground w-full sm:w-auto">
             <Plus className="w-4 h-4 mr-2" />
             Add Reminder
           </Button>
@@ -114,8 +114,8 @@ export default function Reminders() {
 
         <div className="grid gap-6">
           {reminders.map((reminder) => (
-            <Card key={reminder.id} className={`p-6 hover:shadow-lg transition-all ${reminder.done ? 'opacity-50 bg-muted/30' : ''}`}>
-              <div className="flex items-start justify-between gap-4">
+            <Card key={reminder.id} className={`p-4 sm:p-6 hover:shadow-lg transition-all ${reminder.done ? 'opacity-50 bg-muted/30' : ''}`}>
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                 <div className="flex gap-4 flex-1">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${reminder.done ? 'bg-muted' : 'bg-accent/10'}`}>
                     {reminder.done ? (
@@ -125,12 +125,12 @@ export default function Reminders() {
                     )}
                   </div>
                   
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
                       <h3 className={`text-lg font-semibold ${reminder.done ? 'line-through text-muted-foreground' : ''}`}>
                         {reminder.title}
                       </h3>
-                      <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
+                      <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground whitespace-nowrap">
                         {reminder.category}
                       </span>
                     </div>
@@ -146,11 +146,12 @@ export default function Reminders() {
                   </div>
                 </div>
                 
-                <div className="flex gap-2">
+                <div className="flex gap-2 sm:flex-row w-full sm:w-auto">
                   <Button 
                     variant="ghost" 
                     size="icon"
                     onClick={() => handleEdit(reminder)}
+                    className="flex-shrink-0"
                   >
                     <Pencil className="w-4 h-4" />
                   </Button>
@@ -158,7 +159,7 @@ export default function Reminders() {
                     variant={reminder.done ? "outline" : "default"}
                     size="sm"
                     onClick={() => handleMarkDone(reminder.id)}
-                    className={reminder.done ? '' : 'bg-primary hover:bg-primary/90 text-primary-foreground'}
+                    className={`flex-1 sm:flex-initial ${reminder.done ? '' : 'bg-primary hover:bg-primary/90 text-primary-foreground'}`}
                   >
                     <Check className="w-4 h-4 mr-2" />
                     {reminder.done ? 'Undo' : 'Mark Done'}

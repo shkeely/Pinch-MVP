@@ -118,23 +118,23 @@ export default function Guests() {
       <TopNav />
       
       <main className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-4xl font-serif font-bold mb-2">Guest Management</h1>
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-2">Guest Management</h1>
             <p className="text-muted-foreground">
               {guests.length} guests • {filteredGuests.length} in current view
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button variant="outline" className="w-full sm:w-auto">
               <Upload className="w-4 h-4 mr-2" />
               Import CSV
             </Button>
-            <Button variant="outline" onClick={handleExportCSV}>
+            <Button variant="outline" onClick={handleExportCSV} className="w-full sm:w-auto">
               <Download className="w-4 h-4 mr-2" />
               Export CSV
             </Button>
-            <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button className="bg-accent hover:bg-accent/90 text-accent-foreground w-full sm:w-auto">
               <UserPlus className="w-4 h-4 mr-2" />
               Add Guest
             </Button>
@@ -230,14 +230,14 @@ export default function Guests() {
 
         {/* Action Buttons */}
         <div className="rounded-lg p-4 mb-6 border border-accent/10 bg-white/[0.31]">
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="bg-violet-100">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button variant="outline" size="sm" className="bg-violet-100 w-full sm:w-auto">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
               Send Announcement
             </Button>
-            <Button variant="outline" size="sm" className="bg-violet-100">
+            <Button variant="outline" size="sm" className="bg-violet-100 w-full sm:w-auto">
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
