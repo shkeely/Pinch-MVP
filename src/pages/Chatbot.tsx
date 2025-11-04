@@ -88,7 +88,7 @@ export default function Chatbot() {
                 {tones.map(tone => {
                 const Icon = tone.icon;
                 const isSelected = selectedTone === tone.id;
-                return <Card key={tone.id} className={`p-4 cursor-pointer transition-all ${isSelected ? 'border-accent border-2 bg-muted/40' : 'bg-muted/30 hover:border-accent/50'}`} onClick={() => setSelectedTone(tone.id)}>
+                return <Card key={tone.id} className={`p-4 cursor-pointer transition-all ${isSelected ? 'border-accent border-2 bg-accent/5' : 'hover:border-accent/50'}`} onClick={() => setSelectedTone(tone.id)}>
                       <div className="flex items-start gap-3 mb-3">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isSelected ? 'bg-accent/20' : 'bg-muted'}`}>
                           <Icon className={`w-5 h-5 ${isSelected ? 'text-accent' : 'text-muted-foreground'}`} />
@@ -107,13 +107,13 @@ export default function Chatbot() {
             </div>
 
             {/* Chatbot Name */}
-            <Card className="p-6 bg-muted/30">
+            <Card className="p-6">
               <h3 className="font-semibold mb-3">Chatbot Name</h3>
               <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter chatbot name" />
             </Card>
 
             {/* Auto-Reply */}
-            <Card className="p-6 bg-muted/30">
+            <Card className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="font-medium mb-1">Auto-Reply</h4>
@@ -124,14 +124,14 @@ export default function Chatbot() {
             </Card>
 
             {/* Knowledge Base Card */}
-            <Card className="p-6 bg-muted/30">
+            <Card className="p-6">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
                 <h2 className="text-xl font-semibold">Knowledge Base</h2>
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-stone-100">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-[#fcfbf8]">
                   <div className="flex items-center gap-3">
                     <MessageSquare className="w-5 h-5 text-muted-foreground" />
                     <div>
@@ -142,7 +142,7 @@ export default function Chatbot() {
                   <Badge variant="secondary">Active</Badge>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-lg bg-stone-100">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-[#fcfbf8]">
                   <div className="flex items-center gap-3">
                     <MessageSquare className="w-5 h-5 text-muted-foreground" />
                     <div>
@@ -182,7 +182,7 @@ export default function Chatbot() {
               </div>
             </Card>
 
-            <Card className="overflow-hidden bg-card border-border shadow-lg ring-2 ring-accent/20">
+            <Card className="overflow-hidden bg-card border-border">
               <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{chatbotName}</h2>
                 <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
