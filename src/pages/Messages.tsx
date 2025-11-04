@@ -91,9 +91,6 @@ export default function Messages() {
           <button onClick={() => setActiveFilter('escalated')} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeFilter === 'escalated' ? 'bg-[#ccc1dd] text-foreground' : 'bg-white border border-border text-foreground hover:bg-muted/50'}`}>
             Escalated
           </button>
-          <button onClick={() => setActiveFilter('risky')} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeFilter === 'risky' ? 'bg-[#ccc1dd] text-foreground' : 'bg-white border border-border text-foreground hover:bg-muted/50'}`}>
-            Risky
-          </button>
         </div>
 
         {/* Main Content - Two Column Layout */}
