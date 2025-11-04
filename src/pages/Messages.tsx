@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
 import TopNav from '@/components/navigation/TopNav';
+import { AIAssistButton } from '@/components/ai/AIAssistButton';
 interface Message {
   id: string;
   guestName: string;
@@ -56,6 +58,7 @@ export default function Messages() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'auto' | 'escalated' | 'risky'>('all');
   const [selectedMessage, setSelectedMessage] = useState<Message>(mockMessages[0]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [draftResponse, setDraftResponse] = useState('');
   const filteredMessages = mockMessages.filter(msg => {
     const matchesFilter = activeFilter === 'all' || msg.status === activeFilter;
     const matchesSearch = msg.guestName.toLowerCase().includes(searchQuery.toLowerCase()) || msg.question.toLowerCase().includes(searchQuery.toLowerCase());
@@ -180,15 +183,30 @@ export default function Messages() {
 
             {/* Draft Response */}
             {!selectedMessage.answer && <div className="mb-6">
-                <h3 className="font-semibold text-foreground mb-3">Draft Response</h3>
-                <div className="flex gap-2 items-end">
-                  <Input placeholder="Type your response..." className="flex-1 rounded-full border-border" />
-                  <Button size="icon" className="rounded-full h-10 w-10 flex-shrink-0" style={{
-                backgroundColor: '#5b6850',
-                color: 'white'
-              }}>
-                    <Send className="w-4 h-4" />
-                  </Button>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold text-foreground">Draft Response</h3>
+                  <AIAssistButton 
+                    currentText={draftResponse}
+                    onAIGenerate={setDraftResponse}
+                    context={`in response to: "${selectedMessage.question}"`}
+                  />
+                </div>
+                <div className="space-y-3">
+                  <Textarea 
+                    placeholder="Type your response..." 
+                    value={draftResponse}
+                    onChange={(e) => setDraftResponse(e.target.value)}
+                    className="min-h-[120px] border-border" 
+                  />
+                  <div className="flex justify-end">
+                    <Button className="rounded-full px-6 gap-2" style={{
+                      backgroundColor: '#5b6850',
+                      color: 'white'
+                    }}>
+                      <Send className="w-4 h-4" />
+                      Send Response
+                    </Button>
+                  </div>
                 </div>
               </div>}
 

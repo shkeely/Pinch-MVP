@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { AIAssistButton } from "@/components/ai/AIAssistButton";
 
 export default function Dashboard1Alt() {
   const navigate = useNavigate();
@@ -32,7 +33,8 @@ export default function Dashboard1Alt() {
   const [draftMessageDialogOpen, setDraftMessageDialogOpen] = useState(false);
   const [addAnswerDialogOpen, setAddAnswerDialogOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
-  const [draftContent, setDraftContent] = useState("Hi everyone! Just wanted to address the parking situation. There's a parking lot available at the venue with plenty of spaces. Street parking is also available nearby. Looking forward to seeing you all!");
+  const [draftContent, setDraftContent] = useState('');
+  const [faqAnswer, setFaqAnswer] = useState('');
   const totalQuestions = 47;
   const autoAnswerRate = 37;
   const newMessages = 12;
@@ -266,6 +268,14 @@ export default function Dashboard1Alt() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">Message</label>
+              <AIAssistButton 
+                currentText={messageContent}
+                onAIGenerate={setMessageContent}
+                context="regarding your upcoming wedding celebration"
+              />
+            </div>
             <Textarea 
               placeholder="Type your message here..."
               value={messageContent}
@@ -344,6 +354,14 @@ export default function Dashboard1Alt() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">Message about parking</label>
+              <AIAssistButton 
+                currentText={draftContent}
+                onAIGenerate={setDraftContent}
+                context="There's a parking lot at the venue with plenty of spaces"
+              />
+            </div>
             <Textarea 
               value={draftContent}
               onChange={(e) => setDraftContent(e.target.value)}
@@ -379,8 +397,18 @@ export default function Dashboard1Alt() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">Your answer</label>
+              <AIAssistButton 
+                currentText={faqAnswer}
+                onAIGenerate={setFaqAnswer}
+                context="regarding shuttle service availability at the wedding venue"
+              />
+            </div>
             <Textarea 
               placeholder="Type your answer here..."
+              value={faqAnswer}
+              onChange={(e) => setFaqAnswer(e.target.value)}
               className="min-h-[150px]"
             />
           </div>
