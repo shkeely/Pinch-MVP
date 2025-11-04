@@ -107,7 +107,7 @@ export default function Chatbot() {
             </div>
 
             {/* Chatbot Name */}
-            <Card className="p-6">
+            <Card className="p-6 bg-[#f7f5f3]">
               <h3 className="font-semibold mb-3">Chatbot Name</h3>
               <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter chatbot name" />
             </Card>
