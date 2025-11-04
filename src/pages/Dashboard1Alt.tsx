@@ -135,7 +135,7 @@ export default function Dashboard1Alt() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_326px] lg:gap-8 lg:grid-rows-[auto]">
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_500px] lg:gap-8 lg:grid-rows-[auto]">
 
           {/* Needs Your Attention - Full width on mobile/tablet, left column on desktop */}
           <div className="w-full lg:col-start-1 lg:row-start-1 space-y-4">
@@ -217,7 +217,7 @@ export default function Dashboard1Alt() {
           </div>
 
           {/* Right Column - Reminders */}
-          <Card className="w-full lg:col-start-2 lg:row-start-1 lg:w-[326px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+          <Card className="w-full lg:col-start-2 lg:row-start-1 lg:w-[500px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
             <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
               Upcoming Reminders
             </h2>
