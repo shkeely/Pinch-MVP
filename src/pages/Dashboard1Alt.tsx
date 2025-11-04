@@ -135,7 +135,7 @@ export default function Dashboard1Alt() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_500px] lg:gap-8 lg:grid-rows-[auto]">
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_500px] lg:gap-8 lg:grid-rows-[auto] lg:items-start">
 
           {/* Needs Your Attention - Full width on mobile/tablet, left column on desktop */}
           <div className="w-full lg:col-start-1 lg:row-start-1 space-y-4">
@@ -225,7 +225,7 @@ export default function Dashboard1Alt() {
               Next scheduled messages
             </p>
             
-            <div className="space-y-2">
+            <div className="space-y-3">
               {/* Reminder 1 */}
               <div className="border border-border rounded-lg p-2 border-l-4 border-l-purple-500">
                 <div className="flex items-start justify-between mb-1">
@@ -305,7 +305,7 @@ export default function Dashboard1Alt() {
             <Button 
               variant="outline" 
               onClick={() => navigate('/reminders')}
-              className="w-full mt-4 rounded-full"
+              className="w-full mt-3 rounded-full"
             >
               View All Reminders
             </Button>
