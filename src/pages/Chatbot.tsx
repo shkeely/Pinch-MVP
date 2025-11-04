@@ -3,6 +3,8 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send } from 'lucide-react';
@@ -28,7 +30,7 @@ const tones = [{
 export default function Chatbot() {
   const [selectedTone, setSelectedTone] = useState('warm');
   const [chatbotName, setChatbotName] = useState('Wedding Assistant');
-  const [autoReply, setAutoReply] = useState(true);
+  const [replyMode, setReplyMode] = useState<'auto' | 'approval'>('auto');
   const [chatbotActive, setChatbotActive] = useState(true);
   const [testMessage, setTestMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([{
@@ -112,15 +114,25 @@ export default function Chatbot() {
               <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter chatbot name" />
             </Card>
 
-            {/* Auto-Reply */}
+            {/* Reply Mode */}
             <Card className="p-6 bg-[#f7f5f3]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-medium mb-1">Auto-Reply</h4>
-                  <p className="text-sm text-muted-foreground">Respond to messages automatically</p>
+              <h4 className="font-medium mb-4">Message Handling</h4>
+              <RadioGroup value={replyMode} onValueChange={(value) => setReplyMode(value as 'auto' | 'approval')}>
+                <div className="flex items-start space-x-3 mb-4">
+                  <RadioGroupItem value="auto" id="auto" className="mt-0.5" />
+                  <div className="flex-1">
+                    <Label htmlFor="auto" className="font-medium cursor-pointer">Auto-Reply</Label>
+                    <p className="text-sm text-muted-foreground">Respond to messages automatically</p>
+                  </div>
                 </div>
-                <Switch checked={autoReply} onCheckedChange={setAutoReply} />
-              </div>
+                <div className="flex items-start space-x-3">
+                  <RadioGroupItem value="approval" id="approval" className="mt-0.5" />
+                  <div className="flex-1">
+                    <Label htmlFor="approval" className="font-medium cursor-pointer">Notify Me for Message Approval</Label>
+                    <p className="text-sm text-muted-foreground">Review and approve messages before sending</p>
+                  </div>
+                </div>
+              </RadioGroup>
             </Card>
 
             {/* Knowledge Base Card */}
