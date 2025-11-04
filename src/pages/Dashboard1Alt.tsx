@@ -45,7 +45,7 @@ export default function Dashboard1Alt() {
 
       <div className="container mx-auto lg:px-6 py-6 lg:py-8 max-w-7xl px-[20px]">
         {/* Daily Digest Section with Stats */}
-        <div className="mb-12">
+        <div className="mb-12 scale-[1.15] origin-top-left">
           <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
             {/* Daily Digest Content - Left Column */}
             <div className="flex-1 space-y-6">
