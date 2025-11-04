@@ -13,6 +13,7 @@ import Step3 from "./pages/onboarding/Step3";
 import Step4 from "./pages/onboarding/Step4";
 import Dashboard1 from "./pages/Dashboard1";
 import Dashboard1Alt from "./pages/Dashboard1Alt";
+import Dashboard1AltSimplified from "./pages/Dashboard1Alt-Simplified";
 import DashboardAlt from "./pages/DashboardAlt";
 import Messages from "./pages/Messages";
 import Reminders from "./pages/Reminders";
@@ -38,7 +39,7 @@ const App = () => (
             <Route path="/onboarding/step-2" element={<Step2 />} />
             <Route path="/onboarding/step-3" element={<Step3 />} />
             <Route path="/onboarding/step-4" element={<Step4 />} />
-            <Route path="/dashboard1" element={<Dashboard1 />} />
+            <Route path="/dashboard1" element={<Dashboard1AltSimplified />} />
             <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
             <Route path="/dashboard-alt" element={<DashboardAlt />} />
             <Route path="/messages" element={<Messages />} />
