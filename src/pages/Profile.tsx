@@ -150,7 +150,7 @@ export default function Profile() {
                     )}
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor={`name-${partner.id}`}>Name</Label>
                       <Input
@@ -160,31 +160,33 @@ export default function Profile() {
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor={`email-${partner.id}`}>Email</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          id={`email-${partner.id}`}
-                          type="email"
-                          value={partner.email}
-                          onChange={(e) => handleUpdatePartner(partner.id, 'email', e.target.value)}
-                          className="pl-10"
-                        />
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor={`email-${partner.id}`}>Email</Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            id={`email-${partner.id}`}
+                            type="email"
+                            value={partner.email}
+                            onChange={(e) => handleUpdatePartner(partner.id, 'email', e.target.value)}
+                            className="pl-10"
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor={`phone-${partner.id}`}>Phone</Label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          id={`phone-${partner.id}`}
-                          type="tel"
-                          value={partner.phone}
-                          onChange={(e) => handleUpdatePartner(partner.id, 'phone', e.target.value)}
-                          className="pl-10"
-                        />
+                      <div className="space-y-2">
+                        <Label htmlFor={`phone-${partner.id}`}>Phone</Label>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            id={`phone-${partner.id}`}
+                            type="tel"
+                            value={partner.phone}
+                            onChange={(e) => handleUpdatePartner(partner.id, 'phone', e.target.value)}
+                            className="pl-10"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
