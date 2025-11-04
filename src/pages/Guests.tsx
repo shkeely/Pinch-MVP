@@ -4,14 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { UserPlus, Upload, Pencil, Settings, Plus, X, Download } from 'lucide-react';
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
@@ -20,7 +13,10 @@ export default function Guests() {
   const [segments, setSegments] = useState<Segment[]>(['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors']);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [newSegmentName, setNewSegmentName] = useState('');
-  const [editingSegment, setEditingSegment] = useState<{ old: Segment; new: string } | null>(null);
+  const [editingSegment, setEditingSegment] = useState<{
+    old: Segment;
+    new: string;
+  } | null>(null);
   const guests = [{
     id: 1,
     name: 'Emily Thompson',
@@ -58,9 +54,7 @@ export default function Guests() {
     segment: 'Parents' as Segment,
     status: 'Active'
   }];
-
   const filteredGuests = selectedSegment === 'All' ? guests : guests.filter(g => g.segment === selectedSegment);
-
   const handleAddSegment = () => {
     if (!newSegmentName.trim()) {
       toast.error("Segment name cannot be empty");
@@ -74,7 +68,6 @@ export default function Guests() {
     setNewSegmentName('');
     toast.success(`Added segment: ${newSegmentName}`);
   };
-
   const handleRemoveSegment = (segment: Segment) => {
     if (segment === 'All') {
       toast.error("Cannot remove 'All' segment");
@@ -86,7 +79,6 @@ export default function Guests() {
     }
     toast.success(`Removed segment: ${segment}`);
   };
-
   const handleRenameSegment = () => {
     if (!editingSegment || !editingSegment.new.trim()) {
       toast.error("Segment name cannot be empty");
@@ -107,14 +99,11 @@ export default function Guests() {
     toast.success(`Renamed segment from "${editingSegment.old}" to "${editingSegment.new}"`);
     setEditingSegment(null);
   };
-
   const handleExportCSV = () => {
-    const csvContent = [
-      ['Name', 'Phone', 'Segment', 'Status'],
-      ...filteredGuests.map(g => [g.name, g.phone, g.segment, g.status])
-    ].map(row => row.join(',')).join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const csvContent = [['Name', 'Phone', 'Segment', 'Status'], ...filteredGuests.map(g => [g.name, g.phone, g.segment, g.status])].map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;'
+    });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
@@ -153,7 +142,7 @@ export default function Guests() {
         </div>
 
         {/* Segments Section */}
-        <Card className="p-6 mb-6 bg-stone-50">
+        <Card className="p-6 mb-6 bg-[#f7f5f3]">
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold mb-1">Segments</h2>
@@ -180,12 +169,7 @@ export default function Guests() {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Add New Segment</label>
                     <div className="flex gap-2">
-                      <Input
-                        placeholder="Enter segment name"
-                        value={newSegmentName}
-                        onChange={(e) => setNewSegmentName(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleAddSegment()}
-                      />
+                      <Input placeholder="Enter segment name" value={newSegmentName} onChange={e => setNewSegmentName(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAddSegment()} />
                       <Button onClick={handleAddSegment} size="sm">
                         <Plus className="w-4 h-4 mr-1" />
                         Add
@@ -197,52 +181,36 @@ export default function Guests() {
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Existing Segments</label>
                     <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                      {segments.map(segment => (
-                        <div key={segment} className="flex items-center gap-2 p-2 rounded-md border bg-background">
-                          {editingSegment?.old === segment ? (
-                            <>
-                              <Input
-                                value={editingSegment.new}
-                                onChange={(e) => setEditingSegment({ old: segment, new: e.target.value })}
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Enter') handleRenameSegment();
-                                  if (e.key === 'Escape') setEditingSegment(null);
-                                }}
-                                className="flex-1"
-                                autoFocus
-                              />
+                      {segments.map(segment => <div key={segment} className="flex items-center gap-2 p-2 rounded-md border bg-background">
+                          {editingSegment?.old === segment ? <>
+                              <Input value={editingSegment.new} onChange={e => setEditingSegment({
+                          old: segment,
+                          new: e.target.value
+                        })} onKeyDown={e => {
+                          if (e.key === 'Enter') handleRenameSegment();
+                          if (e.key === 'Escape') setEditingSegment(null);
+                        }} className="flex-1" autoFocus />
                               <Button size="sm" onClick={handleRenameSegment}>
                                 Save
                               </Button>
                               <Button size="sm" variant="ghost" onClick={() => setEditingSegment(null)}>
                                 Cancel
                               </Button>
-                            </>
-                          ) : (
-                            <>
+                            </> : <>
                               <span className="flex-1 font-medium">{segment}</span>
-                              {segment !== 'All' && (
-                                <>
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={() => setEditingSegment({ old: segment, new: segment })}
-                                  >
+                              {segment !== 'All' && <>
+                                  <Button size="sm" variant="ghost" onClick={() => setEditingSegment({
+                            old: segment,
+                            new: segment
+                          })}>
                                     <Pencil className="w-4 h-4" />
                                   </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    onClick={() => handleRemoveSegment(segment)}
-                                  >
+                                  <Button size="sm" variant="ghost" onClick={() => handleRemoveSegment(segment)}>
                                     <X className="w-4 h-4" />
                                   </Button>
-                                </>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      ))}
+                                </>}
+                            </>}
+                        </div>)}
                     </div>
                   </div>
                 </div>
