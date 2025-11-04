@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send } from 'lucide-react';
+import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
 const tones = [{
   id: 'warm',
   name: 'Warm',
@@ -33,6 +34,7 @@ export default function Chatbot() {
   const [replyMode, setReplyMode] = useState<'auto' | 'approval'>('auto');
   const [chatbotActive, setChatbotActive] = useState(true);
   const [testMessage, setTestMessage] = useState('');
+  const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([{
     role: 'user',
     content: 'What time is the wedding?',
@@ -166,10 +168,20 @@ export default function Chatbot() {
                 </div>
               </div>
 
-              <Button variant="outline" className="w-full mt-4">
+              <Button 
+                variant="outline" 
+                className="w-full mt-4"
+                onClick={() => setKnowledgeBaseOpen(true)}
+              >
                 Update Knowledge Base
               </Button>
             </Card>
+
+            {/* Knowledge Base Dialog */}
+            <KnowledgeBaseDialog 
+              open={knowledgeBaseOpen} 
+              onOpenChange={setKnowledgeBaseOpen}
+            />
 
             <Button className="w-full" size="lg">
               Save Changes
