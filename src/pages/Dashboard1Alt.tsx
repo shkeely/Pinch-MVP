@@ -273,7 +273,7 @@ export default function Dashboard1Alt() {
               </div>
 
               {/* Reminder 3 */}
-              <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-orange-500">
+              <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-orange-500 mt-2">
                 <div className="flex items-start justify-between mb-1.5">
                   <h3 className="text-sm font-medium text-foreground">Thank You Message</h3>
                   <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100 text-xs">Thank You</Badge>
