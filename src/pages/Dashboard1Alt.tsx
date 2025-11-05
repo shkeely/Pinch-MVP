@@ -135,7 +135,7 @@ export default function Dashboard1Alt() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_500px] lg:gap-8 lg:grid-rows-[auto] lg:items-start">
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_500px] lg:gap-8 lg:grid-rows-[auto] lg:items-end">
 
           {/* Needs Your Attention - Full width on mobile/tablet, left column on desktop */}
           <div className="w-full lg:col-start-1 lg:row-start-1 space-y-4">
