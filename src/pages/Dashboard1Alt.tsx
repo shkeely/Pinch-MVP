@@ -9,19 +9,26 @@ import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { AIAssistButton } from "@/components/ai/AIAssistButton";
+
 export default function Dashboard1Alt() {
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const {
     wedding,
     conversations
   } = useWedding();
+  
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [followUpDialogOpen, setFollowUpDialogOpen] = useState(false);
   const [draftMessageDialogOpen, setDraftMessageDialogOpen] = useState(false);
@@ -82,28 +89,40 @@ export default function Dashboard1Alt() {
               </p>
               
               <div className="space-y-1.5">
-                <Button variant="outline" onClick={() => setMessageDialogOpen(true)} className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setMessageDialogOpen(true)}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Bell className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Send a Message to Guests</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" onClick={() => {
-                  const chatbotUrl = `${window.location.origin}/chatbot-embed`;
-                  navigator.clipboard.writeText(chatbotUrl);
-                  toast({
-                    title: "Link copied!",
-                    description: "Chatbot link has been copied to clipboard."
-                  });
-                }} className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    const chatbotUrl = `${window.location.origin}/chatbot-embed`;
+                    navigator.clipboard.writeText(chatbotUrl);
+                    toast({
+                      title: "Link copied!",
+                      description: "Chatbot link has been copied to clipboard.",
+                    });
+                  }}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Eye className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Share Chatbot</span>
                   </div>
                 </Button>
                 
-                <Button variant="outline" onClick={() => navigate('/guests')} className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate('/guests')}
+                  className="w-full justify-start h-auto py-3 px-4 rounded-full transition-colors bg-white text-[#2E2B27] hover:bg-indigo-400 hover:text-white border-border"
+                >
                   <div className="flex items-center gap-3">
                     <Download className="w-5 h-5" />
                     <span className="text-[15px] font-medium">Export Guest List</span>
@@ -140,7 +159,10 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     The question is about cancellation
                   </p>
-                  <Button onClick={() => navigate('/messages')} className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => navigate('/messages')}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Review all
                   </Button>
                 </div>
@@ -160,7 +182,10 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     This question came up 8 times this week. Would you like me to draft a message?
                   </p>
-                  <Button onClick={() => setDraftMessageDialogOpen(true)} className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => setDraftMessageDialogOpen(true)}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Draft message
                   </Button>
                 </div>
@@ -180,7 +205,10 @@ export default function Dashboard1Alt() {
                   <p className="text-sm text-muted-foreground mb-4">
                     Common question: 'Is there a shuttle?' — Consider adding this to your FAQ.
                   </p>
-                  <Button onClick={() => setAddAnswerDialogOpen(true)} className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400">
+                  <Button 
+                    onClick={() => setAddAnswerDialogOpen(true)}
+                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                  >
                     Add answer
                   </Button>
                 </div>
@@ -197,9 +225,9 @@ export default function Dashboard1Alt() {
               Next scheduled messages
             </p>
             
-            <div className="space-y-2">
+            <div className="space-y-4">
               {/* Reminder 1 */}
-              <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-purple-500 my-[20px]">
+              <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-purple-500">
                 <div className="flex items-start justify-between mb-1.5">
                   <h3 className="text-sm font-medium text-foreground">RSVP Deadline Reminder</h3>
                   <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 text-xs">RSVP</Badge>
@@ -268,7 +296,11 @@ export default function Dashboard1Alt() {
               </div>
             </div>
 
-            <Button variant="outline" onClick={() => navigate('/reminders')} className="w-full mt-2.5 rounded-full">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/reminders')}
+              className="w-full mt-5 rounded-full"
+            >
               View All Reminders
             </Button>
           </Card>
@@ -287,22 +319,33 @@ export default function Dashboard1Alt() {
           <div className="space-y-4 py-4">
             <div className="flex items-center justify-between mb-2">
               <label className="text-sm font-medium">Message</label>
-              <AIAssistButton currentText={messageContent} onAIGenerate={setMessageContent} context="regarding your upcoming wedding celebration" />
+              <AIAssistButton 
+                currentText={messageContent}
+                onAIGenerate={setMessageContent}
+                context="regarding your upcoming wedding celebration"
+              />
             </div>
-            <Textarea placeholder="Type your message here..." value={messageContent} onChange={e => setMessageContent(e.target.value)} className="min-h-[150px]" />
+            <Textarea 
+              placeholder="Type your message here..."
+              value={messageContent}
+              onChange={(e) => setMessageContent(e.target.value)}
+              className="min-h-[150px]"
+            />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setMessageDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Message sent!",
-              description: "Your message has been sent to all guests."
-            });
-            setMessageDialogOpen(false);
-            setMessageContent('');
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Message sent!",
+                  description: "Your message has been sent to all guests.",
+                });
+                setMessageDialogOpen(false);
+                setMessageContent('');
+              }}
+            >
               Send Message
             </Button>
           </DialogFooter>
@@ -321,7 +364,10 @@ export default function Dashboard1Alt() {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Follow-up message</label>
-              <Textarea placeholder="What would you like to follow up about?" className="min-h-[100px]" />
+              <Textarea 
+                placeholder="What would you like to follow up about?"
+                className="min-h-[100px]"
+              />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">When?</label>
@@ -332,13 +378,15 @@ export default function Dashboard1Alt() {
             <Button variant="outline" onClick={() => setFollowUpDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Follow-up scheduled!",
-              description: "We'll remind you to follow up at the scheduled time."
-            });
-            setFollowUpDialogOpen(false);
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Follow-up scheduled!",
+                  description: "We'll remind you to follow up at the scheduled time.",
+                });
+                setFollowUpDialogOpen(false);
+              }}
+            >
               Schedule
             </Button>
           </DialogFooter>
@@ -357,21 +405,31 @@ export default function Dashboard1Alt() {
           <div className="space-y-4 py-4">
             <div className="flex items-center justify-between mb-2">
               <label className="text-sm font-medium">Message about parking</label>
-              <AIAssistButton currentText={draftContent} onAIGenerate={setDraftContent} context="There's a parking lot at the venue with plenty of spaces" />
+              <AIAssistButton 
+                currentText={draftContent}
+                onAIGenerate={setDraftContent}
+                context="There's a parking lot at the venue with plenty of spaces"
+              />
             </div>
-            <Textarea value={draftContent} onChange={e => setDraftContent(e.target.value)} className="min-h-[150px]" />
+            <Textarea 
+              value={draftContent}
+              onChange={(e) => setDraftContent(e.target.value)}
+              className="min-h-[150px]"
+            />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDraftMessageDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Message sent!",
-              description: "Your message about parking has been sent to guests."
-            });
-            setDraftMessageDialogOpen(false);
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Message sent!",
+                  description: "Your message about parking has been sent to guests.",
+                });
+                setDraftMessageDialogOpen(false);
+              }}
+            >
               Send to Guests
             </Button>
           </DialogFooter>
@@ -390,21 +448,32 @@ export default function Dashboard1Alt() {
           <div className="space-y-4 py-4">
             <div className="flex items-center justify-between mb-2">
               <label className="text-sm font-medium">Your answer</label>
-              <AIAssistButton currentText={faqAnswer} onAIGenerate={setFaqAnswer} context="regarding shuttle service availability at the wedding venue" />
+              <AIAssistButton 
+                currentText={faqAnswer}
+                onAIGenerate={setFaqAnswer}
+                context="regarding shuttle service availability at the wedding venue"
+              />
             </div>
-            <Textarea placeholder="Type your answer here..." value={faqAnswer} onChange={e => setFaqAnswer(e.target.value)} className="min-h-[150px]" />
+            <Textarea 
+              placeholder="Type your answer here..."
+              value={faqAnswer}
+              onChange={(e) => setFaqAnswer(e.target.value)}
+              className="min-h-[150px]"
+            />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddAnswerDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={() => {
-            toast({
-              title: "Answer added!",
-              description: "The answer has been added to your FAQ."
-            });
-            setAddAnswerDialogOpen(false);
-          }}>
+            <Button 
+              onClick={() => {
+                toast({
+                  title: "Answer added!",
+                  description: "The answer has been added to your FAQ.",
+                });
+                setAddAnswerDialogOpen(false);
+              }}
+            >
               Add to FAQ
             </Button>
           </DialogFooter>
