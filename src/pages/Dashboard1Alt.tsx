@@ -217,7 +217,7 @@ export default function Dashboard1Alt() {
           </div>
 
           {/* Right Column - Reminders */}
-          <Card className="w-full lg:col-start-2 lg:row-start-1 lg:w-[500px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+          <Card className="w-full lg:col-start-2 lg:row-start-1 lg:w-[500px] px-5 pt-5 pb-3 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
             <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
               Upcoming Reminders
             </h2>
