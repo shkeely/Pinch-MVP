@@ -217,15 +217,15 @@ export default function Dashboard1Alt() {
           </div>
 
           {/* Right Column - Reminders */}
-          <Card className="w-full lg:col-start-2 lg:row-start-1 lg:w-[500px] p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-            <h2 className="text-2xl font-serif font-medium mb-1 text-foreground">
+          <Card className="w-full lg:col-start-2 lg:row-start-1 lg:w-[500px] p-4 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <h2 className="text-2xl font-serif font-medium mb-0.5 text-foreground">
               Upcoming Reminders
             </h2>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm text-muted-foreground mb-3">
               Next scheduled messages
             </p>
             
-            <div className="space-y-2.5">
+            <div className="space-y-2">
               {/* Reminder 1 */}
               <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-purple-500">
                 <div className="flex items-start justify-between mb-1.5">
@@ -299,7 +299,7 @@ export default function Dashboard1Alt() {
             <Button 
               variant="outline" 
               onClick={() => navigate('/reminders')}
-              className="w-full mt-4 rounded-full"
+              className="w-full mt-3 rounded-full"
             >
               View All Reminders
             </Button>
