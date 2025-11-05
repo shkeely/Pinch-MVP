@@ -192,7 +192,7 @@ export default function Messages() {
                 </div>}
             </div>
 
-            {/* Draft Response */}
+            {/* Draft Response for Escalated Messages */}
             {!selectedMessage.answer && <div className="mb-6">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-semibold text-foreground">Draft Response</h3>
@@ -216,6 +216,35 @@ export default function Messages() {
                     }}>
                       <Send className="w-4 h-4" />
                       Send Response
+                    </Button>
+                  </div>
+                </div>
+              </div>}
+
+            {/* Follow-up Message for Auto-Answered Messages */}
+            {selectedMessage.answer && <div className="mb-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold text-foreground">Send Follow-up Message</h3>
+                  <AIAssistButton 
+                    currentText={draftResponse}
+                    onAIGenerate={setDraftResponse}
+                    context={`follow-up message to ${selectedMessage.guestName} regarding: "${selectedMessage.question}"`}
+                  />
+                </div>
+                <div className="space-y-3">
+                  <Textarea 
+                    placeholder="Type a follow-up message..." 
+                    value={draftResponse}
+                    onChange={(e) => setDraftResponse(e.target.value)}
+                    className="min-h-[120px] border-border" 
+                  />
+                  <div className="flex justify-end">
+                    <Button className="rounded-full px-6 gap-2" style={{
+                      backgroundColor: '#5b6850',
+                      color: 'white'
+                    }}>
+                      <Send className="w-4 h-4" />
+                      Send Message
                     </Button>
                   </div>
                 </div>
