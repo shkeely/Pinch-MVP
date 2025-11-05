@@ -135,7 +135,7 @@ export default function Dashboard1Alt() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_500px] lg:gap-8 lg:grid-rows-[auto] lg:items-end">
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[1fr_500px] lg:gap-8 lg:grid-rows-[auto]">
 
           {/* Needs Your Attention - Full width on mobile/tablet, left column on desktop */}
           <div className="w-full lg:col-start-1 lg:row-start-1 space-y-4">
@@ -225,16 +225,14 @@ export default function Dashboard1Alt() {
               Next scheduled messages
             </p>
             
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {/* Reminder 1 */}
-              <div className="border border-border rounded-lg p-2 border-l-4 border-l-purple-500">
-                <div className="flex items-start justify-between mb-1">
+              <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-purple-500">
+                <div className="flex items-start justify-between mb-1.5">
                   <h3 className="text-sm font-medium text-foreground">RSVP Deadline Reminder</h3>
-                  <div className="flex gap-1.5">
-                    <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Scheduled</Badge>
-                    <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 text-xs">RSVP</Badge>
-                  </div>
+                  <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 text-xs">RSVP</Badge>
                 </div>
+                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-1.5">Scheduled</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
@@ -252,14 +250,12 @@ export default function Dashboard1Alt() {
               </div>
 
               {/* Reminder 2 */}
-              <div className="border border-border rounded-lg p-2 border-l-4 border-l-blue-500">
-                <div className="flex items-start justify-between mb-1">
+              <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-blue-500">
+                <div className="flex items-start justify-between mb-1.5">
                   <h3 className="text-sm font-medium text-foreground">Day-Of Reminder</h3>
-                  <div className="flex gap-1.5">
-                    <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Scheduled</Badge>
-                    <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Attendance</Badge>
-                  </div>
+                  <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs">Attendance</Badge>
                 </div>
+                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100 text-xs mb-1.5">Scheduled</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
@@ -277,14 +273,12 @@ export default function Dashboard1Alt() {
               </div>
 
               {/* Reminder 3 */}
-              <div className="border border-border rounded-lg p-2 border-l-4 border-l-orange-500">
-                <div className="flex items-start justify-between mb-1">
+              <div className="border border-border rounded-lg p-2.5 border-l-4 border-l-orange-500">
+                <div className="flex items-start justify-between mb-1.5">
                   <h3 className="text-sm font-medium text-foreground">Thank You Message</h3>
-                  <div className="flex gap-1.5">
-                    <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 text-xs">Draft</Badge>
-                    <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100 text-xs">Thank You</Badge>
-                  </div>
+                  <Badge className="bg-orange-100 text-orange-700 hover:bg-orange-100 text-xs">Thank You</Badge>
                 </div>
+                <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-100 text-xs mb-1.5">Draft</Badge>
                 <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
@@ -305,7 +299,7 @@ export default function Dashboard1Alt() {
             <Button 
               variant="outline" 
               onClick={() => navigate('/reminders')}
-              className="w-full mt-3 rounded-full"
+              className="w-full mt-4 rounded-full"
             >
               View All Reminders
             </Button>
