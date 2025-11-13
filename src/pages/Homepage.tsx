@@ -123,57 +123,59 @@ export default function Homepage() {
           {/* Upcoming Announcements - Collapsible */}
           {homepage.upcomingAnnouncements.length > 0 && (
             <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded}>
-              <CollapsibleTrigger asChild>
-                <button className={`w-full border-2 border-border p-6 text-center transition-all hover:border-primary/50 hover:shadow-md ${
-                  announcementsExpanded 
-                    ? 'rounded-3xl bg-card' 
-                    : 'rounded-full bg-background'
-                }`}>
-                  <div className="flex items-center justify-between">
-                    <span className="flex-1 text-xl font-semibold text-foreground">
-                      {homepage.upcomingAnnouncements.length} upcoming guest announcements
-                    </span>
-                    {announcementsExpanded ? (
-                      <ChevronUp className="w-5 h-5 text-muted-foreground ml-2" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-muted-foreground ml-2" />
-                    )}
-                  </div>
-                </button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4 space-y-4 px-6 animate-accordion-down">
-                {homepage.upcomingAnnouncements.map((announcement, index) => (
-                  <div
-                    key={announcement.id}
-                    className="flex items-start gap-4 pb-4 border-b border-border last:border-0"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <div className={`w-1 h-16 rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-foreground mb-2">{announcement.title}</h4>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {announcement.date}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {announcement.time}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
-                          {announcement.guests} guests
+              <div className={`w-full border-2 border-border transition-all ${
+                announcementsExpanded 
+                  ? 'rounded-3xl bg-card' 
+                  : 'rounded-full bg-background'
+              }`}>
+                <CollapsibleTrigger asChild>
+                  <button className="w-full p-6 text-center transition-all hover:border-primary/50">
+                    <div className="flex items-center justify-between">
+                      <span className="flex-1 text-xl font-semibold text-foreground">
+                        {homepage.upcomingAnnouncements.length} upcoming guest announcements
+                      </span>
+                      {announcementsExpanded ? (
+                        <ChevronUp className="w-5 h-5 text-muted-foreground ml-2" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-muted-foreground ml-2" />
+                      )}
+                    </div>
+                  </button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-4 px-6 pb-6 animate-accordion-down">
+                  {homepage.upcomingAnnouncements.map((announcement, index) => (
+                    <div
+                      key={announcement.id}
+                      className="flex items-start gap-4 pb-4 border-b border-border last:border-0"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <div className={`w-1 h-16 rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground mb-2">{announcement.title}</h4>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {announcement.date}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {announcement.time}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Users className="w-4 h-4" />
+                            {announcement.guests} guests
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                          {announcement.status}
                         </span>
                       </div>
                     </div>
-                    <div>
-                      <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                        {announcement.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </CollapsibleContent>
+                  ))}
+                </CollapsibleContent>
+              </div>
             </Collapsible>
           )}
         </div>
