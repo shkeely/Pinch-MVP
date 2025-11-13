@@ -90,7 +90,7 @@ export default function Step4() {
           {/* SMS Simulator */}
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-serif font-bold">Test Your Guest Concierge</h2>
+              <h2 className="text-xl font-serif font-bold">Guest Concierge</h2>
               <Badge variant="outline" className="bg-mint/20 text-mint-foreground border-mint/30">
                 Simulation Mode
               </Badge>
