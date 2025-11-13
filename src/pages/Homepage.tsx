@@ -22,8 +22,6 @@ export default function Homepage() {
   };
 
   // Count escalated vs suggestions
-  const escalatedCount = homepage.needsAttention.filter(item => item.type === 'escalated').length;
-  const suggestionsCount = homepage.needsAttention.filter(item => item.type === 'suggestion').length;
   const hasUrgent = homepage.needsAttention.some(item => item.urgent);
 
   return (
@@ -114,36 +112,37 @@ export default function Homepage() {
                     </div>
                   </button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="border-t border-border space-y-3 px-6 py-6 animate-accordion-down">
-                  {escalatedCount > 0 && (
-                    <div className="flex items-start justify-between gap-4 pb-3 border-b border-border">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          {hasUrgent && (
-                            <span className="h-2 w-2 rounded-full bg-destructive animate-pulse" />
+                <CollapsibleContent className="border-t border-border px-6 py-6 space-y-4 animate-accordion-down">
+                  {homepage.needsAttention.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`relative rounded-2xl p-6 border-2 ${
+                        item.type === 'escalated'
+                          ? 'border-orange-300 bg-orange-50/30'
+                          : 'border-purple-300 bg-purple-50/30'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="bg-background">
+                            {item.type === 'escalated' ? 'Escalated' : 'Suggestion'}
+                          </Badge>
+                          {item.urgent && (
+                            <span className="h-2 w-2 rounded-full bg-destructive" />
                           )}
-                          <span className="font-medium text-foreground">
-                            {escalatedCount} Escalated Question{escalatedCount > 1 ? 's' : ''}
-                          </span>
                         </div>
-                      </div>
-                      <Button size="sm" variant="secondary">
-                        Review all
-                      </Button>
-                    </div>
-                  )}
-                  {suggestionsCount > 0 && (
-                    <div className="flex items-start justify-between gap-4 pb-3 border-b border-border last:border-0">
-                      <div className="flex-1">
-                        <span className="font-medium text-foreground">
-                          {suggestionsCount} Suggestion{suggestionsCount > 1 ? 's' : ''}
+                        <span className="text-sm text-muted-foreground">
+                          {item.timestamp}
                         </span>
                       </div>
-                      <Button size="sm" variant="secondary">
-                        Review all
-                      </Button>
+                      <h4 className="font-semibold text-foreground text-lg mb-2">
+                        {item.title}
+                      </h4>
+                      <p className="text-muted-foreground">
+                        {item.description}
+                      </p>
                     </div>
-                  )}
+                  ))}
                 </CollapsibleContent>
               </div>
             </Collapsible>
