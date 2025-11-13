@@ -3,7 +3,7 @@ import AnimatedGreeting from '@/components/homepage/AnimatedGreeting';
 import TopNav from '@/components/navigation/TopNav';
 import { FAKE_DATA } from '@/data/fakeData';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp, Calendar, Users, Check } from 'lucide-react';
+import { ChevronDown, ChevronUp, Calendar, Users, Check, ArrowRight } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
 
@@ -138,9 +138,22 @@ export default function Homepage() {
                       <h4 className="font-semibold text-foreground text-lg mb-2">
                         {item.title}
                       </h4>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground mb-4">
                         {item.description}
                       </p>
+                      <div className="flex justify-end">
+                        <Button
+                          variant="outline"
+                          className={`rounded-full ${
+                            item.type === 'escalated'
+                              ? 'border-orange-400 text-orange-700 hover:bg-orange-50'
+                              : 'border-purple-400 text-purple-700 hover:bg-purple-50'
+                          }`}
+                        >
+                          Review
+                          <ArrowRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </CollapsibleContent>
