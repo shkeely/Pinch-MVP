@@ -1,4 +1,4 @@
-import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles } from 'lucide-react';
+import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles, Lightbulb, CheckCircle2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -101,77 +101,44 @@ export default function Dashboard1() {
               Needs Your Attention
             </h2>
             
-            {/* Card 1: Guests asking about parking */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">
-                    Guests are asking about parking
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    This question came up 8 times this week. Would you like me to draft a message?
-                  </p>
-                  <Button className="rounded-full px-6" style={{
-                  backgroundColor: '#5b6850',
-                  color: 'white'
-                }}>
-                    Draft message
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
-            {/* Card 2: New questions */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <MessageSquare className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-lg font-serif text-foreground">You received 1 escalated questions</h3>
-                    <Badge className="bg-[#e85d5d] hover:bg-[#e85d5d] text-white px-3 py-1 text-xs rounded-full">
-                      Escalated
-                    </Badge>
+            {/* Dynamic Needs Attention Cards */}
+            {homepage.needsAttention.map((item) => (
+              <Card key={item.id} className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
+                    {item.type === 'escalated' ? (
+                      <MessageSquare className="w-6 h-6 text-foreground" />
+                    ) : item.type === 'suggestion' ? (
+                      <Lightbulb className="w-6 h-6 text-foreground" />
+                    ) : (
+                      <TrendingUp className="w-6 h-6 text-foreground" />
+                    )}
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    The question is about cancellation
-                  </p>
-                  <Button className="rounded-full px-6" style={{
-                  backgroundColor: '#5b6850',
-                  color: 'white'
-                }}>
-                    Review all
-                  </Button>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-lg font-serif text-foreground">{item.title}</h3>
+                      {item.urgent && (
+                        <Badge className="bg-[#e85d5d] hover:bg-[#e85d5d] text-white px-3 py-1 text-xs rounded-full">
+                          Urgent
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <Button className="rounded-full px-6" style={{
+                        backgroundColor: '#5b6850',
+                        color: 'white'
+                      }}>
+                        {item.type === 'escalated' ? 'Respond' : item.type === 'suggestion' ? 'Review' : 'View Details'}
+                      </Button>
+                      <span className="text-xs text-muted-foreground">{item.timestamp}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </Card>
-
-            {/* Card 3: Suggestion */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">
-                    Suggestion: Add shuttle info
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Common question: 'Is there a shuttle?' — Consider adding this to your FAQ.
-                  </p>
-                  <Button className="rounded-full px-6" style={{
-                  backgroundColor: '#5b6850',
-                  color: 'white'
-                }}>
-                    Add answer
-                  </Button>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            ))}
           </div>
 
           {/* Quick Actions - Full width on mobile */}
@@ -213,6 +180,27 @@ export default function Dashboard1() {
                   <span className="text-[15px] font-medium">Export Guest List</span>
                 </div>
               </Button>
+            </div>
+          </Card>
+        </div>
+
+        {/* Handled Today Section */}
+        <div className="mt-8">
+          <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+            <h2 className="text-2xl font-serif text-foreground mb-4">
+              Handled Today
+            </h2>
+            <div className="space-y-4">
+              {homepage.handledToday.map((item, index) => (
+                <div key={index} className="flex items-start gap-3 pb-4 border-b last:border-0 last:pb-0">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground">{item.guestName}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{item.question}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{item.timestamp}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </Card>
         </div>
