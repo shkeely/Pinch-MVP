@@ -138,13 +138,13 @@ export default function Homepage() {
                       <h4 className="font-semibold text-foreground text-lg mb-2">
                         {item.title}
                       </h4>
-                      <p className="text-muted-foreground mb-4">
-                        {item.description}
-                      </p>
-                      <div className="flex justify-end">
+                      <div className="flex items-start gap-4">
+                        <p className="text-muted-foreground flex-1">
+                          {item.description}
+                        </p>
                         <Button
                           variant="outline"
-                          className={`rounded-full ${
+                          className={`rounded-full shrink-0 ${
                             item.type === 'escalated'
                               ? 'border-orange-400 text-orange-700 hover:bg-orange-50'
                               : 'border-purple-400 text-purple-700 hover:bg-purple-50'
