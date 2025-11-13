@@ -124,7 +124,11 @@ export default function Homepage() {
           {homepage.upcomingAnnouncements.length > 0 && (
             <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded}>
               <CollapsibleTrigger asChild>
-                <button className="w-full rounded-full border-2 border-border bg-card p-6 text-center transition-all hover:border-primary/50 hover:shadow-md">
+                <button className={`w-full border-2 border-border p-6 text-center transition-all hover:border-primary/50 hover:shadow-md ${
+                  announcementsExpanded 
+                    ? 'rounded-3xl bg-card' 
+                    : 'rounded-full bg-background'
+                }`}>
                   <div className="flex items-center justify-between">
                     <span className="flex-1 text-xl font-semibold text-foreground">
                       {homepage.upcomingAnnouncements.length} upcoming guest announcements
