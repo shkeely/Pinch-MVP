@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useWedding } from '@/contexts/WeddingContext';
+import { useFakeData } from '@/contexts/FakeDataContext';
 import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +29,7 @@ export default function Dashboard1Alt() {
     wedding,
     conversations
   } = useWedding();
+  const { homepage } = useFakeData();
   
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [followUpDialogOpen, setFollowUpDialogOpen] = useState(false);
@@ -36,10 +38,6 @@ export default function Dashboard1Alt() {
   const [messageContent, setMessageContent] = useState('');
   const [draftContent, setDraftContent] = useState('');
   const [faqAnswer, setFaqAnswer] = useState('');
-  const totalQuestions = 47;
-  const autoAnswerRate = 37;
-  const newMessages = 12;
-  const generalQuestions = 8;
   return <div className="min-h-screen bg-background">
       <TopNav />
 
@@ -55,13 +53,13 @@ export default function Dashboard1Alt() {
                   Daily Digest
                 </h2>
                 <p className="text-foreground leading-relaxed text-base lg:text-[1.15rem]">
-                  <span className="font-semibold">{newMessages} new messages today.</span> {generalQuestions} general questions (parking, timing).
+                  <span className="font-semibold">{homepage.metrics.questionsToday} new messages today.</span> {homepage.metrics.questionsAnswered} questions answered automatically.
                 </p>
               </div>
 
               {/* Stats Card - Compact and integrated */}
               <div className="w-fit">
-                <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
+                <StatsCard total={homepage.metrics.questionsToday} autoPercent={homepage.metrics.autoAnsweredPercent} />
               </div>
 
               {/* Trending Tags */}
