@@ -20,7 +20,7 @@ export default function AnimatedGreeting({ userName, status }: AnimatedGreetingP
   };
 
   return (
-    <div className="py-8 animate-fade-in">
+    <div className="py-8 animate-fade-in text-center">
       <h1 className="text-3xl md:text-4xl font-semibold bg-gradient-to-r from-lavender to-primary bg-clip-text text-transparent mb-2">
         Hello {userName},
       </h1>
