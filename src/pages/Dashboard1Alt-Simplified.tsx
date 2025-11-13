@@ -20,6 +20,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { AIAssistButton } from "@/components/ai/AIAssistButton";
+import AnimatedGreeting from '@/components/homepage/AnimatedGreeting';
 
 export default function Dashboard1Alt() {
   const navigate = useNavigate();
@@ -46,11 +47,14 @@ export default function Dashboard1Alt() {
           <div className="flex flex-col lg:flex-row gap-6 lg:items-start">
             {/* Daily Digest Content - Left Column */}
             <div className="flex-1 space-y-6">
-              {/* Title and Description */}
+              {/* Animated Greeting */}
+              <AnimatedGreeting 
+                userName={wedding?.couple1 || "there"} 
+                status={homepage.needsAttention.length > 0 ? 'needs-attention' : homepage.metrics.questionsToday === 0 ? 'all-clear' : 'normal'} 
+              />
+              
+              {/* Daily Summary */}
               <div>
-                <h2 className="text-3xl lg:text-[2.6rem] font-serif font-bold mb-2 text-foreground leading-tight">
-                  Daily Digest
-                </h2>
                 <p className="text-foreground leading-relaxed text-base lg:text-[1.15rem]">
                   <span className="font-semibold">{homepage.metrics.questionsToday} new messages today.</span> {homepage.metrics.questionsAnswered} questions answered automatically.
                 </p>
