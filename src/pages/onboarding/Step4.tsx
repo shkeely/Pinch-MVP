@@ -79,7 +79,7 @@ export default function Step4() {
 
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
-            Test Your Concierge
+            Test Your Guest Concierge
           </h1>
           <p className="text-lg text-muted-foreground">
             Try asking questions as a guest would. Your AI concierge is ready!
