@@ -27,7 +27,7 @@ export default function Homepage() {
   return (
     <div className="min-h-screen bg-background">
       <TopNav />
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">
         {/* Animated Greeting */}
         <AnimatedGreeting userName={homepage.userName} status={getStatus()} />
 
@@ -35,7 +35,7 @@ export default function Homepage() {
         <div className="space-y-4">
           {/* Handled by Pinch - Collapsible */}
           <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded}>
-            <div className={`w-full border-2 border-border transition-all ${
+            <div className={`w-full border-2 border-border transition-all hover:shadow-lg hover:border-primary/30 ${
               handledExpanded 
                 ? 'rounded-3xl bg-card' 
                 : 'rounded-full bg-background'
@@ -68,7 +68,7 @@ export default function Homepage() {
                   {homepage.handledToday.slice(0, 3).map((item, index) => (
                     <div
                       key={index}
-                      className="px-6 py-4 flex items-center justify-between"
+                      className="px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-accent/50 transition-colors"
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <div className="text-foreground">
@@ -88,7 +88,7 @@ export default function Homepage() {
           {/* Needs Attention - Collapsible with urgent indicator */}
           {homepage.needsAttention.length > 0 && (
             <Collapsible open={attentionExpanded} onOpenChange={setAttentionExpanded}>
-              <div className={`w-full border-2 border-destructive/50 transition-all ${
+              <div className={`w-full border-2 border-destructive/50 transition-all hover:shadow-lg hover:border-destructive/70 ${
                 attentionExpanded 
                   ? 'rounded-3xl bg-card' 
                   : 'rounded-full bg-background'
@@ -118,8 +118,8 @@ export default function Homepage() {
                       key={item.id}
                       className={`relative rounded-2xl p-6 border-2 ${
                         item.type === 'escalated'
-                          ? 'border-orange-300 bg-orange-50/30'
-                          : 'border-purple-300 bg-purple-50/30'
+                          ? 'border-orange-200 bg-orange-50/15'
+                          : 'border-purple-200 bg-purple-50/15'
                       }`}
                     >
                       <div className="flex items-start justify-between mb-3">
@@ -164,7 +164,7 @@ export default function Homepage() {
           {/* Upcoming Announcements - Collapsible */}
           {homepage.upcomingAnnouncements.length > 0 && (
             <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded}>
-              <div className={`w-full border-2 border-border transition-all ${
+              <div className={`w-full border-2 border-border transition-all hover:shadow-lg hover:border-primary/30 ${
                 announcementsExpanded 
                   ? 'rounded-3xl bg-card' 
                   : 'rounded-full bg-background'
@@ -193,19 +193,33 @@ export default function Homepage() {
                       <div className={`w-1 h-16 rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
                       <div className="flex-1">
                         <h4 className="font-semibold text-foreground mb-2">{announcement.title}</h4>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
-                            {announcement.date}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
-                            {announcement.time}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Users className="w-4 h-4" />
-                            {announcement.guests} guests
-                          </span>
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {announcement.date}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {announcement.time}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Users className="w-4 h-4" />
+                              {announcement.guests} guests
+                            </span>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className={`rounded-full shrink-0 ${
+                              index === 0
+                                ? 'border-lavender text-lavender hover:bg-lavender/10'
+                                : 'border-primary text-primary hover:bg-primary/10'
+                            }`}
+                          >
+                            Review
+                            <ArrowRight className="w-4 h-4 ml-1" />
+                          </Button>
                         </div>
                       </div>
                       <div>
