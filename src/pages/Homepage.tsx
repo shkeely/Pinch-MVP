@@ -3,8 +3,9 @@ import AnimatedGreeting from '@/components/homepage/AnimatedGreeting';
 import TopNav from '@/components/navigation/TopNav';
 import { FAKE_DATA } from '@/data/fakeData';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp, Calendar, Users } from 'lucide-react';
+import { ChevronDown, ChevronUp, Calendar, Users, Check } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Badge } from '@/components/ui/badge';
 
 export default function Homepage() {
   const { homepage } = FAKE_DATA;
@@ -55,17 +56,33 @@ export default function Homepage() {
                   </div>
                 </button>
               </CollapsibleTrigger>
-              <CollapsibleContent className="border-t border-border space-y-2 px-6 py-6 animate-accordion-down">
-                {homepage.handledToday.slice(0, 3).map((item, index) => (
-                  <div
-                    key={index}
-                    className="text-foreground"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <span className="font-medium text-primary underline">{item.guestName}</span>
-                    <span className="text-muted-foreground"> asked about {item.question}</span>
-                  </div>
-                ))}
+              <CollapsibleContent className="border-t border-border animate-accordion-down">
+                <div className="px-6 py-4 flex items-center justify-center gap-2">
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 hover:bg-green-50">
+                    <Check className="w-3 h-3 mr-1" />
+                    Handled by Pinch
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    {homepage.handledToday.length} questions answered
+                  </span>
+                </div>
+                <div className="divide-y divide-border">
+                  {homepage.handledToday.slice(0, 3).map((item, index) => (
+                    <div
+                      key={index}
+                      className="px-6 py-4 flex items-center justify-between"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <div className="text-foreground">
+                        <span className="font-semibold">{item.guestName}</span>
+                        <span className="text-muted-foreground"> asked about {item.question}</span>
+                      </div>
+                      <span className="text-sm text-muted-foreground whitespace-nowrap ml-4">
+                        {item.timestamp}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </CollapsibleContent>
             </div>
           </Collapsible>
