@@ -135,7 +135,7 @@ export default function Homepage() {
                           {item.timestamp}
                         </span>
                       </div>
-                      <h4 className="font-semibold text-foreground text-lg mb-2">
+                      <h4 className="font-display font-semibold text-foreground text-lg mb-2">
                         {item.title}
                       </h4>
                       <div className="flex items-center gap-4">
