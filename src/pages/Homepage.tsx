@@ -36,87 +36,99 @@ export default function Homepage() {
         <div className="space-y-4">
           {/* Handled by Pinch - Collapsible */}
           <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded}>
-            <CollapsibleTrigger asChild>
-              <button className="w-full rounded-full border-2 border-border bg-card p-6 text-center transition-all hover:border-primary/50 hover:shadow-md">
-                <div className="flex items-center justify-between">
-                  <span className="flex-1 text-xl font-semibold text-foreground">
-                    Pinch answered {homepage.handledToday.length} guest questions
-                  </span>
-                  {handledExpanded ? (
-                    <ChevronUp className="w-5 h-5 text-muted-foreground ml-2" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-muted-foreground ml-2" />
-                  )}
-                </div>
-              </button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-4 space-y-2 px-6 animate-accordion-down">
-              {homepage.handledToday.slice(0, 3).map((item, index) => (
-                <div
-                  key={index}
-                  className="text-foreground"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <span className="font-medium text-primary underline">{item.guestName}</span>
-                  <span className="text-muted-foreground"> asked about {item.question}</span>
-                </div>
-              ))}
-            </CollapsibleContent>
+            <div className={`w-full border-2 border-border transition-all ${
+              handledExpanded 
+                ? 'rounded-3xl bg-card' 
+                : 'rounded-full bg-background'
+            }`}>
+              <CollapsibleTrigger asChild>
+                <button className="w-full p-6 text-center transition-all hover:border-primary/50">
+                  <div className="flex items-center justify-between">
+                    <span className="flex-1 text-xl font-semibold text-foreground">
+                      Pinch answered {homepage.handledToday.length} guest questions
+                    </span>
+                    {handledExpanded ? (
+                      <ChevronUp className="w-5 h-5 text-muted-foreground ml-2" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-muted-foreground ml-2" />
+                    )}
+                  </div>
+                </button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="border-t border-border space-y-2 px-6 py-6 animate-accordion-down">
+                {homepage.handledToday.slice(0, 3).map((item, index) => (
+                  <div
+                    key={index}
+                    className="text-foreground"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <span className="font-medium text-primary underline">{item.guestName}</span>
+                    <span className="text-muted-foreground"> asked about {item.question}</span>
+                  </div>
+                ))}
+              </CollapsibleContent>
+            </div>
           </Collapsible>
 
           {/* Needs Attention - Collapsible with urgent indicator */}
           {homepage.needsAttention.length > 0 && (
             <Collapsible open={attentionExpanded} onOpenChange={setAttentionExpanded}>
-              <CollapsibleTrigger asChild>
-                <button className="w-full rounded-full border-2 border-destructive/50 bg-card p-6 text-center transition-all hover:border-destructive hover:shadow-md">
-                  <div className="flex items-center justify-between">
-                    <span className="flex-1 text-xl font-semibold text-foreground">
-                      {homepage.needsAttention.length} things need your attention.
-                    </span>
-                    <div className="flex items-center gap-2 ml-2">
-                      {hasUrgent && (
-                        <span className="h-2 w-2 rounded-full bg-destructive animate-pulse" />
-                      )}
-                      {attentionExpanded ? (
-                        <ChevronUp className="w-5 h-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4 space-y-3 px-6 animate-accordion-down">
-                {escalatedCount > 0 && (
-                  <div className="flex items-start justify-between gap-4 pb-3 border-b border-border">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
+              <div className={`w-full border-2 border-destructive/50 transition-all ${
+                attentionExpanded 
+                  ? 'rounded-3xl bg-card' 
+                  : 'rounded-full bg-background'
+              }`}>
+                <CollapsibleTrigger asChild>
+                  <button className="w-full p-6 text-center transition-all hover:border-destructive">
+                    <div className="flex items-center justify-between">
+                      <span className="flex-1 text-xl font-semibold text-foreground">
+                        {homepage.needsAttention.length} things need your attention.
+                      </span>
+                      <div className="flex items-center gap-2 ml-2">
                         {hasUrgent && (
                           <span className="h-2 w-2 rounded-full bg-destructive animate-pulse" />
                         )}
-                        <span className="font-medium text-foreground">
-                          {escalatedCount} Escalated Question{escalatedCount > 1 ? 's' : ''}
-                        </span>
+                        {attentionExpanded ? (
+                          <ChevronUp className="w-5 h-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                        )}
                       </div>
                     </div>
-                    <Button size="sm" variant="secondary">
-                      Review all
-                    </Button>
-                  </div>
-                )}
-                {suggestionsCount > 0 && (
-                  <div className="flex items-start justify-between gap-4 pb-3 border-b border-border last:border-0">
-                    <div className="flex-1">
-                      <span className="font-medium text-foreground">
-                        {suggestionsCount} Suggestion{suggestionsCount > 1 ? 's' : ''}
-                      </span>
+                  </button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="border-t border-border space-y-3 px-6 py-6 animate-accordion-down">
+                  {escalatedCount > 0 && (
+                    <div className="flex items-start justify-between gap-4 pb-3 border-b border-border">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          {hasUrgent && (
+                            <span className="h-2 w-2 rounded-full bg-destructive animate-pulse" />
+                          )}
+                          <span className="font-medium text-foreground">
+                            {escalatedCount} Escalated Question{escalatedCount > 1 ? 's' : ''}
+                          </span>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="secondary">
+                        Review all
+                      </Button>
                     </div>
-                    <Button size="sm" variant="secondary">
-                      Review all
-                    </Button>
-                  </div>
-                )}
-              </CollapsibleContent>
+                  )}
+                  {suggestionsCount > 0 && (
+                    <div className="flex items-start justify-between gap-4 pb-3 border-b border-border last:border-0">
+                      <div className="flex-1">
+                        <span className="font-medium text-foreground">
+                          {suggestionsCount} Suggestion{suggestionsCount > 1 ? 's' : ''}
+                        </span>
+                      </div>
+                      <Button size="sm" variant="secondary">
+                        Review all
+                      </Button>
+                    </div>
+                  )}
+                </CollapsibleContent>
+              </div>
             </Collapsible>
           )}
 
