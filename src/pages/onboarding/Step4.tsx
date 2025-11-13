@@ -65,7 +65,7 @@ export default function Step4() {
       onboardingStep: 4,
       onboardingComplete: true
     });
-    navigate('/dashboard1-alt');
+    navigate('/dashboard1');
   };
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString('en-US', {
