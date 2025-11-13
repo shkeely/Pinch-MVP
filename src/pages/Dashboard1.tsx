@@ -1,4 +1,4 @@
-import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles, Lightbulb, CheckCircle2 } from 'lucide-react';
+import { Send, Bell, Download, Eye } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -106,43 +106,39 @@ export default function Dashboard1() {
             </h2>
             
             {/* Dynamic Needs Attention Cards */}
-            {homepage.needsAttention.map((item) => (
-              <Card key={item.id} className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                    {item.type === 'escalated' ? (
-                      <MessageSquare className="w-6 h-6 text-foreground" />
-                    ) : item.type === 'suggestion' ? (
-                      <Lightbulb className="w-6 h-6 text-foreground" />
-                    ) : (
-                      <TrendingUp className="w-6 h-6 text-foreground" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-serif text-foreground">{item.title}</h3>
-                      {item.urgent && (
-                        <Badge className="bg-[#e85d5d] hover:bg-[#e85d5d] text-white px-3 py-1 text-xs rounded-full">
-                          Urgent
+            {homepage.needsAttention.map((item) => {
+              const borderColor = item.type === 'escalated' 
+                ? 'border-amber-500' 
+                : item.type === 'suggestion' 
+                ? 'border-purple-500' 
+                : 'border-green-500';
+              
+              return (
+                <Card key={item.id} className={`p-4 bg-card border-l-4 ${borderColor} hover:shadow-md transition-shadow rounded-lg`}>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-xs">
+                          {item.type === 'escalated' ? 'Escalated' : item.type === 'suggestion' ? 'Suggestion' : 'Insight'}
                         </Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {item.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <Button className="rounded-full px-6" style={{
-                        backgroundColor: '#5b6850',
-                        color: 'white'
-                      }}>
-                        {item.type === 'escalated' ? 'Respond' : item.type === 'suggestion' ? 'Review' : 'View Details'}
-                      </Button>
+                        {item.urgent && (
+                          <span className="flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-destructive opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span>
+                          </span>
+                        )}
+                      </div>
                       <span className="text-xs text-muted-foreground">{item.timestamp}</span>
                     </div>
+                    <h3 className="text-sm font-medium text-foreground">{item.title}</h3>
+                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                    <Button variant="ghost" size="sm" className="w-fit mt-2 text-xs">
+                      {item.type === 'escalated' ? 'Respond →' : 'Review →'}
+                    </Button>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              );
+            })}
           </div>
 
           {/* Quick Actions - Full width on mobile */}
@@ -190,18 +186,28 @@ export default function Dashboard1() {
 
         {/* Handled Today Section */}
         <div className="mt-8">
-          <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-            <h2 className="text-2xl font-serif text-foreground mb-4">
-              Handled Today
-            </h2>
-            <div className="space-y-4">
+          <h2 className="text-2xl font-serif text-foreground mb-4">
+            Handled Today
+          </h2>
+          <Card className="p-4 bg-card/50 border-border-subtle rounded-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                ✓ Handled by Pinch
+              </Badge>
+              <span className="text-xs text-muted-foreground">
+                {homepage.handledToday.length} questions answered
+              </span>
+            </div>
+            <div className="space-y-2">
               {homepage.handledToday.map((item, index) => (
-                <div key={index} className="flex items-start gap-3 pb-4 border-b last:border-0 last:pb-0">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground">{item.guestName}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{item.question}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{item.timestamp}</p>
+                <div key={index} className="py-2 hover:bg-muted/30 rounded px-2 -mx-2 transition-colors">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="text-sm text-foreground">
+                      <span className="font-medium">{item.guestName}</span>
+                      <span className="text-muted-foreground"> asked about </span>
+                      <span className="text-muted-foreground">{item.question}</span>
+                    </p>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">{item.timestamp}</span>
                   </div>
                 </div>
               ))}
