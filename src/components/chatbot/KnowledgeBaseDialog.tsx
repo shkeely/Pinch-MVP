@@ -128,7 +128,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-serif">Knowledge Base Management</DialogTitle>
+          <DialogTitle className="text-2xl font-serif">Chatbot Brain Management</DialogTitle>
           <DialogDescription>
             Configure what information your AI chatbot can access to answer guest questions
           </DialogDescription>
@@ -148,7 +148,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
             </div>
           </div>
 
-          {/* Knowledge Bases List */}
+          {/* Chatbot Brain List */}
           <div className="space-y-3">
             {knowledgeBases.map((kb) => {
               const Icon = kb.icon;
@@ -229,11 +229,11 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
             })}
           </div>
 
-          {/* Add New Knowledge Base */}
+          {/* Add New Chatbot Brain */}
           {showAddNew ? (
             <div className="p-4 rounded-lg border-2 border-dashed border-border space-y-3">
               <Input
-                placeholder="Knowledge base name"
+                placeholder="Chatbot brain name"
                 value={newKBName}
                 onChange={(e) => setNewKBName(e.target.value)}
               />
@@ -245,7 +245,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
               />
               <div className="flex gap-2">
                 <Button onClick={handleAddNew} className="flex-1">
-                  Add Knowledge Base
+                  Add Chatbot Brain
                 </Button>
                 <Button 
                   variant="outline" 
@@ -266,7 +266,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
               onClick={() => setShowAddNew(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Custom Knowledge Base
+              Add Custom Chatbot Brain
             </Button>
           )}
 
@@ -282,7 +282,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
         </div>
       </DialogContent>
 
-      {/* Knowledge Base Editor Dialog */}
+      {/* Chatbot Brain Editor Dialog */}
       {editingKB && (
         <KnowledgeBaseEditor
           open={!!editingKB}

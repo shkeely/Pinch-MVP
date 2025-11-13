@@ -49,7 +49,7 @@ export function FeedbackDialog({ open, onOpenChange, messageContent, onApplyChan
   };
 
   const generateRecommendations = () => {
-    // Simulate AI-generated knowledge base recommendations
+    // Simulate AI-generated chatbot brain recommendations
     const generatedRecs = [
       `Update tone guidelines based on ${feedbackType} feedback`,
       `Add FAQ entry: "${messageContent.substring(0, 50)}..." with improved response`,
@@ -61,7 +61,7 @@ export function FeedbackDialog({ open, onOpenChange, messageContent, onApplyChan
   };
 
   const handleApproveAll = () => {
-    toast.success("Knowledge base updated successfully!");
+    toast.success("Chatbot Brain updated successfully!");
     handleReset();
     onOpenChange(false);
   };
@@ -216,7 +216,7 @@ export function FeedbackDialog({ open, onOpenChange, messageContent, onApplyChan
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles className="w-5 h-5 text-purple-600" />
-                <h3 className="font-semibold">Recommended Knowledge Base Changes</h3>
+                <h3 className="font-semibold">Recommended Chatbot Brain Changes</h3>
               </div>
               
               {recommendations.map((rec, idx) => (

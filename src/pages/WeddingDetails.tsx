@@ -43,7 +43,7 @@ export default function WeddingDetails() {
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-serif font-semibold mb-2">Wedding Details</h1>
-            <p className="text-muted-foreground">Manage your wedding information and knowledge base</p>
+            <p className="text-muted-foreground">Manage your wedding information and chatbot brain</p>
           </div>
           <Button 
             onClick={() => setKnowledgeBaseOpen(true)}
@@ -51,7 +51,7 @@ export default function WeddingDetails() {
             className="gap-2"
           >
             <Database className="w-4 h-4" />
-            Knowledge Base
+            Chatbot Brain
           </Button>
         </div>
 
