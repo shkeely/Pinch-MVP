@@ -142,7 +142,7 @@ export default function Homepage() {
                     </div>
                   </button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="space-y-4 px-6 pb-6 animate-accordion-down">
+                <CollapsibleContent className="border-t border-border space-y-4 px-6 py-6 animate-accordion-down">
                   {homepage.upcomingAnnouncements.map((announcement, index) => (
                     <div
                       key={announcement.id}
