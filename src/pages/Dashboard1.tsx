@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useWedding } from '@/contexts/WeddingContext';
+import { useFakeData } from '@/contexts/FakeDataContext';
 import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
 export default function Dashboard1() {
@@ -11,10 +12,7 @@ export default function Dashboard1() {
     wedding,
     conversations
   } = useWedding();
-  const totalQuestions = 47;
-  const autoAnswerRate = 37;
-  const newMessages = 12;
-  const generalQuestions = 8;
+  const { homepage } = useFakeData();
   return <div className="min-h-screen bg-background">
       <TopNav />
 
@@ -28,13 +26,13 @@ export default function Dashboard1() {
                 Daily Digest
               </h2>
               <p className="text-foreground leading-relaxed text-base md:text-[1.15rem]">
-                <span className="font-semibold">{newMessages} new messages today.</span> {generalQuestions} general questions (parking, timing).
+                <span className="font-semibold">{homepage.metrics.questionsToday} new messages today.</span> {homepage.metrics.questionsAnswered} questions answered automatically.
               </p>
             </div>
 
             {/* Stats Card - Aligned to the right */}
             <div className="flex-shrink-0">
-              <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
+              <StatsCard total={homepage.metrics.questionsToday} autoPercent={homepage.metrics.autoAnsweredPercent} />
             </div>
           </div>
 

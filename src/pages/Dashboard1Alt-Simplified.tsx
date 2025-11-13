@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useWedding } from '@/contexts/WeddingContext';
+import { useFakeData } from '@/contexts/FakeDataContext';
 import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +28,7 @@ export default function Dashboard1Alt() {
     wedding,
     conversations
   } = useWedding();
+  const { homepage } = useFakeData();
   
   const [messageDialogOpen, setMessageDialogOpen] = useState(false);
   const [followUpDialogOpen, setFollowUpDialogOpen] = useState(false);
@@ -35,10 +37,6 @@ export default function Dashboard1Alt() {
   const [messageContent, setMessageContent] = useState('');
   const [draftContent, setDraftContent] = useState('');
   const [faqAnswer, setFaqAnswer] = useState('');
-  const totalQuestions = 47;
-  const autoAnswerRate = 37;
-  const newMessages = 12;
-  const generalQuestions = 8;
   return <div className="min-h-screen bg-background">
       <TopNav />
 
@@ -54,13 +52,13 @@ export default function Dashboard1Alt() {
                   Daily Digest
                 </h2>
                 <p className="text-foreground leading-relaxed text-base lg:text-[1.15rem]">
-                  <span className="font-semibold">{newMessages} new messages today.</span> {generalQuestions} general questions (parking, timing).
+                  <span className="font-semibold">{homepage.metrics.questionsToday} new messages today.</span> {homepage.metrics.questionsAnswered} questions answered automatically.
                 </p>
               </div>
 
               {/* Stats Card - Compact and integrated */}
               <div className="w-fit">
-                <StatsCard total={totalQuestions} autoPercent={autoAnswerRate} />
+                <StatsCard total={homepage.metrics.questionsToday} autoPercent={homepage.metrics.autoAnsweredPercent} />
               </div>
 
               {/* Trending Tags */}
@@ -144,77 +142,39 @@ export default function Dashboard1Alt() {
               Needs Your Attention
             </h2>
             
-            {/* Card 1: Escalated questions */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <MessageSquare className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-serif text-foreground">You received 1 escalated questions</h3>
-                    <Badge className="bg-[#e85d5d] hover:bg-[#e85d5d] text-white px-3 py-1 text-xs rounded-full">
-                      Escalated
-                    </Badge>
+            {/* Dynamic Needs Attention Cards */}
+            {homepage.needsAttention.map((item) => (
+              <Card key={item.id} className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
+                    {item.type === 'escalated' ? (
+                      <MessageSquare className="w-6 h-6 text-foreground" />
+                    ) : (
+                      <Sparkles className="w-6 h-6 text-foreground" />
+                    )}
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    The question is about cancellation
-                  </p>
-                  <Button 
-                    onClick={() => navigate('/messages')}
-                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
-                  >
-                    Review all
-                  </Button>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-serif text-foreground">{item.title}</h3>
+                      {item.urgent && (
+                        <Badge className="bg-[#e85d5d] hover:bg-[#e85d5d] text-white px-3 py-1 text-xs rounded-full">
+                          Urgent
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {item.description}
+                    </p>
+                    <Button 
+                      onClick={() => item.type === 'escalated' ? navigate('/messages') : setAddAnswerDialogOpen(true)}
+                      className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
+                    >
+                      {item.type === 'escalated' ? 'Review all' : 'Add answer'}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Card>
-
-            {/* Card 2: Guests asking about parking */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">
-                    Guests are asking about parking
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    This question came up 8 times this week. Would you like me to draft a message?
-                  </p>
-                  <Button 
-                    onClick={() => setDraftMessageDialogOpen(true)}
-                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
-                  >
-                    Draft message
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
-            {/* Card 3: Suggestion */}
-            <Card className="p-5 bg-card border-border-subtle shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px]">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-muted/50 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-foreground" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-serif text-foreground mb-2">
-                    Suggestion: Add shuttle info
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Common question: 'Is there a shuttle?' — Consider adding this to your FAQ.
-                  </p>
-                  <Button 
-                    onClick={() => setAddAnswerDialogOpen(true)}
-                    className="rounded-full px-6 bg-[#5b6850] text-white hover:bg-indigo-400"
-                  >
-                    Add answer
-                  </Button>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            ))}
           </div>
 
           {/* Your Concierge - Full width on mobile/tablet, right column on desktop */}

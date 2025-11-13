@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useWedding } from '@/contexts/WeddingContext';
+import { useFakeData } from '@/contexts/FakeDataContext';
 import TopNav from '@/components/navigation/TopNav';
 
 export default function DashboardAlt() {
@@ -11,6 +12,7 @@ export default function DashboardAlt() {
     wedding,
     conversations
   } = useWedding();
+  const { homepage } = useFakeData();
 
   return <div className="min-h-screen bg-background">
       <TopNav />
@@ -31,23 +33,23 @@ export default function DashboardAlt() {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="space-y-1">
-                <div className="text-4xl md:text-5xl font-semibold text-foreground">47</div>
+                <div className="text-4xl md:text-5xl font-semibold text-foreground">{homepage.metrics.questionsToday}</div>
                 <p className="text-sm text-muted-foreground">Total Questions</p>
               </div>
               
               <div className="space-y-1">
-                <div className="text-4xl md:text-5xl font-semibold text-foreground">37%</div>
+                <div className="text-4xl md:text-5xl font-semibold text-foreground">{homepage.metrics.autoAnsweredPercent}%</div>
                 <p className="text-sm text-muted-foreground">Auto-Answered</p>
               </div>
               
               <div className="space-y-1">
-                <div className="text-4xl md:text-5xl font-semibold text-foreground">12</div>
-                <p className="text-sm text-muted-foreground">New Messages</p>
+                <div className="text-4xl md:text-5xl font-semibold text-foreground">{homepage.metrics.questionsAnswered}</div>
+                <p className="text-sm text-muted-foreground">Questions Answered</p>
               </div>
               
               <div className="space-y-1">
-                <div className="text-4xl md:text-5xl font-semibold text-foreground">8</div>
-                <p className="text-sm text-muted-foreground">General Questions</p>
+                <div className="text-4xl md:text-5xl font-semibold text-foreground">{homepage.metrics.questionsEscalated}</div>
+                <p className="text-sm text-muted-foreground">Escalated</p>
               </div>
             </div>
 
