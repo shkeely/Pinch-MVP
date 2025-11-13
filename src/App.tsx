@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { WeddingProvider } from "@/contexts/WeddingContext";
 import { FakeDataProvider } from "@/contexts/FakeDataContext";
 import Index from "./pages/Index";
+import Homepage from "./pages/Homepage";
 import Step1A from "./pages/onboarding/Step1A";
 import Step1B from "./pages/onboarding/Step1B";
 import Step1C from "./pages/onboarding/Step1C";
@@ -38,13 +39,14 @@ const App = () => (
           <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/homepage" element={<Homepage />} />
             <Route path="/onboarding/step-1a" element={<Step1A />} />
             <Route path="/onboarding/step-1b" element={<Step1B />} />
             <Route path="/onboarding/step-1c" element={<Step1C />} />
             <Route path="/onboarding/step-2" element={<Step2 />} />
             <Route path="/onboarding/step-3" element={<Step3 />} />
             <Route path="/onboarding/step-4" element={<Step4 />} />
-            <Route path="/dashboard1" element={<Dashboard1AltSimplified />} />
+            <Route path="/dashboard1" element={<Homepage />} />
             <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
             <Route path="/dashboard-alt" element={<DashboardAlt />} />
             <Route path="/messages" element={<Messages />} />
