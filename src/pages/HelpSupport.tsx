@@ -30,7 +30,7 @@ export default function HelpSupport() {
     },
     {
       question: 'How does the AI chatbot work?',
-      answer: 'The chatbot uses your wedding details and custom knowledge base to automatically answer guest questions. You can update the knowledge base anytime from the Chatbot page.'
+      answer: 'The chatbot uses your wedding details and custom chatbot brain to automatically answer guest questions. You can update the chatbot brain anytime from the Chatbot page.'
     },
     {
       question: 'Can I customize automated messages?',

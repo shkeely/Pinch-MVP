@@ -166,11 +166,11 @@ export default function Chatbot() {
               </RadioGroup>
             </Card>
 
-            {/* Knowledge Base Card */}
+            {/* Chatbot Brain Card */}
             <Card className="p-6 bg-white dark:bg-card">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
-                <h2 className="text-xl font-semibold">Knowledge Base</h2>
+                <h2 className="text-xl font-semibold">Chatbot Brain</h2>
               </div>
 
               <div className="space-y-4">
@@ -202,7 +202,7 @@ export default function Chatbot() {
                 className="w-full mt-4"
                 onClick={() => setKnowledgeBaseOpen(true)}
               >
-                Update Knowledge Base
+                Update Chatbot Brain
               </Button>
             </Card>
 

@@ -73,7 +73,7 @@ export default function Settings() {
                 className="gap-2"
               >
                 <Database className="w-4 h-4" />
-                Knowledge Base
+                Chatbot Brain
               </Button>
             </div>
 
