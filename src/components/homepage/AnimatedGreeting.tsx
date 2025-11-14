@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 
 interface AnimatedGreetingProps {
   userName: string;
@@ -17,49 +17,65 @@ export default function AnimatedGreeting({
 }: AnimatedGreetingProps) {
   const [step, setStep] = useState(0);
   const [subtitleOpacity, setSubtitleOpacity] = useState(0);
+  const completedRef = useRef(false);
 
-  const messages = [
-    null, // Step 0: Just greeting
-    "Everything is running smoothly ✨",
-    "Let's get into today's updates",
+  const dynamicUpdates = useMemo(() => ([
     handledCount > 0 ? `${handledCount} ${handledCount === 1 ? 'person' : 'people'} asked Pinch questions.` : null,
     attentionCount > 0 ? `${attentionCount} ${attentionCount === 1 ? 'thing' : 'things'} need your attention.` : null,
     announcementsCount > 0 ? `You have ${announcementsCount} upcoming guest ${announcementsCount === 1 ? 'announcement' : 'announcements'}` : null,
-    "Here are today's updates", // Final message before buttons appear
-  ].filter(msg => msg !== null || step <= 2); // Keep nulls for first 3 steps
+  ].filter(Boolean) as string[]), [handledCount, attentionCount, announcementsCount]);
+
+  const messages = useMemo<(string | null)[]>(() => ([
+    null, // Step 0: Just greeting
+    "Everything is running smoothly ✨",
+    "Let's get into today's updates",
+    ...dynamicUpdates,
+    "Here are today's updates", // Final message - stays visible
+  ]), [dynamicUpdates]);
+
+  const timings = useMemo<number[]>(() => {
+    const baseDurations = [750, 1500, 1500];
+    const dynamicDurations = Array(dynamicUpdates.length).fill(1500);
+    return [...baseDurations, ...dynamicDurations, 1200];
+  }, [dynamicUpdates]);
 
   useEffect(() => {
     if (!onComplete) return; // Skip animation if no callback
     
-    const timings = [750, 1500, 1500, 1500, 1500, 1500, 1200]; // Duration for each step (50% slower)
-    
-    if (step < messages.length) {
-      // Fade in subtitle
-      const fadeInTimer = setTimeout(() => {
-        setSubtitleOpacity(1);
-      }, 50);
+    const isLast = step === messages.length - 1;
 
-      // Move to next step
-      const nextStepTimer = setTimeout(() => {
-        setSubtitleOpacity(0);
-        setTimeout(() => {
-          setStep(prev => prev + 1);
-        }, 200); // Wait for fade out
-      }, timings[step]);
-
-      return () => {
-        clearTimeout(fadeInTimer);
-        clearTimeout(nextStepTimer);
-      };
-    } else {
-      // Animation complete - keep subtitle visible
+    // Fade in subtitle
+    const fadeInTimer = window.setTimeout(() => {
       setSubtitleOpacity(1);
-      onComplete();
+    }, 50);
+
+    let nextTimer: number | null = null;
+
+    if (!isLast) {
+      // Normal step: fade out and move to next
+      nextTimer = window.setTimeout(() => {
+        setSubtitleOpacity(0);
+        window.setTimeout(() => setStep(prev => prev + 1), 200);
+      }, timings[step] ?? 1500);
+    } else {
+      // Last step: keep visible, call onComplete once, no fade out
+      nextTimer = window.setTimeout(() => {
+        setSubtitleOpacity(1);
+        if (!completedRef.current) {
+          completedRef.current = true;
+          onComplete();
+        }
+      }, timings[step] ?? 1200);
     }
-  }, [step, messages.length, onComplete]);
+
+    return () => {
+      clearTimeout(fadeInTimer);
+      if (nextTimer) clearTimeout(nextTimer);
+    };
+  }, [step, messages.length, timings, onComplete]);
 
   const displayMessage = onComplete 
-    ? (step >= messages.length ? "Here are today's updates" : messages[step])
+    ? (messages[step] ?? "Here are today's updates")
     : (attentionCount > 0 ? "Here are today's updates" : "Everything is running smoothly ✨");
 
   return (
