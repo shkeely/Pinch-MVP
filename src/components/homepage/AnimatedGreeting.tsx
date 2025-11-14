@@ -30,7 +30,7 @@ export default function AnimatedGreeting({
   useEffect(() => {
     if (!onComplete) return; // Skip animation if no callback
     
-    const timings = [500, 1000, 1000, 1000, 1000, 1000]; // Duration for each step
+    const timings = [750, 1500, 1500, 1500, 1500, 1500]; // Duration for each step (50% slower)
     
     if (step < messages.length) {
       // Fade in subtitle
