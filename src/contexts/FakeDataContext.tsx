@@ -86,17 +86,17 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
       ],
       handledToday: [
         {
-          guestName: 'Susan M.',
+          guestName: 'Sally',
           question: 'parking',
           timestamp: '1 hour ago'
         },
         {
-          guestName: 'Tom C.',
+          guestName: 'Tom',
           question: 'kids policy',
           timestamp: '3 hours ago'
         },
         {
-          guestName: 'Jennifer L.',
+          guestName: 'John',
           question: 'venue location',
           timestamp: '5 hours ago'
         },
@@ -106,7 +106,7 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
           timestamp: '6 hours ago'
         },
         {
-          guestName: 'Lisa W.',
+          guestName: 'Jennifer L.',
           question: 'ceremony time',
           timestamp: '7 hours ago'
         }
