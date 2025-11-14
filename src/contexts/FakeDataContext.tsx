@@ -30,6 +30,9 @@ interface FakeDataContextType {
     id: number;
     guestName: string;
     guestPhone: string;
+    category: string;
+    question: string;
+    answer: string | null;
     lastMessage: string;
     timestamp: string;
     unread: boolean;
@@ -119,8 +122,76 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
     conversations: [
       {
         id: 1,
-        guestName: 'Michael Rodriguez',
+        guestName: 'Sally',
+        guestPhone: '+1-555-0101',
+        category: 'Parking',
+        question: 'Where can I park?',
+        answer: 'There is free parking available in the lot adjacent to the venue. Enter through the main gate on Oak Street. The lot can accommodate 150 vehicles.',
+        lastMessage: 'Where can I park?',
+        timestamp: new Date(Date.now() - 600000).toISOString(), // 10 mins ago
+        unread: false,
+        confidence: 95,
+        status: 'auto-answered'
+      },
+      {
+        id: 2,
+        guestName: 'Tom',
+        guestPhone: '+1-555-0102',
+        category: 'Dress Code',
+        question: 'What should I wear?',
+        answer: "We're going for cocktail attire! Think dressy but not too formal. Ladies can wear cocktail dresses, and gentlemen can wear suits or dress pants with a blazer.",
+        lastMessage: 'What should I wear?',
+        timestamp: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+        unread: false,
+        confidence: 92,
+        status: 'auto-answered'
+      },
+      {
+        id: 3,
+        guestName: 'John',
+        guestPhone: '+1-555-0103',
+        category: 'Registry',
+        question: 'Where are you registered?',
+        answer: "Thank you for thinking of us! We're registered at Crate & Barrel and Amazon. Links can be found on our wedding website.",
+        lastMessage: 'Where are you registered?',
+        timestamp: new Date(Date.now() - 7200000).toISOString(), // 2 hours ago
+        unread: false,
+        confidence: 96,
+        status: 'auto-answered'
+      },
+      {
+        id: 4,
+        guestName: 'Jennifer L.',
+        guestPhone: '+1-555-0104',
+        category: 'Venue',
+        question: 'Where is the venue?',
+        answer: "The ceremony and reception will be at The Grand Estate, located at 123 Celebration Lane, Downtown. It's about 15 minutes from the city center.",
+        lastMessage: 'Where is the venue?',
+        timestamp: new Date(Date.now() - 10800000).toISOString(), // 3 hours ago
+        unread: false,
+        confidence: 98,
+        status: 'auto-answered'
+      },
+      {
+        id: 5,
+        guestName: 'Robert P.',
+        guestPhone: '+1-555-0105',
+        category: 'Timing',
+        question: 'What time does it start?',
+        answer: "We'd love to see you there! The ceremony starts at 4:00 PM. We recommend arriving by 3:45 PM to find your seats.",
+        lastMessage: 'What time does it start?',
+        timestamp: new Date(Date.now() - 14400000).toISOString(), // 4 hours ago
+        unread: false,
+        confidence: 99,
+        status: 'auto-answered'
+      },
+      {
+        id: 6,
+        guestName: 'Michael R.',
         guestPhone: '+1-555-0123',
+        category: 'RSVP Changes',
+        question: 'Can I change my +1 from Sarah to Alex?',
+        answer: null,
         lastMessage: 'Can I change my +1 from Sarah to Alex?',
         timestamp: new Date(Date.now() - 7200000).toISOString(), // 2 hours ago
         unread: true,
@@ -128,34 +199,17 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
         status: 'escalated'
       },
       {
-        id: 2,
-        guestName: 'Susan Martinez',
-        guestPhone: '+1-555-0101',
-        lastMessage: 'Where can I park?',
-        timestamp: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
-        unread: false,
-        confidence: 95,
-        status: 'auto-answered'
-      },
-      {
-        id: 3,
-        guestName: 'David Kim',
+        id: 7,
+        guestName: 'David K.',
         guestPhone: '+1-555-0145',
+        category: 'Attire',
+        question: 'What should groomsmen wear?',
+        answer: 'The dress code is cocktail attire for guests.',
         lastMessage: 'What should groomsmen wear?',
         timestamp: new Date(Date.now() - 14400000).toISOString(), // 4 hours ago
         unread: true,
         confidence: 60,
         status: 'escalated'
-      },
-      {
-        id: 4,
-        guestName: 'Tom Chen',
-        guestPhone: '+1-555-0102',
-        lastMessage: 'Can I bring my kids?',
-        timestamp: new Date(Date.now() - 10800000).toISOString(), // 3 hours ago
-        unread: false,
-        confidence: 88,
-        status: 'auto-answered'
       }
     ],
     
