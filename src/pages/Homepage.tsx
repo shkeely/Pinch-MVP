@@ -6,10 +6,14 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, Calendar, Users, Check, ArrowRight } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
+import { ConversationModal } from '@/components/homepage/ConversationModal';
+import { useFakeData } from '@/contexts/FakeDataContext';
 export default function Homepage() {
   const {
     homepage
   } = FAKE_DATA;
+  const { conversations: fakeConversations } = useFakeData();
+  const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [handledExpanded, setHandledExpanded] = useState(false);
   const [attentionExpanded, setAttentionExpanded] = useState(false);
   const [announcementsExpanded, setAnnouncementsExpanded] = useState(false);
@@ -87,17 +91,27 @@ export default function Homepage() {
                   
                 </div>
                 <div className="divide-y divide-border pb-4">
-                  {homepage.handledToday.slice(0, 3).map((item, index) => <div key={index} className="px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-accent/50 transition-colors" style={{
-                  animationDelay: `${index * 50}ms`
-                }}>
-                      <div className="text-foreground">
-                        <span className="font-semibold">{item.guestName}</span>
-                        <span className="text-muted-foreground"> asked about {item.question}</span>
+                  {homepage.handledToday.slice(0, 3).map((item, index) => {
+                    const fullConversation = fakeConversations.find(
+                      (conv) => conv.guestName === item.guestName
+                    );
+                    return (
+                      <div
+                        key={index}
+                        className="px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-accent/50 transition-all duration-200 hover:translate-x-1"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                        onClick={() => fullConversation && setSelectedConversation(fullConversation)}
+                      >
+                        <div className="text-foreground">
+                          <span className="font-semibold">{item.guestName}</span>
+                          <span className="text-muted-foreground"> asked about {item.question}</span>
+                        </div>
+                        <span className="text-sm text-muted-foreground whitespace-nowrap ml-4">
+                          {item.timestamp}
+                        </span>
                       </div>
-                      <span className="text-sm text-muted-foreground whitespace-nowrap ml-4">
-                        {item.timestamp}
-                      </span>
-                    </div>)}
+                    );
+                  })}
                 </div>
               </CollapsibleContent>
             </div>
@@ -221,6 +235,13 @@ export default function Homepage() {
             Want to change your notifications?
           </p>
         </div>}
+
+        {/* Conversation Modal */}
+        <ConversationModal 
+          conversation={selectedConversation}
+          isOpen={!!selectedConversation}
+          onClose={() => setSelectedConversation(null)}
+        />
       </div>
     </div>;
 }
