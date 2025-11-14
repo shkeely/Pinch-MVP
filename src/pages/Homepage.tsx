@@ -34,7 +34,7 @@ export default function Homepage() {
         <div className="space-y-4">
           {/* Handled by Pinch - Collapsible */}
           <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded}>
-            <div className={`w-full border-2 border-border transition-all hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background'}`}>
+            <div className={`w-full border-2 border-border transition-[border-radius,background-color,box-shadow] duration-300 ease-in-out hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background'}`}>
               <CollapsibleTrigger asChild>
                 <button className="w-full p-6 text-center transition-all hover:border-primary/50">
                   <div className="flex items-center justify-between">
@@ -45,7 +45,7 @@ export default function Homepage() {
                   </div>
                 </button>
               </CollapsibleTrigger>
-              <CollapsibleContent className="border-t border-border animate-accordion-down">
+              <CollapsibleContent className="border-t border-border">
                 <div className="px-6 py-4 flex items-center justify-center gap-2">
                   <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 hover:bg-green-50">
                     <Check className="w-3 h-3 mr-1" />
@@ -72,7 +72,7 @@ export default function Homepage() {
 
           {/* Needs Attention - Collapsible with urgent indicator */}
           {homepage.needsAttention.length > 0 && <Collapsible open={attentionExpanded} onOpenChange={setAttentionExpanded}>
-              <div className={`w-full border-2 border-destructive/50 transition-all hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background'}`}>
+              <div className={`w-full border-2 border-destructive/50 transition-[border-radius,background-color,box-shadow] duration-300 ease-in-out hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-destructive">
                     <div className="flex items-center justify-between">
@@ -86,7 +86,7 @@ export default function Homepage() {
                     </div>
                   </button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="border-t border-border px-6 py-6 space-y-4 animate-accordion-down">
+                <CollapsibleContent className="border-t border-border px-6 py-6 space-y-4">
                   {homepage.needsAttention.map(item => <div key={item.id} className={`relative rounded-2xl p-6 border-2 ${item.type === 'escalated' ? 'border-orange-200 bg-orange-50/15' : 'border-purple-200 bg-purple-50/15'}`}>
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function Homepage() {
 
           {/* Upcoming Announcements - Collapsible */}
           {homepage.upcomingAnnouncements.length > 0 && <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded}>
-              <div className={`w-full border-2 border-border transition-all hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background'}`}>
+              <div className={`w-full border-2 border-border transition-[border-radius,background-color,box-shadow] duration-300 ease-in-out hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-primary/50">
                     <div className="flex items-center justify-between">
@@ -129,7 +129,7 @@ export default function Homepage() {
                     </div>
                   </button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="border-t border-border space-y-4 px-6 py-6 animate-accordion-down">
+                <CollapsibleContent className="border-t border-border space-y-4 px-6 py-6">
                   {homepage.upcomingAnnouncements.map((announcement, index) => <div key={announcement.id} className="flex items-start gap-4 pb-4 border-b border-border last:border-0" style={{
                 animationDelay: `${index * 50}ms`
               }}>
