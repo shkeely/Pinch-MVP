@@ -10,7 +10,8 @@ interface EscalatedQuestionModalProps {
   guestPhone: string;
   question: string;
   confidence: number;
-  attemptedResponse: string;
+  aiAttemptedResponse: string;
+  escalationReason: string;
   timestamp: string;
 }
 
@@ -21,7 +22,8 @@ export function EscalatedQuestionModal({
   guestPhone,
   question,
   confidence,
-  attemptedResponse,
+  aiAttemptedResponse,
+  escalationReason,
   timestamp
 }: EscalatedQuestionModalProps) {
   const getConfidenceBadgeColor = (confidence: number) => {
@@ -85,7 +87,7 @@ export function EscalatedQuestionModal({
             <p className="text-sm font-medium text-muted-foreground">Pinch's Attempted Response:</p>
             <div className="bg-muted/50 rounded-lg p-4">
               <p className="text-base text-foreground leading-relaxed">
-                {attemptedResponse}
+                {aiAttemptedResponse}
               </p>
             </div>
           </div>
@@ -99,7 +101,7 @@ export function EscalatedQuestionModal({
                   Reason for Escalation
                 </p>
                 <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
-                  Low confidence - needs human review
+                  {escalationReason}
                 </p>
               </div>
             </div>
