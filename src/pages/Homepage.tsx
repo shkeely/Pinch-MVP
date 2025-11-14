@@ -34,7 +34,7 @@ export default function Homepage() {
         <div className="space-y-4">
           {/* Handled by Pinch - Collapsible */}
           <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded}>
-            <div className={`w-full border-2 border-border duration-300 ease-in-out hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow]' : 'rounded-full bg-background transition-[border-radius,background-color,box-shadow] delay-[400ms]'}`}>
+            <div className={`w-full border-2 border-border transition-[border-radius,background-color,box-shadow] duration-300 ease-in-out hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background delay-200'}`}>
               <CollapsibleTrigger asChild>
                 <button className="w-full p-6 text-center transition-all hover:border-primary/50">
                   <div className="flex items-center justify-between">
@@ -72,7 +72,7 @@ export default function Homepage() {
 
           {/* Needs Attention - Collapsible with urgent indicator */}
           {homepage.needsAttention.length > 0 && <Collapsible open={attentionExpanded} onOpenChange={setAttentionExpanded}>
-              <div className={`w-full border-2 border-destructive/50 duration-300 ease-in-out hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow]' : 'rounded-full bg-background transition-[border-radius,background-color,box-shadow] delay-[400ms]'}`}>
+              <div className={`w-full border-2 border-destructive/50 transition-[border-radius,background-color,box-shadow] duration-300 ease-in-out hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background delay-200'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-destructive">
                     <div className="flex items-center justify-between">
@@ -118,7 +118,7 @@ export default function Homepage() {
 
           {/* Upcoming Announcements - Collapsible */}
           {homepage.upcomingAnnouncements.length > 0 && <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded}>
-              <div className={`w-full border-2 border-border duration-300 ease-in-out hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow]' : 'rounded-full bg-background transition-[border-radius,background-color,box-shadow] delay-[400ms]'}`}>
+              <div className={`w-full border-2 border-border transition-[border-radius,background-color,box-shadow] duration-300 ease-in-out hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card' : 'rounded-full bg-background delay-200'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-primary/50">
                     <div className="flex items-center justify-between">
