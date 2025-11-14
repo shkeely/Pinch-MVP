@@ -45,7 +45,7 @@ export default function Homepage() {
           <Collapsible 
             open={handledExpanded} 
             onOpenChange={setHandledExpanded} 
-            className={`transition-all duration-500 ease-out ${visibleButtons >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+            className={`transition-all duration-500 ease-out transform-gpu ${visibleButtons >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
             <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
               <CollapsibleTrigger asChild>
@@ -88,7 +88,7 @@ export default function Homepage() {
           <Collapsible 
             open={attentionExpanded} 
             onOpenChange={setAttentionExpanded} 
-            className={`transition-all duration-500 ease-out ${visibleButtons >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+            className={`transition-all duration-500 ease-out transform-gpu ${visibleButtons >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
               <div className={`w-full border-2 border-destructive/50 hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
@@ -140,7 +140,7 @@ export default function Homepage() {
           <Collapsible 
             open={announcementsExpanded} 
             onOpenChange={setAnnouncementsExpanded} 
-            className={`transition-all duration-500 ease-out ${visibleButtons >= 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+            className={`transition-all duration-500 ease-out transform-gpu ${visibleButtons >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
               <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
