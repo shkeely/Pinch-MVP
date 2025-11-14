@@ -192,7 +192,17 @@ export default function Homepage() {
                     >
                       <div className={`w-1 h-16 rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
                       <div className="flex-1">
-                        <h4 className="font-semibold text-foreground mb-2">{announcement.title}</h4>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs px-3 py-1 mb-2 ${
+                            index === 0 
+                              ? 'bg-lavender/10 dark:bg-lavender/20 border-lavender/30 text-lavender dark:text-lavender' 
+                              : 'bg-primary/10 dark:bg-primary/20 border-primary/30 text-primary dark:text-primary'
+                          }`}
+                        >
+                          Scheduled
+                        </Badge>
+                        <h4 className="font-sans font-semibold text-foreground mb-2">{announcement.title}</h4>
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1">
