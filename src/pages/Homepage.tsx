@@ -138,7 +138,7 @@ export default function Homepage() {
                         <Badge variant="outline" className="bg-background text-xs px-3 py-1 mb-2">
                           Scheduled
                         </Badge>
-                        <h4 className="font-sans font-semibold text-foreground mb-2">{announcement.title}</h4>
+                        <h4 className="font-sans font-semibold text-foreground mb-1">{announcement.title}</h4>
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1">
