@@ -8,13 +8,15 @@ import { Badge } from '@/components/ui/badge';
 import { ConversationModal } from '@/components/homepage/ConversationModal';
 import { EscalatedQuestionModal } from '@/components/modals/EscalatedQuestionModal';
 import { AISuggestionModal } from '@/components/modals/AISuggestionModal';
+import { AnnouncementsReviewModal } from '@/components/modals/AnnouncementsReviewModal';
 import { useFakeData } from '@/contexts/FakeDataContext';
 
 export default function Homepage() {
-  const { homepage, conversations: fakeConversations } = useFakeData();
+  const { homepage, conversations: fakeConversations, upcomingAnnouncements } = useFakeData();
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [escalatedModalOpen, setEscalatedModalOpen] = useState(false);
   const [suggestionModalOpen, setSuggestionModalOpen] = useState(false);
+  const [announcementsModalOpen, setAnnouncementsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [handledExpanded, setHandledExpanded] = useState(false);
   const [attentionExpanded, setAttentionExpanded] = useState(false);
@@ -225,7 +227,12 @@ export default function Homepage() {
                               {announcement.guests} guests
                             </span>
                           </div>
-                          <Button variant="outline" size="sm" className={`rounded-full shrink-0 ${index === 0 ? 'border-lavender text-lavender hover:bg-lavender/10' : 'border-primary text-primary hover:bg-primary/10'}`}>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className={`rounded-full shrink-0 ${index === 0 ? 'border-lavender text-lavender hover:bg-lavender/10' : 'border-primary text-primary hover:bg-primary/10'}`}
+                            onClick={() => setAnnouncementsModalOpen(true)}
+                          >
                             Review
                             <ArrowRight className="w-4 h-4 ml-1" />
                           </Button>
@@ -287,6 +294,12 @@ export default function Homepage() {
             timestamp={selectedItem.timestamp}
           />
         )}
+
+        <AnnouncementsReviewModal
+          open={announcementsModalOpen}
+          onClose={() => setAnnouncementsModalOpen(false)}
+          announcements={upcomingAnnouncements.filter(a => a.status === 'scheduled')}
+        />
       </div>
     </div>;
 }
