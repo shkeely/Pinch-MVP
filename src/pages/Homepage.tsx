@@ -42,7 +42,11 @@ export default function Homepage() {
         {showButtons && (
           <div className="space-y-4">
           {/* Handled by Pinch - Collapsible */}
-          {visibleButtons >= 1 && <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded} className="animate-in fade-in-0 zoom-in-95 duration-500 ease-out">
+          <Collapsible 
+            open={handledExpanded} 
+            onOpenChange={setHandledExpanded} 
+            className={`transition-all duration-500 ease-out ${visibleButtons >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+          >
             <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
               <CollapsibleTrigger asChild>
                 <button className="w-full p-6 text-center transition-all hover:border-primary/50">
@@ -77,10 +81,15 @@ export default function Homepage() {
                 </div>
               </CollapsibleContent>
             </div>
-          </Collapsible>}
+          </Collapsible>
 
           {/* Needs Attention - Collapsible with urgent indicator */}
-          {homepage.needsAttention.length > 0 && visibleButtons >= 2 && <Collapsible open={attentionExpanded} onOpenChange={setAttentionExpanded} className="animate-in fade-in-0 zoom-in-95 duration-500 ease-out">
+          {homepage.needsAttention.length > 0 && (
+          <Collapsible 
+            open={attentionExpanded} 
+            onOpenChange={setAttentionExpanded} 
+            className={`transition-all duration-500 ease-out ${visibleButtons >= 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+          >
               <div className={`w-full border-2 border-destructive/50 hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-destructive">
@@ -123,10 +132,16 @@ export default function Homepage() {
                     </div>)}
                 </CollapsibleContent>
               </div>
-            </Collapsible>}
+          </Collapsible>
+          )}
 
           {/* Upcoming Announcements - Collapsible */}
-          {homepage.upcomingAnnouncements.length > 0 && visibleButtons >= 3 && <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded} className="animate-in fade-in-0 zoom-in-95 duration-500 ease-out">
+          {homepage.upcomingAnnouncements.length > 0 && (
+          <Collapsible 
+            open={announcementsExpanded} 
+            onOpenChange={setAnnouncementsExpanded} 
+            className={`transition-all duration-500 ease-out ${visibleButtons >= 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+          >
               <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-primary/50">
@@ -172,8 +187,9 @@ export default function Homepage() {
                     </div>)}
                 </CollapsibleContent>
               </div>
-            </Collapsible>}
-          </div>
+          </Collapsible>
+          )}
+        </div>
         )}
 
         {/* End Message */}
