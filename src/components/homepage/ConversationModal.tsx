@@ -41,7 +41,7 @@ export function ConversationModal({ conversation, isOpen, onClose }: Conversatio
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[600px] p-6 animate-in fade-in-0 zoom-in-95">
+      <DialogContent className="sm:max-w-[600px] w-[100vw] sm:w-auto p-6 animate-in fade-in-0 zoom-in-95 rounded-none sm:rounded-lg">
         <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <DialogTitle className="text-2xl font-semibold text-foreground">
             {conversation.guestName}
