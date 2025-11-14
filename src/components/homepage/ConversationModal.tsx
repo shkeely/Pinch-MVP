@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Car, Shirt, Gift, MapPin, Clock, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { formatRelativeTime } from '@/lib/dateUtils';
 
 interface Conversation {
   id: number;
@@ -63,7 +64,7 @@ export function ConversationModal({ conversation, isOpen, onClose }: Conversatio
               {categoryIcons[conversation.category] || <Clock className="w-3.5 h-3.5" />}
               <span>{conversation.category}</span>
             </Badge>
-            <span className="text-sm text-muted-foreground">{conversation.timestamp}</span>
+            <span className="text-sm text-muted-foreground">{formatRelativeTime(conversation.timestamp)}</span>
           </div>
 
           {/* Divider */}
