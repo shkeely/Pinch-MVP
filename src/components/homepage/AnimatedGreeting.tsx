@@ -34,9 +34,9 @@ export default function AnimatedGreeting({
   ]), [dynamicUpdates]);
 
   const timings = useMemo<number[]>(() => {
-    const baseDurations = [750, 1500, 1500];
-    const dynamicDurations = Array(dynamicUpdates.length).fill(1500);
-    return [...baseDurations, ...dynamicDurations, 1200];
+    const baseDurations = [975, 1950, 1950]; // 30% slower
+    const dynamicDurations = Array(dynamicUpdates.length).fill(1950); // 30% slower
+    return [...baseDurations, ...dynamicDurations, 1560]; // 30% slower
   }, [dynamicUpdates]);
 
   useEffect(() => {
