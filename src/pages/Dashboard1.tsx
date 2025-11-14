@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Send, Bell, Download, Eye, TrendingUp, MessageSquare, Sparkles, Lightbulb, CheckCircle2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,12 +9,15 @@ import { useFakeData } from '@/contexts/FakeDataContext';
 import TopNav from '@/components/navigation/TopNav';
 import StatsCard from '@/components/dashboard/StatsCard';
 import AnimatedGreeting from '@/components/homepage/AnimatedGreeting';
+import { ConversationModal } from '@/components/homepage/ConversationModal';
+
 export default function Dashboard1() {
+  const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const {
     wedding,
     conversations
   } = useWedding();
-  const { homepage } = useFakeData();
+  const { homepage, conversations: fakeConversations } = useFakeData();
   return <div className="min-h-screen bg-background">
       <TopNav />
 
@@ -197,23 +201,37 @@ export default function Dashboard1() {
               Handled Today
             </h2>
             <div className="space-y-2">
-              {homepage.handledToday.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="flex items-start gap-3 pb-4 pt-3 px-3 -mx-3 border-b last:border-0 last:pb-0 cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:translate-x-1 hover:border-l-2 hover:border-purple-500 rounded-md"
-                  onClick={() => console.log('Clicked:', item)}
-                >
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground">{item.guestName}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{item.question}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{item.timestamp}</p>
+              {homepage.handledToday.map((item, index) => {
+                // Find the full conversation data from fakeConversations
+                const fullConversation = fakeConversations.find(
+                  conv => conv.guestName === item.guestName
+                );
+                
+                return (
+                  <div 
+                    key={index} 
+                    className="flex items-start gap-3 pb-4 pt-3 px-3 -mx-3 border-b last:border-0 last:pb-0 cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:translate-x-1 hover:border-l-2 hover:border-purple-500 rounded-md"
+                    onClick={() => fullConversation && setSelectedConversation(fullConversation)}
+                  >
+                    <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground">{item.guestName}</p>
+                      <p className="text-sm text-muted-foreground mt-1">{item.question}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{item.timestamp}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Card>
         </div>
+
+        {/* Conversation Modal */}
+        <ConversationModal 
+          conversation={selectedConversation}
+          isOpen={!!selectedConversation}
+          onClose={() => setSelectedConversation(null)}
+        />
       </div>
     </div>;
 }
