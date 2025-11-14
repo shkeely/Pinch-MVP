@@ -120,6 +120,7 @@
 
   html {
     @apply bg-background;
+    scrollbar-gutter: stable;
   }
 
   body {
