@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { X, Phone, AlertCircle, Lightbulb } from 'lucide-react';
+import { ReplyComposerModal } from './ReplyComposerModal';
 
 interface EscalatedQuestionModalProps {
   open: boolean;
@@ -26,14 +28,21 @@ export function EscalatedQuestionModal({
   escalationReason,
   timestamp
 }: EscalatedQuestionModalProps) {
+  const [replyModalOpen, setReplyModalOpen] = useState(false);
+
   const getConfidenceBadgeColor = (confidence: number) => {
     if (confidence >= 80) return 'bg-green-500/10 text-green-700 border-green-500/20';
     if (confidence >= 50) return 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20';
     return 'bg-orange-500/10 text-orange-700 border-orange-500/20';
   };
 
+  const handleReplyManually = () => {
+    setReplyModalOpen(true);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <>
+      <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] w-[100vw] sm:w-auto p-6 animate-in fade-in-0 zoom-in-95 rounded-none sm:rounded-lg">
         <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <div className="flex items-center gap-2">
@@ -120,6 +129,7 @@ export function EscalatedQuestionModal({
             Add to Chatbot Brain
           </Button>
           <Button 
+            onClick={handleReplyManually}
             className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white"
           >
             Reply Manually
@@ -127,5 +137,14 @@ export function EscalatedQuestionModal({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+
+    <ReplyComposerModal
+      open={replyModalOpen}
+      onClose={() => setReplyModalOpen(false)}
+      guestName={guestName}
+      guestPhone={guestPhone}
+      question={question}
+    />
+    </>
   );
 }
