@@ -3,17 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { X, Sparkles, MessageCircle } from 'lucide-react';
 
-interface Question {
-  guestName: string;
-  question: string;
-}
-
 interface AISuggestionModalProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  context: string;
-  detectedQuestions: Question[];
+  suggestionContext: string;
+  relatedQuestions: string[];
+  recommendedAction: string;
   timestamp: string;
 }
 
@@ -21,8 +17,9 @@ export function AISuggestionModal({
   open,
   onClose,
   title,
-  context,
-  detectedQuestions,
+  suggestionContext,
+  relatedQuestions,
+  recommendedAction,
   timestamp
 }: AISuggestionModalProps) {
   return (
@@ -64,7 +61,7 @@ export function AISuggestionModal({
           <div className="space-y-2">
             <p className="text-sm font-medium text-muted-foreground">Why Pinch suggests this:</p>
             <p className="text-base text-foreground leading-relaxed">
-              {context}
+              {suggestionContext}
             </p>
           </div>
 
@@ -74,21 +71,26 @@ export function AISuggestionModal({
               Questions that triggered this suggestion:
             </p>
             <div className="space-y-2">
-              {detectedQuestions.map((q, index) => (
+              {relatedQuestions.map((question, index) => (
                 <div 
                   key={index} 
                   className="bg-muted/50 rounded-lg p-3 border border-border"
                 >
                   <div className="flex items-start gap-2">
                     <MessageCircle className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-foreground">{q.guestName}</p>
-                      <p className="text-sm text-muted-foreground mt-1">"{q.question}"</p>
-                    </div>
+                    <p className="text-sm text-foreground">{question}</p>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Recommended Action */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-muted-foreground">Recommended Action:</p>
+            <p className="text-base text-foreground leading-relaxed">
+              {recommendedAction}
+            </p>
           </div>
 
           {/* Info Box */}

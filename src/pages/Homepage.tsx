@@ -270,7 +270,8 @@ export default function Homepage() {
             guestPhone={selectedItem.guestPhone || ''}
             question={selectedItem.question || ''}
             confidence={selectedItem.confidence || 0}
-            attemptedResponse={selectedItem.attemptedResponse || ''}
+            aiAttemptedResponse={selectedItem.aiAttemptedResponse || ''}
+            escalationReason={selectedItem.escalationReason || ''}
             timestamp={selectedItem.timestamp}
           />
         )}
@@ -283,8 +284,9 @@ export default function Homepage() {
               setSelectedItem(null);
             }}
             title={selectedItem.title}
-            context={selectedItem.context || ''}
-            detectedQuestions={selectedItem.detectedQuestions || []}
+            suggestionContext={selectedItem.suggestionContext || ''}
+            relatedQuestions={selectedItem.relatedQuestions || []}
+            recommendedAction={selectedItem.recommendedAction || ''}
             timestamp={selectedItem.timestamp}
           />
         )}
