@@ -25,6 +25,7 @@ export default function Homepage() {
   const [visibleButtons, setVisibleButtons] = useState(0);
   const [showEndSection, setShowEndSection] = useState(false);
   const [greetingDone, setGreetingDone] = useState(false);
+  const [skipClicked, setSkipClicked] = useState(false);
   const timeoutsRef = useRef<number[]>([]);
 
   // Count escalated vs suggestions
@@ -41,11 +42,9 @@ export default function Homepage() {
     timeoutsRef.current.forEach(id => clearTimeout(id));
     timeoutsRef.current = [];
     
-    // Immediately show everything
+    // Mark as skipped and complete greeting
+    setSkipClicked(true);
     setGreetingDone(true);
-    setShowButtons(true);
-    setVisibleButtons(3);
-    setShowEndSection(true);
   }, []);
 
   // One-time button reveal sequence after greeting completes
@@ -55,10 +54,18 @@ export default function Homepage() {
     setShowButtons(true);
 
     const ids: number[] = [];
-    ids.push(window.setTimeout(() => setVisibleButtons(1), 150));
-    ids.push(window.setTimeout(() => setVisibleButtons(2), 600));
-    ids.push(window.setTimeout(() => setVisibleButtons(3), 1050));
-    ids.push(window.setTimeout(() => setShowEndSection(true), 1400));
+    
+    if (skipClicked) {
+      // Skip was clicked: show all buttons instantly, then end section after delay
+      setVisibleButtons(3);
+      ids.push(window.setTimeout(() => setShowEndSection(true), 300));
+    } else {
+      // Normal animation: reveal buttons one by one
+      ids.push(window.setTimeout(() => setVisibleButtons(1), 150));
+      ids.push(window.setTimeout(() => setVisibleButtons(2), 600));
+      ids.push(window.setTimeout(() => setVisibleButtons(3), 1050));
+      ids.push(window.setTimeout(() => setShowEndSection(true), 1400));
+    }
 
     timeoutsRef.current = ids;
 
@@ -66,7 +73,7 @@ export default function Homepage() {
       timeoutsRef.current.forEach(id => clearTimeout(id));
       timeoutsRef.current = [];
     };
-  }, [greetingDone]);
+  }, [greetingDone, skipClicked]);
   return <div className="min-h-screen bg-background">
       <TopNav />
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">

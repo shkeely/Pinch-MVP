@@ -19,6 +19,7 @@ export default function AnimatedGreeting({
 }: AnimatedGreetingProps) {
   const [step, setStep] = useState(0);
   const [subtitleOpacity, setSubtitleOpacity] = useState(0);
+  const [skipped, setSkipped] = useState(false);
   const completedRef = useRef(false);
 
   const dynamicUpdates = useMemo(() => ([
@@ -43,6 +44,7 @@ export default function AnimatedGreeting({
 
   useEffect(() => {
     if (!onComplete) return; // Skip animation if no callback
+    if (skipped) return; // Stop animation if skipped
     
     const isLast = step === messages.length - 1;
 
@@ -74,13 +76,20 @@ export default function AnimatedGreeting({
       clearTimeout(fadeInTimer);
       if (nextTimer) clearTimeout(nextTimer);
     };
-  }, [step, messages.length, timings, onComplete]);
+  }, [step, messages.length, timings, onComplete, skipped]);
 
   const displayMessage = onComplete 
     ? (messages[step] ?? null)
     : (attentionCount > 0 ? "Here are today's updates" : "Everything is running smoothly ✨");
 
-  const isAnimating = onComplete && step < messages.length - 1;
+  const isAnimating = onComplete && step >= 1 && step < messages.length - 1;
+
+  const handleSkipClick = () => {
+    setSkipped(true);
+    setStep(messages.length - 1);
+    setSubtitleOpacity(1);
+    if (onSkip) onSkip();
+  };
 
   return (
     <div className="py-8 text-center">
@@ -95,8 +104,8 @@ export default function AnimatedGreeting({
       </p>
       {isAnimating && onSkip && (
         <button
-          onClick={onSkip}
-          className="mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
+          onClick={handleSkipClick}
+          className="mt-4 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 underline-offset-4 hover:underline animate-fade-in"
         >
           Skip intro →
         </button>
