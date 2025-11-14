@@ -11,6 +11,18 @@ interface FakeDataContextType {
       description: string;
       timestamp: string;
       urgent: boolean;
+      // Escalated question details
+      guestName?: string;
+      guestPhone?: string;
+      question?: string;
+      confidence?: number;
+      attemptedResponse?: string;
+      // Suggestion details
+      context?: string;
+      detectedQuestions?: Array<{
+        guestName: string;
+        question: string;
+      }>;
     }>;
     handledToday: Array<{
       guestName: string;
@@ -73,7 +85,12 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
           title: 'Guest Question Escalated',
           description: 'Michael R. asked about changing his +1 status',
           timestamp: '2 hours ago',
-          urgent: true
+          urgent: true,
+          guestName: 'Michael Rodriguez',
+          guestPhone: '+1-555-0123',
+          question: 'Can I change my +1 from Sarah to Alex? I know I already submitted my RSVP but something came up.',
+          confidence: 45,
+          attemptedResponse: "I don't have specific information about changing RSVP details after submission. This seems like something that would require the couple's direct approval."
         },
         {
           id: 2,
@@ -81,7 +98,22 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
           title: 'AI Suggestion',
           description: 'David K. asked about groomsman suits - consider adding suit details to Wedding Info',
           timestamp: '4 hours ago',
-          urgent: false
+          urgent: false,
+          context: 'Multiple guests are asking about attire for the wedding party. Adding groomsman suit details to your chatbot brain will help Pinch answer these questions automatically.',
+          detectedQuestions: [
+            {
+              guestName: 'David K.',
+              question: 'What should groomsmen wear?'
+            },
+            {
+              guestName: 'James M.',
+              question: 'Do we need to rent specific suits for the wedding party?'
+            },
+            {
+              guestName: 'Robert S.',
+              question: 'Are there color requirements for groomsmen attire?'
+            }
+          ]
         }
       ],
       handledToday: [

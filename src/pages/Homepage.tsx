@@ -7,6 +7,8 @@ import { ChevronDown, ChevronUp, Calendar, Users, Check, ArrowRight } from 'luci
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
 import { ConversationModal } from '@/components/homepage/ConversationModal';
+import { EscalatedQuestionModal } from '@/components/modals/EscalatedQuestionModal';
+import { AISuggestionModal } from '@/components/modals/AISuggestionModal';
 import { useFakeData } from '@/contexts/FakeDataContext';
 export default function Homepage() {
   const {
@@ -14,6 +16,9 @@ export default function Homepage() {
   } = FAKE_DATA;
   const { conversations: fakeConversations } = useFakeData();
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
+  const [escalatedModalOpen, setEscalatedModalOpen] = useState(false);
+  const [suggestionModalOpen, setSuggestionModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
   const [handledExpanded, setHandledExpanded] = useState(false);
   const [attentionExpanded, setAttentionExpanded] = useState(false);
   const [announcementsExpanded, setAnnouncementsExpanded] = useState(false);
@@ -158,7 +163,18 @@ export default function Homepage() {
                         <p className="text-muted-foreground flex-1">
                           {item.description}
                         </p>
-                        <Button variant="outline" className={`rounded-full shrink-0 ${item.type === 'escalated' ? 'border-orange-400 text-orange-700 hover:bg-orange-50' : 'border-purple-400 text-purple-700 hover:bg-purple-50'}`}>
+                        <Button 
+                          variant="outline" 
+                          className={`rounded-full shrink-0 ${item.type === 'escalated' ? 'border-orange-400 text-orange-700 hover:bg-orange-50' : 'border-purple-400 text-purple-700 hover:bg-purple-50'}`}
+                          onClick={() => {
+                            setSelectedItem(item);
+                            if (item.type === 'escalated') {
+                              setEscalatedModalOpen(true);
+                            } else {
+                              setSuggestionModalOpen(true);
+                            }
+                          }}
+                        >
                           Review
                           <ArrowRight className="w-4 h-4 ml-1" />
                         </Button>
@@ -236,12 +252,42 @@ export default function Homepage() {
           </p>
         </div>}
 
-        {/* Conversation Modal */}
+        {/* Modals */}
         <ConversationModal 
           conversation={selectedConversation}
           isOpen={!!selectedConversation}
           onClose={() => setSelectedConversation(null)}
         />
+        
+        {selectedItem?.type === 'escalated' && (
+          <EscalatedQuestionModal
+            open={escalatedModalOpen}
+            onClose={() => {
+              setEscalatedModalOpen(false);
+              setSelectedItem(null);
+            }}
+            guestName={selectedItem.guestName || ''}
+            guestPhone={selectedItem.guestPhone || ''}
+            question={selectedItem.question || ''}
+            confidence={selectedItem.confidence || 0}
+            attemptedResponse={selectedItem.attemptedResponse || ''}
+            timestamp={selectedItem.timestamp}
+          />
+        )}
+        
+        {selectedItem?.type === 'suggestion' && (
+          <AISuggestionModal
+            open={suggestionModalOpen}
+            onClose={() => {
+              setSuggestionModalOpen(false);
+              setSelectedItem(null);
+            }}
+            title={selectedItem.title}
+            context={selectedItem.context || ''}
+            detectedQuestions={selectedItem.detectedQuestions || []}
+            timestamp={selectedItem.timestamp}
+          />
+        )}
       </div>
     </div>;
 }
