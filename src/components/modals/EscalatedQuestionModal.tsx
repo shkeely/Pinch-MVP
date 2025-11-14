@@ -132,7 +132,7 @@ export function EscalatedQuestionModal({
             onClick={handleReplyManually}
             className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white"
           >
-            Reply Manually
+            Reply
           </Button>
         </DialogFooter>
       </DialogContent>
