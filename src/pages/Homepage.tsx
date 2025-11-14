@@ -133,7 +133,7 @@ export default function Homepage() {
                   {homepage.upcomingAnnouncements.map((announcement, index) => <div key={announcement.id} className="flex items-start gap-4 pb-4 border-b border-border last:border-0" style={{
                 animationDelay: `${index * 50}ms`
               }}>
-                      <div className={`w-1 h-full rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
+                      <div className={`w-1.5 h-full rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
                       <div className="flex-1">
                         <Badge variant="outline" className="bg-background text-xs px-3 py-1 mb-2">
                           Scheduled
