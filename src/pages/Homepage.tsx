@@ -164,7 +164,7 @@ export default function Homepage() {
                         </p>
                         <Button 
                           variant="outline" 
-                          className={`rounded-full shrink-0 ${item.type === 'escalated' ? 'border-orange-400 text-orange-700 hover:bg-orange-50' : 'border-purple-400 text-purple-700 hover:bg-purple-50'}`}
+                          className={`rounded-full shrink-0 justify-start ${item.type === 'escalated' ? 'border-orange-400 text-orange-700 hover:bg-orange-50' : 'border-purple-400 text-purple-700 hover:bg-purple-50'}`}
                           onClick={() => {
                             setSelectedItem(item);
                             if (item.type === 'escalated') {
@@ -230,7 +230,7 @@ export default function Homepage() {
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className={`rounded-full shrink-0 ${index === 0 ? 'border-lavender text-lavender hover:bg-lavender/10' : 'border-primary text-primary hover:bg-primary/10'}`}
+                            className={`rounded-full shrink-0 justify-start ${index === 0 ? 'border-lavender text-lavender hover:bg-lavender/10' : 'border-primary text-primary hover:bg-primary/10'}`}
                             onClick={() => setAnnouncementsModalOpen(true)}
                           >
                             Review
