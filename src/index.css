@@ -120,11 +120,12 @@
 
   html {
     @apply bg-background;
-    scrollbar-gutter: stable;
+    scrollbar-gutter: stable both-edges;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    scrollbar-gutter: stable both-edges;
   }
 
   h1, h2, h3, h4, h5, h6 {
