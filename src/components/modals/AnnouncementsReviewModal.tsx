@@ -67,7 +67,7 @@ export function AnnouncementsReviewModal({ open, onClose, announcements }: Annou
                 {/* Header with icon and title */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-primary" />
+                    <Calendar className="w-5 h-5 text-foreground" />
                     <h3 className="font-semibold text-lg">{announcement.title}</h3>
                   </div>
                   <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
@@ -78,11 +78,11 @@ export function AnnouncementsReviewModal({ open, onClose, announcements }: Annou
                 {/* Schedule info */}
                 <div className="space-y-2 mb-3">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="w-4 h-4 text-foreground" />
                     <span>Scheduled: {announcement.scheduledDate} at {announcement.scheduledTime}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Users className="w-4 h-4" />
+                    <Users className="w-4 h-4 text-foreground" />
                     <span>Recipients: {announcement.recipients} ({announcement.recipientCount} people)</span>
                   </div>
                 </div>
@@ -112,7 +112,7 @@ export function AnnouncementsReviewModal({ open, onClose, announcements }: Annou
                       onClick={handleEdit}
                       className="rounded-full"
                     >
-                      <Edit className="w-4 h-4 mr-1" />
+                      <Edit className="w-4 h-4 mr-1 text-foreground" />
                       Edit
                     </Button>
                     <Button
@@ -121,7 +121,7 @@ export function AnnouncementsReviewModal({ open, onClose, announcements }: Annou
                       onClick={() => handlePreview(announcement)}
                       className="rounded-full"
                     >
-                      <Eye className="w-4 h-4 mr-1" />
+                      <Eye className="w-4 h-4 mr-1 text-foreground" />
                       Preview
                     </Button>
                   </div>
