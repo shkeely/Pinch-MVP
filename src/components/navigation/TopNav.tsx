@@ -34,7 +34,7 @@ export default function TopNav() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-      <div className="container relative flex h-16 items-center px-4 md:px-6">
+      <div className="container relative flex h-16 items-center pl-4 md:pl-6 pr-2 md:pr-3">
         {/* Mobile: Hamburger Menu */}
         <div className="flex items-center gap-3 md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
