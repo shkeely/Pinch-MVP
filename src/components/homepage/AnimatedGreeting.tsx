@@ -6,6 +6,7 @@ interface AnimatedGreetingProps {
   attentionCount: number;
   announcementsCount: number;
   onComplete?: () => void;
+  onSkip?: () => void;
 }
 
 export default function AnimatedGreeting({ 
@@ -13,7 +14,8 @@ export default function AnimatedGreeting({
   handledCount, 
   attentionCount, 
   announcementsCount,
-  onComplete 
+  onComplete,
+  onSkip
 }: AnimatedGreetingProps) {
   const [step, setStep] = useState(0);
   const [subtitleOpacity, setSubtitleOpacity] = useState(0);
@@ -75,8 +77,10 @@ export default function AnimatedGreeting({
   }, [step, messages.length, timings, onComplete]);
 
   const displayMessage = onComplete 
-    ? (messages[step] ?? "Here are today's updates")
+    ? (messages[step] ?? null)
     : (attentionCount > 0 ? "Here are today's updates" : "Everything is running smoothly ✨");
+
+  const isAnimating = onComplete && step < messages.length - 1;
 
   return (
     <div className="py-8 text-center">
@@ -89,6 +93,14 @@ export default function AnimatedGreeting({
       >
         {displayMessage}
       </p>
+      {isAnimating && onSkip && (
+        <button
+          onClick={onSkip}
+          className="mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
+        >
+          Skip intro →
+        </button>
+      )}
     </div>
   );
 }
