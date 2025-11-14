@@ -25,12 +25,13 @@ export default function AnimatedGreeting({
     handledCount > 0 ? `${handledCount} ${handledCount === 1 ? 'person' : 'people'} asked Pinch questions.` : null,
     attentionCount > 0 ? `${attentionCount} ${attentionCount === 1 ? 'thing' : 'things'} need your attention.` : null,
     announcementsCount > 0 ? `You have ${announcementsCount} upcoming guest ${announcementsCount === 1 ? 'announcement' : 'announcements'}` : null,
+    "Here are today's updates", // Final message before buttons appear
   ].filter(msg => msg !== null || step <= 2); // Keep nulls for first 3 steps
 
   useEffect(() => {
     if (!onComplete) return; // Skip animation if no callback
     
-    const timings = [750, 1500, 1500, 1500, 1500, 1500]; // Duration for each step (50% slower)
+    const timings = [750, 1500, 1500, 1500, 1500, 1500, 1200]; // Duration for each step (50% slower)
     
     if (step < messages.length) {
       // Fade in subtitle
