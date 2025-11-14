@@ -45,7 +45,7 @@ export default function Homepage() {
                   </div>
                 </button>
               </CollapsibleTrigger>
-              <CollapsibleContent className="border-t border-border overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down data-[state=open]:[animation-delay:120ms]">
+              <CollapsibleContent className="border-t border-border overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                 <div className="px-6 py-4 flex items-center justify-center gap-2">
                   <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 hover:bg-green-50">
                     <Check className="w-3 h-3 mr-1" />
@@ -86,7 +86,7 @@ export default function Homepage() {
                     </div>
                   </button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="border-t border-border px-6 py-6 space-y-4 overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down data-[state=open]:[animation-delay:120ms]">
+                <CollapsibleContent className="border-t border-border px-6 py-6 space-y-4 overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   {homepage.needsAttention.map(item => <div key={item.id} className={`relative rounded-2xl p-6 border-2 ${item.type === 'escalated' ? 'border-orange-200 bg-orange-50/15' : 'border-purple-200 bg-purple-50/15'}`}>
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export default function Homepage() {
                     </div>
                   </button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="border-t border-border space-y-4 px-6 py-6 overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down data-[state=open]:[animation-delay:120ms]">
+                <CollapsibleContent className="border-t border-border space-y-4 px-6 py-6 overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   {homepage.upcomingAnnouncements.map((announcement, index) => <div key={announcement.id} className="flex items-start gap-4 pb-4 border-b border-border last:border-0" style={{
                 animationDelay: `${index * 50}ms`
               }}>
