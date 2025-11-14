@@ -196,9 +196,13 @@ export default function Dashboard1() {
             <h2 className="text-2xl font-serif text-foreground mb-4">
               Handled Today
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {homepage.handledToday.map((item, index) => (
-                <div key={index} className="flex items-start gap-3 pb-4 border-b last:border-0 last:pb-0">
+                <div 
+                  key={index} 
+                  className="flex items-start gap-3 pb-4 pt-3 px-3 -mx-3 border-b last:border-0 last:pb-0 cursor-pointer transition-all duration-200 hover:bg-purple-50 hover:translate-x-1 hover:border-l-2 hover:border-purple-500 rounded-md"
+                  onClick={() => console.log('Clicked:', item)}
+                >
                   <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground">{item.guestName}</p>
