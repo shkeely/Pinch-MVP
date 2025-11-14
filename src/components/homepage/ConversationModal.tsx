@@ -12,6 +12,7 @@ interface Conversation {
   question: string;
   answer: string | null;
   timestamp: string;
+  confidence: number;
 }
 
 interface ConversationModalProps {
@@ -40,6 +41,12 @@ export function ConversationModal({ conversation, isOpen, onClose }: Conversatio
     onClose();
   };
 
+  const getConfidenceBadgeColor = (confidence: number) => {
+    if (confidence >= 80) return 'bg-green-500/10 text-green-700 border-green-500/20';
+    if (confidence >= 50) return 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20';
+    return 'bg-red-500/10 text-red-700 border-red-500/20';
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] w-[100vw] sm:w-auto p-6 animate-in fade-in-0 zoom-in-95 rounded-none sm:rounded-lg">
@@ -58,11 +65,15 @@ export function ConversationModal({ conversation, isOpen, onClose }: Conversatio
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Category and Timestamp */}
-          <div className="flex items-center gap-3">
+          {/* Category, Confidence, and Timestamp */}
+          <div className="flex items-center gap-3 flex-wrap">
             <Badge variant="secondary" className="flex items-center gap-1.5 px-3 py-1">
               {categoryIcons[conversation.category] || <Clock className="w-3.5 h-3.5" />}
               <span>{conversation.category}</span>
+            </Badge>
+            <Badge className={`flex items-center gap-1.5 px-3 py-1 border ${getConfidenceBadgeColor(conversation.confidence)}`}>
+              <span className="font-semibold">{conversation.confidence}%</span>
+              <span className="text-xs">confidence</span>
             </Badge>
             <span className="text-sm text-muted-foreground">{formatRelativeTime(conversation.timestamp)}</span>
           </div>
