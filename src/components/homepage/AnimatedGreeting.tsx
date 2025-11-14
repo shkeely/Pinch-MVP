@@ -52,13 +52,15 @@ export default function AnimatedGreeting({
         clearTimeout(nextStepTimer);
       };
     } else {
-      // Animation complete
+      // Animation complete - keep subtitle visible
+      setSubtitleOpacity(1);
       onComplete();
     }
   }, [step, messages.length, onComplete]);
 
-  const displayMessage = onComplete ? messages[step] : 
-    (attentionCount > 0 ? "Here are today's updates" : "Everything is running smoothly ✨");
+  const displayMessage = onComplete 
+    ? (step >= messages.length ? "Here are today's updates" : messages[step])
+    : (attentionCount > 0 ? "Here are today's updates" : "Everything is running smoothly ✨");
 
   return (
     <div className="py-8 text-center">
