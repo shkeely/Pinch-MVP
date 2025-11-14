@@ -158,7 +158,7 @@ export default function Homepage() {
                       <h4 className="font-sans font-semibold text-foreground text-lg mb-2">
                         {item.title}
                       </h4>
-                      <div className="flex items-center gap-4">
+                      <div className="flex flex-col md:flex-row md:items-center items-start gap-3 md:gap-4">
                         <p className="text-muted-foreground flex-1">
                           {item.description}
                         </p>
