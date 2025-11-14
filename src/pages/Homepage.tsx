@@ -13,14 +13,7 @@ export default function Homepage() {
   const [handledExpanded, setHandledExpanded] = useState(false);
   const [attentionExpanded, setAttentionExpanded] = useState(false);
   const [announcementsExpanded, setAnnouncementsExpanded] = useState(false);
-
-  // Determine status for greeting
-  const getStatus = () => {
-    const count = homepage.needsAttention.length;
-    if (count === 0) return 'all-clear';
-    if (count >= 3) return 'needs-attention';
-    return 'normal';
-  };
+  const [showButtons, setShowButtons] = useState(false);
 
   // Count escalated vs suggestions
   const hasUrgent = homepage.needsAttention.some(item => item.urgent);
@@ -28,10 +21,17 @@ export default function Homepage() {
       <TopNav />
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">
         {/* Animated Greeting */}
-        <AnimatedGreeting userName={homepage.userName} status={getStatus()} />
+        <AnimatedGreeting 
+          userName={homepage.userName}
+          handledCount={homepage.handledToday.length}
+          attentionCount={homepage.needsAttention.length}
+          announcementsCount={homepage.upcomingAnnouncements.length}
+          onComplete={() => setShowButtons(true)}
+        />
 
         {/* Updates Section - All Collapsible */}
-        <div className="space-y-4">
+        {showButtons && (
+          <div className="space-y-4 animate-fade-in">
           {/* Handled by Pinch - Collapsible */}
           <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded}>
             <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
@@ -164,7 +164,8 @@ export default function Homepage() {
                 </CollapsibleContent>
               </div>
             </Collapsible>}
-        </div>
+          </div>
+        )}
 
         {/* End Message */}
         <div className="text-center space-y-2 py-8">
