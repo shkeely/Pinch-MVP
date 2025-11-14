@@ -12,7 +12,7 @@ export default function Homepage() {
   } = FAKE_DATA;
   const [handledExpanded, setHandledExpanded] = useState(false);
   const [attentionExpanded, setAttentionExpanded] = useState(false);
-  const [announcementsExpanded, setAnnouncementsExpanded] = useState(true);
+  const [announcementsExpanded, setAnnouncementsExpanded] = useState(false);
 
   // Determine status for greeting
   const getStatus = () => {
