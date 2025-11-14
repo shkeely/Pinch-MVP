@@ -50,7 +50,9 @@ export default function Dashboard1Alt() {
               {/* Animated Greeting */}
               <AnimatedGreeting 
                 userName={wedding?.couple1 || "there"} 
-                status={homepage.needsAttention.length > 0 ? 'needs-attention' : homepage.metrics.questionsToday === 0 ? 'all-clear' : 'normal'} 
+                handledCount={homepage.metrics?.questionsAnswered || 0}
+                attentionCount={homepage.needsAttention?.length || 0}
+                announcementsCount={0}
               />
               
               {/* Daily Summary */}
