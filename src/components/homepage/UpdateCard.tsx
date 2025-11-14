@@ -67,7 +67,7 @@ export default function UpdateCard({
       {/* Action Button */}
       {actionLabel && onAction && (
         <CardFooter className="p-6 pt-0 flex justify-end">
-          <Button onClick={onAction} size="sm" className="text-foreground">
+          <Button onClick={onAction} size="sm" className="!text-foreground">
             {actionLabel}
           </Button>
         </CardFooter>

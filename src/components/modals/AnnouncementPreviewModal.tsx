@@ -70,13 +70,13 @@ export function AnnouncementPreviewModal({ open, onClose, announcement }: Announ
           {/* Metadata */}
           <div className="bg-muted/50 rounded-lg p-3 space-y-2">
             <div className="flex items-center gap-2 text-sm">
-              <Users className="w-4 h-4 text-muted-foreground" />
+              <Users className="w-4 h-4 text-foreground" />
               <span className="text-muted-foreground">
                 Will be sent to: <span className="font-medium text-foreground">{announcement.recipientCount} guests</span>
               </span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
+              <Calendar className="w-4 h-4 text-foreground" />
               <span className="text-muted-foreground">
                 On: <span className="font-medium text-foreground">{announcement.scheduledDate} at {announcement.scheduledTime}</span>
               </span>
