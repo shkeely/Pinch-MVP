@@ -34,7 +34,7 @@ export default function TopNav() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+      <div className="container relative flex h-16 items-center px-4 md:px-6">
         {/* Mobile: Hamburger Menu */}
         <div className="flex items-center gap-3 md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -85,7 +85,7 @@ export default function TopNav() {
         </h1>
 
         {/* Desktop Navigation Pills - Hidden on mobile */}
-        <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 rounded-full bg-muted/50 p-1 lg:p-1.5 shadow-sm flex-shrink">
+        <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 rounded-full bg-muted/50 p-1 lg:p-1.5 shadow-sm flex-shrink absolute left-1/2 -translate-x-1/2">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
@@ -107,7 +107,7 @@ export default function TopNav() {
         </nav>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+        <div className="flex items-center gap-2 md:gap-3 flex-shrink-0 ml-auto">
           <Button 
             variant="outline" 
             size="sm" 
