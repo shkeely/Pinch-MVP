@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import AnimatedGreeting from '@/components/homepage/AnimatedGreeting';
 import TopNav from '@/components/navigation/TopNav';
-import { FAKE_DATA } from '@/data/fakeData';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, Calendar, Users, Check, ArrowRight } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -10,11 +9,9 @@ import { ConversationModal } from '@/components/homepage/ConversationModal';
 import { EscalatedQuestionModal } from '@/components/modals/EscalatedQuestionModal';
 import { AISuggestionModal } from '@/components/modals/AISuggestionModal';
 import { useFakeData } from '@/contexts/FakeDataContext';
+
 export default function Homepage() {
-  const {
-    homepage
-  } = FAKE_DATA;
-  const { conversations: fakeConversations } = useFakeData();
+  const { homepage, conversations: fakeConversations } = useFakeData();
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [escalatedModalOpen, setEscalatedModalOpen] = useState(false);
   const [suggestionModalOpen, setSuggestionModalOpen] = useState(false);
