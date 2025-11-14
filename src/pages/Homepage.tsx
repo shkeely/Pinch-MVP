@@ -14,6 +14,8 @@ export default function Homepage() {
   const [attentionExpanded, setAttentionExpanded] = useState(false);
   const [announcementsExpanded, setAnnouncementsExpanded] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
+  const [visibleButtons, setVisibleButtons] = useState(0);
+  const [showEndSection, setShowEndSection] = useState(false);
 
   // Count escalated vs suggestions
   const hasUrgent = homepage.needsAttention.some(item => item.urgent);
@@ -26,14 +28,21 @@ export default function Homepage() {
           handledCount={homepage.handledToday.length}
           attentionCount={homepage.needsAttention.length}
           announcementsCount={homepage.upcomingAnnouncements.length}
-          onComplete={() => setShowButtons(true)}
+          onComplete={() => {
+            setShowButtons(true);
+            // Stagger button animations
+            setTimeout(() => setVisibleButtons(1), 100);
+            setTimeout(() => setVisibleButtons(2), 500);
+            setTimeout(() => setVisibleButtons(3), 900);
+            setTimeout(() => setShowEndSection(true), 1400);
+          }}
         />
 
         {/* Updates Section - All Collapsible */}
         {showButtons && (
-          <div className="space-y-4 animate-fade-in">
+          <div className="space-y-4">
           {/* Handled by Pinch - Collapsible */}
-          <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded}>
+          {visibleButtons >= 1 && <Collapsible open={handledExpanded} onOpenChange={setHandledExpanded} className="animate-in fade-in-0 zoom-in-95 duration-500 ease-out">
             <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
               <CollapsibleTrigger asChild>
                 <button className="w-full p-6 text-center transition-all hover:border-primary/50">
@@ -68,10 +77,10 @@ export default function Homepage() {
                 </div>
               </CollapsibleContent>
             </div>
-          </Collapsible>
+          </Collapsible>}
 
           {/* Needs Attention - Collapsible with urgent indicator */}
-          {homepage.needsAttention.length > 0 && <Collapsible open={attentionExpanded} onOpenChange={setAttentionExpanded}>
+          {homepage.needsAttention.length > 0 && visibleButtons >= 2 && <Collapsible open={attentionExpanded} onOpenChange={setAttentionExpanded} className="animate-in fade-in-0 zoom-in-95 duration-500 ease-out">
               <div className={`w-full border-2 border-destructive/50 hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-destructive">
@@ -117,7 +126,7 @@ export default function Homepage() {
             </Collapsible>}
 
           {/* Upcoming Announcements - Collapsible */}
-          {homepage.upcomingAnnouncements.length > 0 && <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded}>
+          {homepage.upcomingAnnouncements.length > 0 && visibleButtons >= 3 && <Collapsible open={announcementsExpanded} onOpenChange={setAnnouncementsExpanded} className="animate-in fade-in-0 zoom-in-95 duration-500 ease-out">
               <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
                   <button className="w-full p-6 text-center transition-all hover:border-primary/50">
@@ -168,14 +177,14 @@ export default function Homepage() {
         )}
 
         {/* End Message */}
-        <div className="text-center space-y-2 py-8">
+        {showEndSection && <div className="text-center space-y-2 py-8 animate-in fade-in-0 duration-500">
           <h2 className="text-2xl font-serif font-semibold text-foreground">
             That's all for today.
           </h2>
           <p className="text-muted-foreground">
             Want to change your notifications?
           </p>
-        </div>
+        </div>}
       </div>
     </div>;
 }
