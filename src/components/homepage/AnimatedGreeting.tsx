@@ -21,10 +21,10 @@ export default function AnimatedGreeting({ userName, status }: AnimatedGreetingP
 
   return (
     <div className="py-8 animate-fade-in text-center">
-      <h1 className="text-3xl md:text-4xl font-semibold bg-gradient-to-r from-lavender to-primary bg-clip-text text-transparent mb-2">
+      <h1 className="text-3xl md:text-4xl font-semibold text-black mb-2">
         Hello {userName},
       </h1>
-      <p className="text-xl md:text-2xl text-muted-foreground">
+      <p className="text-xl md:text-2xl text-black">
         {getStatusMessage()}
       </p>
     </div>
