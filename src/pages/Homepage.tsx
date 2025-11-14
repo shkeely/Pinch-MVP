@@ -64,7 +64,7 @@ export default function Homepage() {
                     {homepage.handledToday.length} questions answered
                   </span>
                 </div>
-                <div className="divide-y divide-border">
+                <div className="divide-y divide-border pb-4">
                   {homepage.handledToday.slice(0, 3).map((item, index) => (
                     <div
                       key={index}
