@@ -192,14 +192,7 @@ export default function Homepage() {
                     >
                       <div className={`w-1 h-16 rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
                       <div className="flex-1">
-                        <Badge 
-                          variant="outline" 
-                          className={`text-xs px-3 py-1 mb-2 ${
-                            index === 0 
-                              ? 'bg-lavender/10 dark:bg-lavender/20 border-lavender/30 text-lavender dark:text-lavender' 
-                              : 'bg-primary/10 dark:bg-primary/20 border-primary/30 text-primary dark:text-primary'
-                          }`}
-                        >
+                        <Badge variant="outline" className="bg-background text-xs px-3 py-1 mb-2">
                           Scheduled
                         </Badge>
                         <h4 className="font-sans font-semibold text-foreground mb-2">{announcement.title}</h4>
@@ -231,11 +224,6 @@ export default function Homepage() {
                             <ArrowRight className="w-4 h-4 ml-1" />
                           </Button>
                         </div>
-                      </div>
-                      <div>
-                        <span className="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                          {announcement.status}
-                        </span>
                       </div>
                     </div>
                   ))}
