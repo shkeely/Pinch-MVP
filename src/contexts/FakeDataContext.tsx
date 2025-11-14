@@ -44,6 +44,19 @@ interface FakeDataContextType {
     };
   };
   
+  // Detailed announcements data
+  upcomingAnnouncements: Array<{
+    id: number;
+    title: string;
+    message: string;
+    scheduledDate: string;
+    scheduledTime: string;
+    recipients: string;
+    recipientCount: number;
+    status: 'scheduled' | 'draft' | 'sent';
+    category: 'reminder' | 'update' | 'announcement';
+  }>;
+  
   // Conversations data
   conversations: Array<{
     id: number;
@@ -167,6 +180,31 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
         autoAnsweredPercent: 83
       }
     },
+    
+    upcomingAnnouncements: [
+      {
+        id: 1,
+        title: 'RSVP Deadline Reminder',
+        message: "Hi! Just a friendly reminder that we need your RSVP by November 15th. Can't wait to celebrate with you! 🎉",
+        scheduledDate: 'November 15, 2025',
+        scheduledTime: '10:00 AM',
+        recipients: 'All Guests',
+        recipientCount: 85,
+        status: 'scheduled',
+        category: 'reminder'
+      },
+      {
+        id: 2,
+        title: 'Day-Of Parking Reminder',
+        message: "Good morning! Just a reminder that there's free parking available at the venue. See you soon! 💒",
+        scheduledDate: 'April 15, 2026',
+        scheduledTime: '8:00 AM',
+        recipients: 'All Guests',
+        recipientCount: 85,
+        status: 'scheduled',
+        category: 'reminder'
+      }
+    ],
     
     conversations: [
       {
