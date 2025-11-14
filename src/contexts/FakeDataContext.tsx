@@ -28,6 +28,14 @@ interface FakeDataContextType {
       question: string;
       timestamp: string;
     }>;
+    upcomingAnnouncements: Array<{
+      id: string;
+      title: string;
+      date: string;
+      time: string;
+      guests: number;
+      status: string;
+    }>;
     metrics: {
       questionsToday: number;
       questionsAnswered: number;
@@ -132,6 +140,24 @@ export function FakeDataProvider({ children }: { children: ReactNode }) {
           guestName: 'Jennifer L.',
           question: 'ceremony time',
           timestamp: '7 hours ago'
+        }
+      ],
+      upcomingAnnouncements: [
+        {
+          id: "1",
+          title: "RSVP Deadline Reminder",
+          date: "Nov 15, 2025",
+          time: "9:00 AM",
+          guests: 120,
+          status: "Scheduled"
+        },
+        {
+          id: "2",
+          title: "Day-Of Reminder",
+          date: "Apr 15, 2025",
+          time: "9:00 AM",
+          guests: 127,
+          status: "Scheduled"
         }
       ],
       metrics: {
