@@ -35,6 +35,19 @@ export default function Homepage() {
     setGreetingDone(true);
   }, []);
 
+  // Skip animation callback
+  const handleSkip = useCallback(() => {
+    // Clear any pending timeouts
+    timeoutsRef.current.forEach(id => clearTimeout(id));
+    timeoutsRef.current = [];
+    
+    // Immediately show everything
+    setGreetingDone(true);
+    setShowButtons(true);
+    setVisibleButtons(3);
+    setShowEndSection(true);
+  }, []);
+
   // One-time button reveal sequence after greeting completes
   useEffect(() => {
     if (!greetingDone) return;
@@ -64,6 +77,7 @@ export default function Homepage() {
           attentionCount={homepage.needsAttention.length}
           announcementsCount={homepage.upcomingAnnouncements.length}
           onComplete={handleGreetingComplete}
+          onSkip={handleSkip}
         />
 
         {/* Updates Section - All Collapsible */}
