@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import AnimatedGreeting from '@/components/homepage/AnimatedGreeting';
 import TopNav from '@/components/navigation/TopNav';
 import { FAKE_DATA } from '@/data/fakeData';
@@ -16,9 +16,36 @@ export default function Homepage() {
   const [showButtons, setShowButtons] = useState(false);
   const [visibleButtons, setVisibleButtons] = useState(0);
   const [showEndSection, setShowEndSection] = useState(false);
+  const [greetingDone, setGreetingDone] = useState(false);
+  const timeoutsRef = useRef<number[]>([]);
 
   // Count escalated vs suggestions
   const hasUrgent = homepage.needsAttention.some(item => item.urgent);
+
+  // Stable callback for AnimatedGreeting
+  const handleGreetingComplete = useCallback(() => {
+    setGreetingDone(true);
+  }, []);
+
+  // One-time button reveal sequence after greeting completes
+  useEffect(() => {
+    if (!greetingDone) return;
+
+    setShowButtons(true);
+
+    const ids: number[] = [];
+    ids.push(window.setTimeout(() => setVisibleButtons(1), 150));
+    ids.push(window.setTimeout(() => setVisibleButtons(2), 600));
+    ids.push(window.setTimeout(() => setVisibleButtons(3), 1050));
+    ids.push(window.setTimeout(() => setShowEndSection(true), 1400));
+
+    timeoutsRef.current = ids;
+
+    return () => {
+      timeoutsRef.current.forEach(id => clearTimeout(id));
+      timeoutsRef.current = [];
+    };
+  }, [greetingDone]);
   return <div className="min-h-screen bg-background">
       <TopNav />
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">
@@ -28,14 +55,7 @@ export default function Homepage() {
           handledCount={homepage.handledToday.length}
           attentionCount={homepage.needsAttention.length}
           announcementsCount={homepage.upcomingAnnouncements.length}
-          onComplete={() => {
-            setShowButtons(true);
-            // Stagger button animations
-            setTimeout(() => setVisibleButtons(1), 100);
-            setTimeout(() => setVisibleButtons(2), 500);
-            setTimeout(() => setVisibleButtons(3), 900);
-            setTimeout(() => setShowEndSection(true), 1400);
-          }}
+          onComplete={handleGreetingComplete}
         />
 
         {/* Updates Section - All Collapsible */}
@@ -45,7 +65,7 @@ export default function Homepage() {
           <Collapsible 
             open={handledExpanded} 
             onOpenChange={setHandledExpanded} 
-            className={`transition-all duration-500 ease-out transform-gpu ${visibleButtons >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
             <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
               <CollapsibleTrigger asChild>
@@ -88,7 +108,7 @@ export default function Homepage() {
           <Collapsible 
             open={attentionExpanded} 
             onOpenChange={setAttentionExpanded} 
-            className={`transition-all duration-500 ease-out transform-gpu ${visibleButtons >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
               <div className={`w-full border-2 border-destructive/50 hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
@@ -140,7 +160,7 @@ export default function Homepage() {
           <Collapsible 
             open={announcementsExpanded} 
             onOpenChange={setAnnouncementsExpanded} 
-            className={`transition-all duration-500 ease-out transform-gpu ${visibleButtons >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
               <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
