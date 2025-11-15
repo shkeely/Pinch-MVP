@@ -13,12 +13,6 @@ export default function Step5HomepageTour() {
   const { updateWedding } = useWedding();
 
   // Set preferred preview route for "Open in new tab"
-  useEffect(() => {
-    localStorage.setItem('preferredPreviewRoute', '/onboarding/step-5');
-    return () => {
-      localStorage.removeItem('preferredPreviewRoute');
-    };
-  }, []);
 
   // Compute and set tooltip position dynamically
   useLayoutEffect(() => {
