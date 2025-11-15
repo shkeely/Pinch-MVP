@@ -234,16 +234,18 @@ export default function Step6ConversationsTour() {
 
                 {/* Tooltip 2: Conversation Thread */}
                 {currentTooltip === 2 && (
-                  <TourTooltip
-                    target="left"
-                    title="Conversation Thread"
-                    description="See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
-                    step={2}
-                    totalSteps={3}
-                    onNext={handleNext}
-                    onPrev={handlePrevious}
-                    className="hidden lg:block z-[60]"
-                  />
+                  <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:static lg:max-w-none z-[60]">
+                    <TourTooltip
+                      target="left"
+                      title="Conversation Thread"
+                      description="See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
+                      step={2}
+                      totalSteps={3}
+                      onNext={handleNext}
+                      onPrev={handlePrevious}
+                      className="lg:block"
+                    />
+                  </div>
                 )}
               </Card>
             </div>
@@ -252,7 +254,7 @@ export default function Step6ConversationsTour() {
 
         {/* Tooltip 1: Conversation List - Next to Messages header */}
         {currentTooltip === 1 && (
-          <div className="fixed top-32 left-[500px] z-50">
+          <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:top-32 lg:left-[500px] lg:translate-x-0 z-50">
             <TourTooltip
               target="right"
               title="All Guest Conversations"
@@ -268,7 +270,7 @@ export default function Step6ConversationsTour() {
 
         {/* Tooltip 3: Status Tags */}
         {currentTooltip === 3 && (
-          <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-50">
+          <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:top-1/2 lg:left-8 lg:-translate-x-0 z-50">
             <TourTooltip
               target="right"
               title="Auto vs Escalated"
