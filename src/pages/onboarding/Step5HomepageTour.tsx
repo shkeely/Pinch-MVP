@@ -76,9 +76,9 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 1: AnimatedGreeting */}
         {currentTooltip === 1 && (
-          <div className="absolute top-32 left-1/2 -translate-x-1/2 z-50">
+          <div className="fixed top-32 right-8 z-50">
             <TourTooltip
-              target="bottom"
+              target="left"
               title="Your Personal Dashboard"
               description="Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
               step={1}
@@ -91,9 +91,9 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 2: Needs Attention section */}
         {currentTooltip === 2 && (
-          <div className="absolute top-96 left-[60%] z-50">
+          <div className="fixed top-80 right-8 z-50">
             <TourTooltip
-              target="right"
+              target="left"
               title="Items Requiring Action"
               description="When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
               step={2}
@@ -107,9 +107,9 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 3: Handled by Pinch section */}
         {currentTooltip === 3 && (
-          <div className="absolute top-[500px] left-1/2 -translate-x-1/2 z-50">
+          <div className="fixed top-96 right-8 z-50">
             <TourTooltip
-              target="top"
+              target="left"
               title="Auto-Answered Questions"
               description="See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
               step={3}
@@ -123,9 +123,9 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 4: Quick Actions */}
         {currentTooltip === 4 && (
-          <div className="absolute top-[650px] left-1/2 -translate-x-1/2 z-50">
+          <div className="fixed bottom-32 right-8 z-50">
             <TourTooltip
-              target="top"
+              target="left"
               title="Quick Actions"
               description="Send messages to all guests, view recent conversations, or add knowledge to your Chatbot Brain right from here. Your most-used tools at your fingertips."
               step={4}
