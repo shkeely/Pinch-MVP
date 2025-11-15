@@ -254,7 +254,7 @@ export default function Step6ConversationsTour() {
         {currentTooltip === 1 && (
           <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
             <TourTooltip
-              target="bottom"
+              target="top"
               title="All Guest Conversations"
               description="Every SMS conversation with your guests appears here. See who's asking what in real-time."
               step={1}
@@ -268,9 +268,9 @@ export default function Step6ConversationsTour() {
 
         {/* Tooltip 3: Status Tags */}
         {currentTooltip === 3 && (
-          <div className="fixed top-1/2 right-8 transform -translate-y-1/2 z-50">
+          <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-50">
             <TourTooltip
-              target="left"
+              target="right"
               title="Auto vs Escalated"
               description="Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response."
               step={3}
