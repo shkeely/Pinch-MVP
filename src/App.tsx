@@ -31,12 +31,49 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const getDefaultRoute = () => {
-  const hash = window.location?.hash?.toLowerCase?.() || '';
-  if (hash === '#onboarding-step-5') {
-    return '/onboarding/step-5';
+// Cookie helper for debugging
+const getRouteCookie = (): string | null => {
+  try {
+    const match = document.cookie.split('; ').find(c => c.startsWith('preferredPreviewRoute='));
+    if (!match) return null;
+    const val = decodeURIComponent(match.split('=')[1] || '');
+    return val || null;
+  } catch (e) {
+    return null;
   }
-  return '/homepage';
+};
+
+const getDefaultRoute = () => {
+  try {
+    const stored = localStorage.getItem('preferredPreviewRoute');
+    const cookie = getRouteCookie();
+    
+    console.log('========== PREVIEW ROUTE DEBUG ==========');
+    console.log('LocalStorage raw:', stored);
+    console.log('Cookie raw:', cookie);
+    console.log('Current URL:', window.location.href);
+    console.log('========================================');
+    
+    const hash = window.location?.hash?.toLowerCase?.() || '';
+    if (hash === '#onboarding-step-5') {
+      return '/onboarding/step-5';
+    }
+    
+    if (stored && stored.startsWith('/')) {
+      console.log('✓ Using localStorage route:', stored);
+      return stored;
+    }
+    if (cookie && cookie.startsWith('/')) {
+      console.log('✓ Using cookie route:', cookie);
+      return cookie;
+    }
+    
+    console.log('⚠ Using default: /homepage');
+    return '/homepage';
+  } catch (e) {
+    console.log('[routing] error', e);
+    return '/homepage';
+  }
 };
 
 const RouteWatcher = () => {
