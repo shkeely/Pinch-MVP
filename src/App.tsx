@@ -58,35 +58,38 @@ const getDefaultRoute = () => {
     // Method 2: Extract route from URL using patterns
     // Matches: /onboarding/step-2, /messages, /reminders, etc.
     const routePatterns = [
-      // Onboarding pages
-      /\/(onboarding\/[^"?\s&]+)/,
+      // Onboarding pages (already working)
+      /\/(onboarding\/step-\d+[a-z]?)\b/i,
       
-      // Main navigation pages
-      /\/(messages)[^/\w]/i,
-      /\/(reminders)[^/\w]/i,
-      /\/(chatbot)[^/\w]/i,
-      /\/(guests)[^/\w]/i,
-      /\/(homepage)[^/\w]/i,
-      /\/(landing)[^/\w]/i,
+      // Main pages - match the word boundaries exactly
+      /\b(\/messages)\b/i,
+      /\b(\/reminders)\b/i,
+      /\b(\/chatbot)\b/i,
+      /\b(\/guests)\b/i,
+      /\b(\/homepage)\b/i,
+      /\b(\/landing)\b/i,
+      /\b(\/settings)\b/i,
+      /\b(\/profile)\b/i,
       
-      // Settings and profile pages
-      /\/(settings)[^/\w]/i,
-      /\/(profile)[^/\w]/i,
-      /\/(wedding-details)[^/\w]/i,
-      /\/(help-support)[^/\w]/i,
+      // Hyphenated pages
+      /\b(\/wedding-details)\b/i,
+      /\b(\/help-support)\b/i,
       
       // Dashboard variants
-      /\/(dashboard[^"?\s&]*)/i,
-      
-      // Catch any other valid route (starts with /, followed by letters/hyphens)
-      /\/([a-z][a-z0-9-]*(?:\/[a-z0-9-]+)*)[^/\w]/i
+      /\b(\/dashboard[^\/\s]*)\b/i
     ];
 
     for (const pattern of routePatterns) {
       const match = fullUrl.match(pattern);
       if (match && match[1]) {
-        const route = '/' + match[1];
-        console.log('Extracted route from URL:', route);
+        let route = match[1];
+        // Ensure route starts with /
+        if (!route.startsWith('/')) {
+          route = '/' + route;
+        }
+        // Remove any trailing junk
+        route = route.split(/[?#\s]/)[0];
+        console.log('Extracted and cleaned route:', route);
         return route;
       }
     }
