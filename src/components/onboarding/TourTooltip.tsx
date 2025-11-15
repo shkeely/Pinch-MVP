@@ -116,8 +116,8 @@ export function TourTooltip({
             width="20"
             height="10"
             viewBox="0 0 20 10"
-            className="fill-background stroke-2"
-            style={{ stroke: '#9b87f5' }}
+            className="stroke-2"
+            style={{ fill: '#9b87f5', stroke: '#9b87f5' }}
           >
             <path d="M0 10 L10 0 L20 10 Z" />
           </svg>
