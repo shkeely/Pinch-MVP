@@ -104,18 +104,20 @@ export function TourTooltip({
           </CardContent>
         </Card>
 
-        {/* Arrow pointer */}
-        <div className={cn('absolute w-0 h-0', arrowClasses[target], target === 'left' ? 'animate-bounce-horizontal' : 'animate-bounce-vertical')}>
-          <svg
-            width="20"
-            height="10"
-            viewBox="0 0 20 10"
-            className="stroke-2"
-            style={{ fill: '#9b87f5', stroke: '#9b87f5' }}
-          >
-            <path d="M0 10 L10 0 L20 10 Z" />
-          </svg>
-        </div>
+        {/* Arrow pointer - only show when highlighting an element */}
+        {highlight && (
+          <div className={cn('absolute w-0 h-0', arrowClasses[target], target === 'left' ? 'animate-bounce-horizontal' : 'animate-bounce-vertical')}>
+            <svg
+              width="20"
+              height="10"
+              viewBox="0 0 20 10"
+              className="stroke-2"
+              style={{ fill: '#9b87f5', stroke: '#9b87f5' }}
+            >
+              <path d="M0 10 L10 0 L20 10 Z" />
+            </svg>
+          </div>
+        )}
       </div>
     </>
   );

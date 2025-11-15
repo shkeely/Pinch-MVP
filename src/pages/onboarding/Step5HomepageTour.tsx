@@ -224,7 +224,7 @@ export default function Step5HomepageTour() {
             <TourTooltip
               target="bottom"
               title="That's the Homepage!"
-              description="You've learned about your personal dashboard. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention. Ready to explore the rest of Pinch?"
+              description="You've learned about your personal dashboard. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention."
               step={4}
               totalSteps={4}
               onNext={handleNext}
