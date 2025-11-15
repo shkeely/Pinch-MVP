@@ -141,6 +141,22 @@ export default {
           "100%": { 
             transform: "translateX(100%)" 
           }
+        },
+        "bounce-vertical": {
+          "0%, 100%": { 
+            transform: "translateY(0)" 
+          },
+          "50%": { 
+            transform: "translateY(-10px)" 
+          }
+        },
+        "bounce-horizontal": {
+          "0%, 100%": { 
+            transform: "translateX(0)" 
+          },
+          "50%": { 
+            transform: "translateX(-10px)" 
+          }
         }
       },
       animation: {
@@ -153,7 +169,9 @@ export default {
         "slide-in-right": "slide-in-right 0.3s ease-out",
         "slide-out-right": "slide-out-right 0.3s ease-out",
         "enter": "fade-in 0.3s ease-out, scale-in 0.2s ease-out",
-        "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out"
+        "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out",
+        "bounce-vertical": "bounce-vertical 1s ease-in-out infinite",
+        "bounce-horizontal": "bounce-horizontal 1s ease-in-out infinite"
       },
     },
   },
