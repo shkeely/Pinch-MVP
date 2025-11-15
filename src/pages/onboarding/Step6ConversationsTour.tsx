@@ -194,27 +194,9 @@ export default function Step6ConversationsTour() {
 ...
                   </div>
                 </div>
-              </Card>
 
-              {/* Tooltip 2: Conversation Thread - Mobile positioned at bottom */}
-              {currentTooltip === 2 && (
-                <div className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:hidden z-[60] w-[calc(100vw-2rem)]">
-                  <TourTooltip
-                    target="top"
-                    title="Conversation Thread"
-                    description="See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
-                    step={2}
-                    totalSteps={3}
-                    onNext={handleNext}
-                    onPrev={handlePrevious}
-                    className="relative"
-                  />
-                </div>
-              )}
-
-              {/* Tooltip 2: Conversation Thread - Desktop positioned inside card */}
-              {currentTooltip === 2 && (
-                <div className="hidden lg:block absolute -left-4 top-1/2 -translate-y-1/2 z-[60]">
+                {/* Tooltip 2: Conversation Thread */}
+                {currentTooltip === 2 && (
                   <TourTooltip
                     target="left"
                     title="Conversation Thread"
@@ -223,16 +205,17 @@ export default function Step6ConversationsTour() {
                     totalSteps={3}
                     onNext={handleNext}
                     onPrev={handlePrevious}
+                    className="z-[60]"
                   />
-                </div>
-              )}
+                )}
+              </Card>
             </div>
           </div>
         </div>
 
-        {/* Tooltip 1: Conversation List - Next to Messages header */}
+        {/* Tooltip 1: Conversation List - Mobile at bottom */}
         {currentTooltip === 1 && (
-          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:top-32 md:left-[500px] md:translate-x-0 z-50 w-[calc(100vw-2rem)] md:w-auto">
+          <div className="fixed bottom-20 left-4 right-4 md:bottom-auto md:top-32 md:left-[500px] md:right-auto z-50">
             <TourTooltip
               target="right"
               title="All Guest Conversations"
@@ -242,14 +225,13 @@ export default function Step6ConversationsTour() {
               onNext={handleNext}
               onPrev={handlePrevious}
               highlight={true}
-              className="md:block"
             />
           </div>
         )}
 
-        {/* Tooltip 3: Status Tags */}
+        {/* Tooltip 3: Status Tags - Mobile at bottom */}
         {currentTooltip === 3 && (
-          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:top-1/2 md:left-8 md:-translate-y-1/2 md:translate-x-0 z-50 w-[calc(100vw-2rem)] md:w-auto">
+          <div className="fixed bottom-20 left-4 right-4 md:bottom-auto md:top-1/2 md:left-8 md:right-auto md:transform md:-translate-y-1/2 z-50">
             <TourTooltip
               target="right"
               title="Auto vs Escalated"
@@ -259,7 +241,6 @@ export default function Step6ConversationsTour() {
               onNext={handleNext}
               onPrev={handlePrevious}
               highlight={true}
-              className="md:block"
             />
           </div>
         )}
