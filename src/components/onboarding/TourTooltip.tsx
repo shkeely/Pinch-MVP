@@ -61,12 +61,6 @@ export function TourTooltip({
               <Badge variant="secondary" className="text-xs">
                 {step} of {totalSteps}
               </Badge>
-              {highlight && (
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  <span className="text-xs text-muted-foreground">Focus</span>
-                </div>
-              )}
             </div>
             <CardTitle className="text-lg font-semibold">{title}</CardTitle>
           </CardHeader>
@@ -111,7 +105,7 @@ export function TourTooltip({
         </Card>
 
         {/* Arrow pointer */}
-        <div className={cn('absolute w-0 h-0 animate-bounce', arrowClasses[target])}>
+        <div className={cn('absolute w-0 h-0', arrowClasses[target], target === 'left' ? 'animate-bounce-horizontal' : 'animate-bounce-vertical')}>
           <svg
             width="20"
             height="10"

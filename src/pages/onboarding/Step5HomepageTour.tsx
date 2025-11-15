@@ -11,7 +11,7 @@ export default function Step5HomepageTour() {
   const { updateWedding } = useWedding();
 
   const handleNext = () => {
-    if (currentTooltip < 4) {
+    if (currentTooltip < 3) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
       // Last tooltip - advance to Step 6
@@ -82,38 +82,22 @@ export default function Step5HomepageTour() {
               title="Your Personal Homepage"
               description="Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
               step={1}
-              totalSteps={4}
+              totalSteps={3}
               onNext={handleNext}
               highlight={true}
             />
           </div>
         )}
 
-        {/* Tooltip 2: Needs Attention section */}
+        {/* Tooltip 2: Auto-Answered Questions (previously step 3) */}
         {currentTooltip === 2 && (
-          <div className="absolute top-96 left-[60%] z-50">
-            <TourTooltip
-              target="right"
-              title="Items Requiring Action"
-              description="When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
-              step={2}
-              totalSteps={4}
-              onNext={handleNext}
-              onPrev={handlePrevious}
-              highlight={true}
-            />
-          </div>
-        )}
-
-        {/* Tooltip 3: Handled by Pinch section */}
-        {currentTooltip === 3 && (
-          <div className="absolute top-[500px] left-1/2 -translate-x-1/2 z-50">
+          <div className="absolute top-[420px] left-1/2 -translate-x-1/2 z-50">
             <TourTooltip
               target="top"
               title="Auto-Answered Questions"
               description="See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
-              step={3}
-              totalSteps={4}
+              step={2}
+              totalSteps={3}
               onNext={handleNext}
               onPrev={handlePrevious}
               highlight={true}
@@ -121,18 +105,18 @@ export default function Step5HomepageTour() {
           </div>
         )}
 
-        {/* Tooltip 4: Wrap-up */}
-        {currentTooltip === 4 && (
-          <div className="absolute top-1/2 right-8 -translate-y-1/2 z-50">
+        {/* Tooltip 3: Needs Attention section (previously step 2) */}
+        {currentTooltip === 3 && (
+          <div className="absolute top-[450px] left-1/2 -translate-x-1/2 z-50">
             <TourTooltip
-              target="right"
-              title="That's the Homepage!"
-              description="You've learned about your personal dashboard. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention. Ready to explore the rest of Pinch?"
-              step={4}
-              totalSteps={4}
+              target="left"
+              title="Needs Your Attention Items"
+              description="When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
+              step={3}
+              totalSteps={3}
               onNext={handleNext}
               onPrev={handlePrevious}
-              highlight={false}
+              highlight={true}
               buttonText="Continue Tour"
             />
           </div>
