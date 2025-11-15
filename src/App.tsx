@@ -45,7 +45,7 @@ const RouteWatcher = () => {
   useEffect(() => {
     if (location.pathname === '/onboarding/step-5') {
       localStorage.setItem('preferredPreviewRoute', '/onboarding/step-5');
-    } else if (location.pathname !== '/' && localStorage.getItem('preferredPreviewRoute')) {
+    } else if (!location.pathname.startsWith('/onboarding') && location.pathname !== '/') {
       localStorage.removeItem('preferredPreviewRoute');
     }
   }, [location.pathname]);
