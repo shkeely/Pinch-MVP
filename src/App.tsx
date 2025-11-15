@@ -118,6 +118,12 @@ const RouteWatcher = () => {
   return null;
 };
 
+const DefaultRouteNavigator = () => {
+  const route = getDefaultRoute();
+  console.log('[DefaultRouteNavigator] Navigating to:', route);
+  return <Navigate to={route} replace />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <WeddingProvider>
@@ -127,7 +133,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to={getDefaultRoute()} replace />} />
+            <Route path="/" element={<DefaultRouteNavigator />} />
             <Route path="/landing" element={<Index />} />
             <Route path="/homepage" element={<Homepage />} />
             <Route path="/onboarding/step-1a" element={<Step1A />} />
