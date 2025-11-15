@@ -30,19 +30,23 @@ export function TourTooltip({
   buttonText,
 }: TourTooltipProps) {
   // Position classes based on target direction
+  // Mobile/tablet: tooltips appear above target, centered
+  // Desktop (lg:): use original positioning
   const positionClasses = {
-    top: 'bottom-full mb-4 left-1/2 -translate-x-1/2',
-    right: 'left-full ml-4 top-1/2 -translate-y-1/2',
-    bottom: 'top-full mt-4 left-1/2 -translate-x-1/2',
-    left: 'right-full mr-4 top-1/2 -translate-y-1/2',
+    top: 'top-auto bottom-full mb-4 left-1/2 -translate-x-1/2 lg:bottom-full lg:mb-4 lg:left-1/2 lg:-translate-x-1/2',
+    right: 'top-auto bottom-full mb-4 left-1/2 -translate-x-1/2 lg:left-full lg:ml-4 lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:mb-0',
+    bottom: 'top-auto bottom-full mb-4 left-1/2 -translate-x-1/2 lg:top-full lg:mt-4 lg:bottom-auto lg:mb-0',
+    left: 'top-auto bottom-full mb-4 left-1/2 -translate-x-1/2 lg:right-full lg:mr-4 lg:top-1/2 lg:-translate-y-1/2 lg:left-auto lg:bottom-auto lg:mb-0',
   };
 
   // Arrow position and rotation based on target direction
+  // Mobile/tablet: arrow points down (tooltip is above)
+  // Desktop (lg:): use original arrow positioning
   const arrowClasses = {
-    top: 'top-full left-1/2 -translate-x-1/2 -mt-2 rotate-180',
-    right: 'right-full top-1/2 -translate-y-1/2 -mr-2 -rotate-90',
-    bottom: 'bottom-full left-1/2 -translate-x-1/2 -mb-2',
-    left: 'left-full top-1/2 -translate-y-1/2 -ml-2 rotate-90',
+    top: 'top-full left-1/2 -translate-x-1/2 -mt-2 rotate-0 lg:rotate-180',
+    right: 'top-full left-1/2 -translate-x-1/2 -mt-2 rotate-0 lg:right-full lg:top-1/2 lg:-translate-y-1/2 lg:-mr-2 lg:-rotate-90 lg:left-auto',
+    bottom: 'top-full left-1/2 -translate-x-1/2 -mt-2 rotate-0 lg:bottom-full lg:-mb-2',
+    left: 'top-full left-1/2 -translate-x-1/2 -mt-2 rotate-0 lg:left-full lg:top-1/2 lg:-translate-y-1/2 lg:-ml-2 lg:rotate-90',
   };
 
   return (
@@ -55,7 +59,7 @@ export function TourTooltip({
           className
         )}
       >
-        <Card className="w-80 sm:w-96 shadow-2xl border-[3px] border-purple-500 ring-4 ring-purple-500/30">
+        <Card className="max-w-[90vw] w-80 sm:max-w-md sm:w-96 shadow-2xl border-[3px] border-purple-500 ring-4 ring-purple-500/30">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between mb-2">
               <Badge variant="secondary" className="text-xs">
@@ -109,7 +113,9 @@ export function TourTooltip({
           <div className={cn(
             'absolute w-0 h-0', 
             arrowClasses[target],
-            (target === 'top' || target === 'bottom') ? 'animate-bounce-vertical' : 'animate-bounce-horizontal'
+            'animate-bounce-vertical lg:animate-none',
+            target === 'right' && 'lg:animate-bounce-horizontal',
+            target === 'left' && 'lg:animate-bounce-horizontal'
           )}>
             <svg
               width="20"

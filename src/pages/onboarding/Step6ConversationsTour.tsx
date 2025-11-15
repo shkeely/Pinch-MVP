@@ -252,7 +252,7 @@ export default function Step6ConversationsTour() {
 
         {/* Tooltip 1: Conversation List - Next to Messages header */}
         {currentTooltip === 1 && (
-          <div className="fixed top-32 left-[500px] z-50">
+          <div className="fixed top-32 left-1/2 -translate-x-1/2 px-4 z-50 lg:left-[500px] lg:translate-x-0 lg:px-0">
             <TourTooltip
               target="right"
               title="All Guest Conversations"
@@ -268,7 +268,7 @@ export default function Step6ConversationsTour() {
 
         {/* Tooltip 3: Status Tags */}
         {currentTooltip === 3 && (
-          <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-50">
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 z-50 lg:left-8 lg:-translate-x-0">
             <TourTooltip
               target="right"
               title="Auto vs Escalated"
