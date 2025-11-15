@@ -4,10 +4,12 @@ import { cn } from '@/lib/utils';
 interface OnboardingStepperProps {
   currentStep: number;
   totalSteps?: number;
+  tourMode?: boolean;
 }
 
-export function OnboardingStepper({ currentStep, totalSteps = 4 }: OnboardingStepperProps) {
+export function OnboardingStepper({ currentStep, totalSteps = 4, tourMode = false }: OnboardingStepperProps) {
   const steps = Array.from({ length: totalSteps }, (_, i) => i + 1);
+  const displayStep = tourMode ? currentStep - 4 : currentStep;
 
   return (
     <div className="w-full max-w-3xl mx-auto mb-8">
@@ -18,18 +20,18 @@ export function OnboardingStepper({ currentStep, totalSteps = 4 }: OnboardingSte
               <div
                 className={cn(
                   "w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all",
-                  step < currentStep && "bg-primary border-primary",
-                  step === currentStep && "border-accent bg-accent",
-                  step > currentStep && "border-border bg-background"
+                  step < displayStep && "bg-primary border-primary",
+                  step === displayStep && "border-accent bg-accent",
+                  step > displayStep && "border-border bg-background"
                 )}
               >
-                {step < currentStep ? (
+                {step < displayStep ? (
                   <Check className="w-5 h-5 text-primary-foreground" />
                 ) : (
                   <span className={cn(
                     "text-sm font-medium",
-                    step === currentStep && "text-accent-foreground",
-                    step > currentStep && "text-muted-foreground"
+                    step === displayStep && "text-accent-foreground",
+                    step > displayStep && "text-muted-foreground"
                   )}>
                     {step}
                   </span>
@@ -37,17 +39,17 @@ export function OnboardingStepper({ currentStep, totalSteps = 4 }: OnboardingSte
               </div>
               <p className={cn(
                 "mt-2 text-xs font-medium text-center",
-                step === currentStep && "text-foreground",
-                step !== currentStep && "text-muted-foreground"
+                step === displayStep && "text-foreground",
+                step !== displayStep && "text-muted-foreground"
               )}>
-                Step {step}
+                {tourMode ? `Tour ${step}` : `Step ${step}`}
               </p>
             </div>
             {index < steps.length - 1 && (
               <div
                 className={cn(
                   "h-0.5 flex-1 mx-2 transition-all",
-                  step < currentStep ? "bg-primary" : "bg-border"
+                  step < displayStep ? "bg-primary" : "bg-border"
                 )}
               />
             )}

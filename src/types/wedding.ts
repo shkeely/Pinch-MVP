@@ -18,6 +18,16 @@ export interface ChatbotSettings {
   notifications: NotificationFrequency;
 }
 
+export interface TourProgress {
+  homepage: boolean;
+  conversations: boolean;
+  guestPage: boolean;
+  weddingInfo: boolean;
+  chatbotSettings: boolean;
+  reminders: boolean;
+  analytics: boolean;
+}
+
 export interface Wedding {
   id: string;
   couple1: string;
@@ -36,8 +46,11 @@ export interface Wedding {
   
   chatbotSettings: ChatbotSettings;
   
-  onboardingStep: 1 | 2 | 3 | 4;
+  onboardingStep: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   onboardingComplete: boolean;
+  tourMode: boolean;
+  canGoBack: boolean;
+  tourProgress: TourProgress;
 }
 
 export interface SimulatedMessage {
