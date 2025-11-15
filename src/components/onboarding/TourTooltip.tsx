@@ -14,6 +14,7 @@ interface TourTooltipProps {
   onPrev?: () => void;
   highlight?: boolean;
   className?: string;
+  buttonText?: string;
 }
 
 export function TourTooltip({
@@ -26,6 +27,7 @@ export function TourTooltip({
   onPrev,
   highlight = true,
   className,
+  buttonText,
 }: TourTooltipProps) {
   // Position classes based on target direction
   const positionClasses = {
@@ -100,7 +102,7 @@ export function TourTooltip({
                     color: 'white',
                   }}
                 >
-                  {step === totalSteps ? 'Finish' : 'Next'}
+                  {buttonText || (step === totalSteps ? 'Finish' : 'Next')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               )}

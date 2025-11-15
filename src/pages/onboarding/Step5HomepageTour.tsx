@@ -121,18 +121,19 @@ export default function Step5HomepageTour() {
           </div>
         )}
 
-        {/* Tooltip 4: Quick Actions */}
+        {/* Tooltip 4: Wrap-up */}
         {currentTooltip === 4 && (
-          <div className="absolute top-[650px] left-1/2 -translate-x-1/2 z-50">
+          <div className="absolute top-1/2 right-8 -translate-y-1/2 z-50">
             <TourTooltip
-              target="top"
-              title="Quick Actions"
-              description="Send messages to all guests, view recent conversations, or add knowledge to your Chatbot Brain right from here. Your most-used tools at your fingertips."
+              target="right"
+              title="That's the Homepage!"
+              description="You've learned about your personal dashboard. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention. Ready to explore the rest of Pinch?"
               step={4}
               totalSteps={4}
               onNext={handleNext}
               onPrev={handlePrevious}
-              highlight={true}
+              highlight={false}
+              buttonText="Continue Tour"
             />
           </div>
         )}
