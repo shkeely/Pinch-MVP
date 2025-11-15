@@ -30,13 +30,7 @@ export function TourPage({
     <div className="min-h-screen bg-background">
       {/* Content Area */}
       <div className="relative">
-        {/* Semi-transparent overlay */}
-        <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px] pointer-events-none z-10" />
-        
-        {/* Actual content with tooltips */}
-        <div className="relative z-20">
-          {children}
-        </div>
+        {children}
       </div>
 
       {/* Footer Navigation */}
