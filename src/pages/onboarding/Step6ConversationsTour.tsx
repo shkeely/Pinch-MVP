@@ -90,6 +90,11 @@ export default function Step6ConversationsTour() {
       showSkipButton={true}
     >
       <div className="relative w-full h-full">
+        {/* Dark Overlay for Step 2 */}
+        {currentTooltip === 2 && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40" />
+        )}
+
         {/* Messages Page Content */}
         <div className="min-h-screen bg-background">
           <TopNav />
@@ -116,7 +121,7 @@ export default function Step6ConversationsTour() {
             {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left Panel - Conversation List */}
-              <Card className="p-6 relative" id="conversation-list">
+              <Card className={`p-6 relative ${currentTooltip === 2 ? 'opacity-30' : ''}`} id="conversation-list">
                 <div className="space-y-4">
                   {/* Search */}
                   <div className="relative">
@@ -163,23 +168,10 @@ export default function Step6ConversationsTour() {
                   </div>
                 </div>
 
-                {/* Tooltip 1: Conversation List */}
-                {currentTooltip === 1 && (
-                  <TourTooltip
-                    target="right"
-                    title="All Guest Conversations"
-                    description="Every SMS conversation with your guests appears here. See who's asking what in real-time."
-                    step={1}
-                    totalSteps={3}
-                    onNext={handleNext}
-                    onPrev={handlePrevious}
-                    className="hidden lg:block"
-                  />
-                )}
               </Card>
 
               {/* Right Panel - Conversation Detail */}
-              <Card className="p-6 relative" id="conversation-thread">
+              <Card className={`p-6 relative ${currentTooltip === 2 ? 'z-50' : ''}`} id="conversation-thread">
                 <div className="space-y-4">
                   {/* Guest Info Header */}
                   <div className="flex items-start justify-between pb-4 border-b">
@@ -250,7 +242,7 @@ export default function Step6ConversationsTour() {
                     totalSteps={3}
                     onNext={handleNext}
                     onPrev={handlePrevious}
-                    className="hidden lg:block"
+                    className="hidden lg:block z-[60]"
                   />
                 )}
               </Card>
@@ -258,18 +250,34 @@ export default function Step6ConversationsTour() {
           </div>
         </div>
 
-        {/* Tooltip 3: Confidence Scores */}
-        {currentTooltip === 3 && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+        {/* Tooltip 1: Conversation List - Top of page */}
+        {currentTooltip === 1 && (
+          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
             <TourTooltip
-              target="top"
-              title="Confidence Scores"
-              description="High confidence (green) means Pinch is sure about the answer. Low confidence (orange/red) means it might need your review."
+              target="bottom"
+              title="All Guest Conversations"
+              description="Every SMS conversation with your guests appears here. See who's asking what in real-time."
+              step={1}
+              totalSteps={3}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={true}
+            />
+          </div>
+        )}
+
+        {/* Tooltip 3: Status Tags */}
+        {currentTooltip === 3 && (
+          <div className="fixed top-1/2 right-8 transform -translate-y-1/2 z-50">
+            <TourTooltip
+              target="left"
+              title="Auto vs Escalated"
+              description="Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response."
               step={3}
               totalSteps={3}
               onNext={handleNext}
               onPrev={handlePrevious}
-              highlight={false}
+              highlight={true}
             />
           </div>
         )}
