@@ -58,13 +58,28 @@ const getDefaultRoute = () => {
     // Method 2: Extract route from URL using patterns
     // Matches: /onboarding/step-2, /messages, /reminders, etc.
     const routePatterns = [
+      // Onboarding pages
       /\/(onboarding\/[^"?\s&]+)/,
-      /\/(messages)[^/\w]/,
-      /\/(reminders)[^/\w]/,
-      /\/(chatbot)[^/\w]/,
-      /\/(guests)[^/\w]/,
-      /\/(settings)[^/\w]/,
-      /\/(homepage)[^/\w]/
+      
+      // Main navigation pages
+      /\/(messages)[^/\w]/i,
+      /\/(reminders)[^/\w]/i,
+      /\/(chatbot)[^/\w]/i,
+      /\/(guests)[^/\w]/i,
+      /\/(homepage)[^/\w]/i,
+      /\/(landing)[^/\w]/i,
+      
+      // Settings and profile pages
+      /\/(settings)[^/\w]/i,
+      /\/(profile)[^/\w]/i,
+      /\/(wedding-details)[^/\w]/i,
+      /\/(help-support)[^/\w]/i,
+      
+      // Dashboard variants
+      /\/(dashboard[^"?\s&]*)/i,
+      
+      // Catch any other valid route (starts with /, followed by letters/hyphens)
+      /\/([a-z][a-z0-9-]*(?:\/[a-z0-9-]+)*)[^/\w]/i
     ];
 
     for (const pattern of routePatterns) {
