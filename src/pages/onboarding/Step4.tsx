@@ -196,8 +196,8 @@ export default function Step4() {
             backgroundColor: '#5b6850',
             color: 'white'
           }}>
-            <Check className="w-5 h-5 mr-2" />
-            Complete Setup & View Dashboard
+          <Check className="w-5 h-5 mr-2" />
+            Complete Setup & View Homepage
           </Button>
         </div>
       </div>

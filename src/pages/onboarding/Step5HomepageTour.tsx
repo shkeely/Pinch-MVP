@@ -63,7 +63,7 @@ export default function Step5HomepageTour() {
   return (
     <TourPage
       stepNumber={5}
-      title="Welcome to Your Dashboard"
+      title="Welcome to Your Homepage"
       description="Let's explore your homepage and see how Pinch keeps you organized"
       onNext={handlePageNext}
       onPrevious={handlePagePrevious}
@@ -79,7 +79,7 @@ export default function Step5HomepageTour() {
           <div className="absolute top-32 left-1/2 -translate-x-1/2 z-50">
             <TourTooltip
               target="bottom"
-              title="Your Personal Dashboard"
+              title="Your Personal Homepage"
               description="Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
               step={1}
               totalSteps={4}
