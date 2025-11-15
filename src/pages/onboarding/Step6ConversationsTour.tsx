@@ -43,12 +43,8 @@ export default function Step6ConversationsTour() {
     if (currentTooltip < 3) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
-      updateWedding({ 
-        onboardingStep: 11,
-        onboardingComplete: true,
-        tourMode: false 
-      });
-      navigate('/homepage');
+      updateWedding({ onboardingStep: 7 });
+      navigate('/onboarding/step-7');
     }
   };
 
@@ -191,7 +187,48 @@ export default function Step6ConversationsTour() {
 
                   {/* Conversation Thread */}
                   <div className="space-y-4 min-h-[400px]">
-...
+                    {/* Guest Message */}
+                    <div className="flex justify-start">
+                      <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                        <p className="text-sm text-foreground">
+                          {selectedConversation.question}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {selectedConversation.timestamp}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* AI Response (if auto-answered) */}
+                    {selectedConversation.status === 'auto' && (
+                      <div className="flex justify-end">
+                        <div className="bg-primary/10 rounded-lg p-3 max-w-[80%]">
+                          <div className="flex items-center gap-2 mb-2" id="confidence-indicator">
+                            <Badge 
+                              className={`text-xs ${getConfidenceBadgeColor(selectedConversation.confidence)}`}
+                            >
+                              {selectedConversation.confidencePercent}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">Pinch</span>
+                          </div>
+                          <p className="text-sm text-foreground">
+                            {selectedConversation.answer}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {selectedConversation.timestamp}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Escalated Notice */}
+                    {selectedConversation.status === 'escalated' && (
+                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <p className="text-sm text-orange-800">
+                          ⚠️ This conversation needs your attention
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -205,7 +242,7 @@ export default function Step6ConversationsTour() {
                     totalSteps={3}
                     onNext={handleNext}
                     onPrev={handlePrevious}
-                    className="z-[60]"
+                    className="hidden lg:block z-[60]"
                   />
                 )}
               </Card>
@@ -213,9 +250,9 @@ export default function Step6ConversationsTour() {
           </div>
         </div>
 
-        {/* Tooltip 1: Conversation List - Mobile at bottom */}
+        {/* Tooltip 1: Conversation List - Next to Messages header */}
         {currentTooltip === 1 && (
-          <div className="fixed bottom-20 left-4 right-4 md:bottom-auto md:top-32 md:left-[500px] md:right-auto z-50">
+          <div className="fixed top-32 left-[500px] z-50">
             <TourTooltip
               target="right"
               title="All Guest Conversations"
@@ -229,9 +266,9 @@ export default function Step6ConversationsTour() {
           </div>
         )}
 
-        {/* Tooltip 3: Status Tags - Mobile at bottom */}
+        {/* Tooltip 3: Status Tags */}
         {currentTooltip === 3 && (
-          <div className="fixed bottom-20 left-4 right-4 md:bottom-auto md:top-1/2 md:left-8 md:right-auto md:transform md:-translate-y-1/2 z-50">
+          <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-50">
             <TourTooltip
               target="right"
               title="Auto vs Escalated"
