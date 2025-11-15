@@ -55,7 +55,7 @@ export function TourTooltip({
           className
         )}
       >
-        <Card className="w-80 sm:w-96 shadow-2xl border-[3px] border-purple-500 ring-4 ring-purple-500/30">
+        <Card className="w-full sm:w-80 md:w-96 shadow-2xl border-[3px] border-purple-500 ring-4 ring-purple-500/30">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between mb-2">
               <Badge variant="secondary" className="text-xs">
