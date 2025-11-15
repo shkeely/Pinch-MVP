@@ -41,7 +41,7 @@ const getDefaultRoute = () => {
     const stored = localStorage.getItem('preferredPreviewRoute');
     const route = stored?.toLowerCase();
     console.log('[routing] preferredPreviewRoute:', route, 'hash:', hash);
-    if (route === '/onboarding/step-5') return '/onboarding/step-5';
+    if (route && route.startsWith('/')) return route;
     return '/homepage';
   } catch (e) {
     console.log('[routing] getDefaultRoute error', e);
@@ -59,8 +59,8 @@ const RouteWatcher = () => {
       console.log('[routing] setting preferredPreviewRoute to /onboarding/step-5');
       localStorage.setItem('preferredPreviewRoute', '/onboarding/step-5');
     } else if (!path.startsWith('/onboarding') && path !== '/') {
-      console.log('[routing] removing preferredPreviewRoute');
-      localStorage.removeItem('preferredPreviewRoute');
+      console.log('[routing] updating preferredPreviewRoute to', path);
+      localStorage.setItem('preferredPreviewRoute', path);
     }
   }, [location.pathname]);
   
