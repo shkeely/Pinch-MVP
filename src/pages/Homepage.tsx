@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AnimatedGreeting from '@/components/homepage/AnimatedGreeting';
 import TopNav from '@/components/navigation/TopNav';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,20 @@ import { AISuggestionModal } from '@/components/modals/AISuggestionModal';
 import { AnnouncementsReviewModal } from '@/components/modals/AnnouncementsReviewModal';
 import { useFakeData } from '@/contexts/FakeDataContext';
 
+// Cookie helper for self-correction
+const getRouteCookie = (): string | null => {
+  try {
+    const match = document.cookie.split('; ').find(c => c.startsWith('preferredPreviewRoute='));
+    if (!match) return null;
+    const val = decodeURIComponent(match.split('=')[1] || '');
+    return val || null;
+  } catch (e) {
+    return null;
+  }
+};
+
 export default function Homepage() {
+  const navigate = useNavigate();
   const { homepage, conversations: fakeConversations, upcomingAnnouncements } = useFakeData();
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [escalatedModalOpen, setEscalatedModalOpen] = useState(false);
@@ -46,6 +60,22 @@ export default function Homepage() {
     setSkipClicked(true);
     setGreetingDone(true);
   }, []);
+
+  // Self-correct routing: if we land on /homepage but have a stored route, redirect
+  useEffect(() => {
+    try {
+      const stored = (localStorage.getItem('preferredPreviewRoute') || '').toLowerCase();
+      const cookieVal = (getRouteCookie() || '').toLowerCase();
+      const candidate = (stored && stored.startsWith('/')) ? stored : (cookieVal && cookieVal.startsWith('/')) ? cookieVal : null;
+
+      if (window.location.pathname.toLowerCase() === '/homepage' && candidate && candidate !== '/homepage') {
+        console.log('[routing] homepage self-correct redirect to', candidate);
+        navigate(candidate, { replace: true });
+      }
+    } catch (e) {
+      console.log('[routing] homepage self-correct error', e);
+    }
+  }, [navigate]);
 
   // One-time button reveal sequence after greeting completes
   useEffect(() => {
