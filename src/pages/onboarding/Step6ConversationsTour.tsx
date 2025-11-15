@@ -243,7 +243,6 @@ export default function Step6ConversationsTour() {
                       totalSteps={3}
                       onNext={handleNext}
                       onPrev={handlePrevious}
-                      className="lg:block"
                     />
                   </div>
                 )}
