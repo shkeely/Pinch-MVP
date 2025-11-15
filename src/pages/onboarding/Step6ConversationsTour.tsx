@@ -1,0 +1,279 @@
+import { useState, useEffect, useLayoutEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import TopNav from '@/components/navigation/TopNav';
+import { TourTooltip } from '@/components/onboarding/TourTooltip';
+import { TourPage } from '@/components/onboarding/TourPage';
+import { useWedding } from '@/contexts/WeddingContext';
+import { FAKE_DATA } from '@/data/fakeData';
+
+export default function Step6ConversationsTour() {
+  const [currentTooltip, setCurrentTooltip] = useState(1);
+  const [tooltipTop, setTooltipTop] = useState(0);
+  const navigate = useNavigate();
+  const { updateWedding } = useWedding();
+
+  const conversations = FAKE_DATA.recentConversations;
+  const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
+
+  useEffect(() => {
+    window.location.hash = '#step-6';
+  }, []);
+
+  useLayoutEffect(() => {
+    const updatePosition = () => {
+      const conversationList = document.getElementById('conversation-list');
+      if (conversationList) {
+        const rect = conversationList.getBoundingClientRect();
+        setTooltipTop(rect.top + window.scrollY);
+      }
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    return () => window.removeEventListener('resize', updatePosition);
+  }, [currentTooltip]);
+
+  const handleNext = () => {
+    if (currentTooltip < 3) {
+      setCurrentTooltip(currentTooltip + 1);
+    } else {
+      updateWedding({ onboardingStep: 7 });
+      navigate('/onboarding/step-7');
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentTooltip > 1) {
+      setCurrentTooltip(currentTooltip - 1);
+    } else {
+      updateWedding({ onboardingStep: 5 });
+      navigate('/onboarding/step-5');
+    }
+  };
+
+  const handleSkipTour = () => {
+    updateWedding({ 
+      onboardingStep: 11,
+      onboardingComplete: true,
+      tourMode: false 
+    });
+    navigate('/homepage');
+  };
+
+  const getConfidenceBadgeColor = (confidence: string) => {
+    switch (confidence) {
+      case 'high':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'medium':
+        return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'low':
+        return 'bg-red-100 text-red-800 border-red-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  return (
+    <TourPage
+      stepNumber={6}
+      title="Guest Conversations"
+      description="See how Pinch handles your guest messages"
+      onNext={currentTooltip === 3 ? handleNext : undefined}
+      onPrevious={handlePrevious}
+      onSkipTour={handleSkipTour}
+      showSkipButton={true}
+    >
+      <div className="relative w-full h-full">
+        {/* Messages Page Content */}
+        <div className="min-h-screen bg-background">
+          <TopNav />
+          
+          <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
+            {/* Header */}
+            <div className="mb-6">
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-2">
+                Messages
+              </h1>
+              <p className="text-muted-foreground text-base">
+                Guest conversations & AI responses
+              </p>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              <Button variant="default" size="sm">All</Button>
+              <Button variant="outline" size="sm">Auto-Answered</Button>
+              <Button variant="outline" size="sm">Escalated</Button>
+              <Button variant="outline" size="sm">Risky</Button>
+            </div>
+
+            {/* Two Column Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Left Panel - Conversation List */}
+              <Card className="p-6 relative" id="conversation-list">
+                <div className="space-y-4">
+                  {/* Search */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                    <Input
+                      placeholder="Search conversations..."
+                      className="pl-10"
+                      disabled
+                    />
+                  </div>
+
+                  {/* Conversation Items */}
+                  <div className="space-y-2">
+                    {conversations.map((conv) => (
+                      <div
+                        key={conv.id}
+                        onClick={() => setSelectedConversation(conv)}
+                        className={`p-4 rounded-lg border cursor-pointer transition-colors ${
+                          selectedConversation.id === conv.id
+                            ? 'bg-accent border-primary'
+                            : 'hover:bg-accent/50'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <p className="font-medium text-foreground">{conv.guestName}</p>
+                            <p className="text-xs text-muted-foreground">{conv.phoneNumber}</p>
+                          </div>
+                          <Badge
+                            variant={conv.status === 'escalated' ? 'destructive' : 'secondary'}
+                            className="text-xs"
+                          >
+                            {conv.status === 'auto' ? 'Auto' : 'Escalated'}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {conv.question}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {conv.timestamp} • {conv.date}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tooltip 1: Conversation List */}
+                {currentTooltip === 1 && (
+                  <TourTooltip
+                    target="right"
+                    title="All Guest Conversations"
+                    description="Every SMS conversation with your guests appears here. See who's asking what in real-time."
+                    step={1}
+                    totalSteps={3}
+                    onNext={handleNext}
+                    onPrev={handlePrevious}
+                    className="hidden lg:block"
+                  />
+                )}
+              </Card>
+
+              {/* Right Panel - Conversation Detail */}
+              <Card className="p-6 relative" id="conversation-thread">
+                <div className="space-y-4">
+                  {/* Guest Info Header */}
+                  <div className="flex items-start justify-between pb-4 border-b">
+                    <div>
+                      <h3 className="text-xl font-semibold text-foreground">
+                        {selectedConversation.guestName}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {selectedConversation.phoneNumber}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Conversation Thread */}
+                  <div className="space-y-4 min-h-[400px]">
+                    {/* Guest Message */}
+                    <div className="flex justify-start">
+                      <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                        <p className="text-sm text-foreground">
+                          {selectedConversation.question}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {selectedConversation.timestamp}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* AI Response (if auto-answered) */}
+                    {selectedConversation.status === 'auto' && (
+                      <div className="flex justify-end">
+                        <div className="bg-primary/10 rounded-lg p-3 max-w-[80%]">
+                          <div className="flex items-center gap-2 mb-2" id="confidence-indicator">
+                            <Badge 
+                              className={`text-xs ${getConfidenceBadgeColor(selectedConversation.confidence)}`}
+                            >
+                              {selectedConversation.confidencePercent}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">Pinch</span>
+                          </div>
+                          <p className="text-sm text-foreground">
+                            {selectedConversation.answer}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {selectedConversation.timestamp}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Escalated Notice */}
+                    {selectedConversation.status === 'escalated' && (
+                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <p className="text-sm text-orange-800">
+                          ⚠️ This conversation needs your attention
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Tooltip 2: Conversation Thread */}
+                {currentTooltip === 2 && (
+                  <TourTooltip
+                    target="left"
+                    title="Conversation Thread"
+                    description="See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
+                    step={2}
+                    totalSteps={3}
+                    onNext={handleNext}
+                    onPrev={handlePrevious}
+                    className="hidden lg:block"
+                  />
+                )}
+              </Card>
+            </div>
+          </div>
+        </div>
+
+        {/* Tooltip 3: Confidence Scores */}
+        {currentTooltip === 3 && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+            <TourTooltip
+              target="top"
+              title="Confidence Scores"
+              description="High confidence (green) means Pinch is sure about the answer. Low confidence (orange/red) means it might need your review."
+              step={3}
+              totalSteps={3}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={false}
+            />
+          </div>
+        )}
+      </div>
+    </TourPage>
+  );
+}
