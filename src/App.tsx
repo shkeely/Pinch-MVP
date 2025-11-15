@@ -45,16 +45,23 @@ const getRouteCookie = (): string | null => {
 
 const getDefaultRoute = () => {
   try {
+    const currentPath = window.location.pathname;
     const hash = window.location?.hash?.toLowerCase?.() || '';
     const stored = localStorage.getItem('preferredPreviewRoute');
     const cookie = getRouteCookie();
     
     console.log('=== PREVIEW ROUTE DEBUG ===');
+    console.log('Current path:', currentPath);
     console.log('Hash:', hash);
     console.log('LocalStorage raw:', stored);
     console.log('Cookie raw:', cookie);
-    console.log('Window location:', window.location.pathname);
     console.log('========================');
+    
+    // If we have a valid current path (not just "/"), use it
+    if (currentPath && currentPath !== '/' && currentPath.startsWith('/')) {
+      console.log('Using current path:', currentPath);
+      return currentPath;
+    }
     
     if (hash === '#onboarding-step-5') {
       return '/onboarding/step-5';
