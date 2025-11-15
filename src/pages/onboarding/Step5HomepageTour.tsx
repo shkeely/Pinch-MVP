@@ -1,23 +1,79 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TourPage } from '@/components/onboarding/TourPage';
 import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
+import { cn } from '@/lib/utils';
 import Homepage from '@/pages/Homepage';
 
 export default function Step5HomepageTour() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
+  const [tooltipTop, setTooltipTop] = useState<number | null>(null);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
+
+  // Set preferred preview route for "Open in new tab"
+  useEffect(() => {
+    localStorage.setItem('preferredPreviewRoute', '/onboarding/step-5');
+    return () => {
+      localStorage.removeItem('preferredPreviewRoute');
+    };
+  }, []);
+
+  // Compute and set tooltip position dynamically
+  useLayoutEffect(() => {
+    const computePosition = () => {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          let anchorEl: HTMLElement | null = null;
+
+          if (currentTooltip === 1) {
+            // Find the "Skip intro →" button
+            const buttons = Array.from(document.querySelectorAll('button'));
+            anchorEl = buttons.find(btn => btn.textContent?.includes('Skip intro')) as HTMLElement;
+          } else if (currentTooltip === 2) {
+            anchorEl = document.getElementById('tour-btn-1');
+          } else if (currentTooltip === 3) {
+            anchorEl = document.getElementById('tour-btn-2');
+          }
+
+          if (anchorEl) {
+            const rect = anchorEl.getBoundingClientRect();
+            setTooltipTop(rect.bottom);
+          } else {
+            // Retry after a short delay if element not found
+            setTimeout(computePosition, 100);
+          }
+        }, 50);
+      });
+    };
+
+    setTooltipTop(null); // Reset while computing
+    computePosition();
+
+    // Recompute on window resize
+    window.addEventListener('resize', computePosition);
+    return () => window.removeEventListener('resize', computePosition);
+  }, [currentTooltip]);
 
   const handleNext = () => {
     if (currentTooltip === 1) {
       // Trigger skip intro when moving from Step 1 to Step 2
-      setTimeout(() => {
+      let attempts = 0;
+      const maxAttempts = 8; // 800ms total
+      const intervalId = setInterval(() => {
+        attempts++;
         const buttons = Array.from(document.querySelectorAll('button'));
         const skipButton = buttons.find(btn => btn.textContent?.includes('Skip intro'));
+        const btn1 = document.getElementById('tour-btn-1');
+        
         if (skipButton) {
           skipButton.click();
+        }
+        
+        // Stop when btn-1 appears or max attempts reached
+        if (btn1 || attempts >= maxAttempts) {
+          clearInterval(intervalId);
         }
       }, 100);
     }
@@ -87,7 +143,13 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 1: AnimatedGreeting */}
         {currentTooltip === 1 && (
-          <div className="absolute top-56 left-1/2 -translate-x-1/2 z-50">
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
             <TourTooltip
               target="bottom"
               title="Your Personal Homepage"
@@ -102,7 +164,13 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 2: Auto-Answered Questions */}
         {currentTooltip === 2 && (
-          <div className="absolute top-[410px] left-1/2 -translate-x-1/2 z-50">
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
             <TourTooltip
               target="bottom"
               title="Auto-Answered Questions"
@@ -118,7 +186,13 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 3: Needs Attention Items */}
         {currentTooltip === 3 && (
-          <div className="absolute top-[460px] left-1/2 -translate-x-1/2 z-50">
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
             <TourTooltip
               target="bottom"
               title="Needs Your Attention Items"
