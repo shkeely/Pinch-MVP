@@ -111,12 +111,13 @@ export function TourTooltip({
         </Card>
 
         {/* Arrow pointer */}
-        <div className={cn('absolute w-0 h-0', arrowClasses[target])}>
+        <div className={cn('absolute w-0 h-0 animate-bounce', arrowClasses[target])}>
           <svg
             width="20"
             height="10"
             viewBox="0 0 20 10"
-            className="fill-background stroke-border stroke-2"
+            className="fill-background stroke-2"
+            style={{ stroke: '#9b87f5' }}
           >
             <path d="M0 10 L10 0 L20 10 Z" />
           </svg>
