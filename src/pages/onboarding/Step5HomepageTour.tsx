@@ -23,6 +23,12 @@ export default function Step5HomepageTour() {
   // Compute and set tooltip position dynamically
   useLayoutEffect(() => {
     const computePosition = () => {
+      // Step 4 is centered, no anchor needed
+      if (currentTooltip === 4) {
+        setTooltipTop(window.innerHeight / 2 - 150); // Centered vertically
+        return;
+      }
+
       requestAnimationFrame(() => {
         setTimeout(() => {
           let anchorEl: HTMLElement | null = null;
@@ -78,7 +84,7 @@ export default function Step5HomepageTour() {
       }, 100);
     }
     
-    if (currentTooltip < 3) {
+    if (currentTooltip < 4) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
       // Last tooltip - advance to Step 6
@@ -155,7 +161,7 @@ export default function Step5HomepageTour() {
               title="Your Personal Homepage"
               description="Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
               step={1}
-              totalSteps={3}
+              totalSteps={4}
               onNext={handleNext}
               highlight={true}
             />
@@ -176,7 +182,7 @@ export default function Step5HomepageTour() {
               title="Auto-Answered Questions"
               description="See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
               step={2}
-              totalSteps={3}
+              totalSteps={4}
               onNext={handleNext}
               onPrev={handlePrevious}
               highlight={true}
@@ -198,11 +204,33 @@ export default function Step5HomepageTour() {
               title="Needs Your Attention Items"
               description="When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
               step={3}
-              totalSteps={3}
+              totalSteps={4}
               onNext={handleNext}
               onPrev={handlePrevious}
               highlight={true}
-              buttonText="Continue Tour"
+            />
+          </div>
+        )}
+
+        {/* Tooltip 4: Wrap-up - Centered */}
+        {currentTooltip === 4 && (
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
+            <TourTooltip
+              target="bottom"
+              title="That's the Homepage!"
+              description="You've learned about your personal dashboard. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention. Ready to explore the rest of Pinch?"
+              step={4}
+              totalSteps={4}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={false}
+              buttonText="Continue Tour →"
             />
           </div>
         )}
