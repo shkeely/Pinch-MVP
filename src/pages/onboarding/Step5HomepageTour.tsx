@@ -13,10 +13,13 @@ export default function Step5HomepageTour() {
   const handleNext = () => {
     if (currentTooltip === 1) {
       // Trigger skip intro when moving from Step 1 to Step 2
-      const skipButton = document.querySelector('button') as HTMLButtonElement | null;
-      if (skipButton && skipButton.textContent?.includes('Skip intro')) {
-        skipButton.click();
-      }
+      setTimeout(() => {
+        const buttons = Array.from(document.querySelectorAll('button'));
+        const skipButton = buttons.find(btn => btn.textContent?.includes('Skip intro'));
+        if (skipButton) {
+          skipButton.click();
+        }
+      }, 100);
     }
     
     if (currentTooltip < 3) {
