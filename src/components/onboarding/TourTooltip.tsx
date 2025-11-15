@@ -50,12 +50,12 @@ export function TourTooltip({
       {/* Tooltip Card */}
       <div
         className={cn(
-          'absolute z-50 animate-fade-in',
+          'absolute z-50',
           positionClasses[target],
           className
         )}
       >
-        <Card className="w-80 sm:w-96 shadow-2xl border-2 animate-scale-in">
+        <Card className="w-80 sm:w-96 shadow-2xl border-2">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between mb-2">
               <Badge variant="secondary" className="text-xs">
