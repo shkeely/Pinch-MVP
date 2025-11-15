@@ -62,10 +62,11 @@ export default function Step4() {
   };
   const handleComplete = () => {
     updateWedding({
-      onboardingStep: 4,
-      onboardingComplete: true
+      onboardingStep: 5,
+      tourMode: true,
+      canGoBack: true
     });
-    navigate('/homepage');
+    navigate('/onboarding/step-5');
   };
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString('en-US', {
