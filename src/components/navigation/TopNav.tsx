@@ -1,4 +1,4 @@
-import { Settings, Menu, ExternalLink } from 'lucide-react';
+import { Settings, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -22,11 +22,6 @@ export default function TopNav() {
   const handleNavigation = (path: string) => {
     navigate(path);
     setIsOpen(false);
-  };
-
-  const handleOpenInNewTab = () => {
-    const url = `${window.location.origin}${location.pathname}${location.search}${location.hash}`;
-    window.open(url, '_blank', 'noopener');
   };
 
   return (
@@ -94,16 +89,6 @@ export default function TopNav() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="hidden lg:flex gap-2 rounded-full"
-            onClick={handleOpenInNewTab}
-          >
-            <ExternalLink className="w-4 h-4" />
-            <span className="hidden xl:inline">Open in New Tab</span>
-          </Button>
-          
           <Button 
             variant="ghost" 
             size="icon" 
