@@ -43,7 +43,8 @@ const RouteWatcher = () => {
   const location = useLocation();
   
   useEffect(() => {
-    console.log('[routing] Current path:', location.pathname);
+    console.log('[RouteWatcher] Current path:', location.pathname);
+    // Removed localStorage updates - let Lovable control preview routing
   }, [location.pathname]);
   
   return null;
