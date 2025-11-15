@@ -32,6 +32,17 @@ const defaultWedding: Wedding = {
   },
   onboardingStep: 1,
   onboardingComplete: false,
+  tourMode: false,
+  canGoBack: false,
+  tourProgress: {
+    homepage: false,
+    conversations: false,
+    guestPage: false,
+    weddingInfo: false,
+    chatbotSettings: false,
+    reminders: false,
+    analytics: false,
+  },
 };
 
 const WeddingContext = createContext<WeddingContextType | undefined>(undefined);
