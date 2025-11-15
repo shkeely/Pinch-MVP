@@ -28,6 +28,7 @@ import Profile from "./pages/Profile";
 import WeddingDetails from "./pages/WeddingDetails";
 import HelpSupport from "./pages/HelpSupport";
 import NotFound from "./pages/NotFound";
+import RoutingDebugPanel from "@/components/debug/RoutingDebugPanel";
 
 const queryClient = new QueryClient();
 
@@ -57,13 +58,35 @@ const getRouteCookie = (): string | null => {
 const getDefaultRoute = () => {
   try {
     const hash = window.location?.hash?.toLowerCase?.() || '';
+    console.log('[routing] getDefaultRoute env:', {
+      origin: window.location.origin,
+      pathname: window.location.pathname,
+      hash,
+      isTopWindow: window.top === window.self,
+      cookieEnabled: navigator.cookieEnabled
+    });
+    
     if (hash === '#onboarding-step-5') {
       console.log('[routing] hash indicates onboarding step 5');
       return '/onboarding/step-5';
     }
-    const stored = localStorage.getItem('preferredPreviewRoute');
-    const lsRoute = stored?.toLowerCase();
-    const ckRoute = getRouteCookie()?.toLowerCase();
+    
+    let lsRoute = null;
+    let ckRoute = null;
+    
+    try {
+      const stored = localStorage.getItem('preferredPreviewRoute');
+      lsRoute = stored?.toLowerCase();
+    } catch (lsError) {
+      console.log('[routing] localStorage read error:', lsError);
+    }
+    
+    try {
+      ckRoute = getRouteCookie()?.toLowerCase();
+    } catch (ckError) {
+      console.log('[routing] cookie read error:', ckError);
+    }
+    
     console.log('[routing] preferredPreviewRoute:', lsRoute, 'cookie:', ckRoute, 'hash:', hash);
     
     if (lsRoute && lsRoute.startsWith('/')) return lsRoute;
@@ -102,9 +125,10 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
-            <RouteWatcher />
-          <Routes>
+      <BrowserRouter>
+        <RouteWatcher />
+        <RoutingDebugPanel />
+        <Routes>
             <Route path="/" element={<Navigate to={getDefaultRoute()} replace />} />
             <Route path="/landing" element={<Index />} />
             <Route path="/homepage" element={<Homepage />} />
