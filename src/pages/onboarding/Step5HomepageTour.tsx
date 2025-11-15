@@ -87,7 +87,7 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 1: AnimatedGreeting */}
         {currentTooltip === 1 && (
-          <div className="absolute top-80 left-1/2 -translate-x-1/2 z-50">
+          <div className="absolute top-56 left-1/2 -translate-x-1/2 z-50">
             <TourTooltip
               target="bottom"
               title="Your Personal Homepage"
