@@ -45,71 +45,59 @@ const getRouteCookie = (): string | null => {
 
 const getDefaultRoute = () => {
   try {
-    const url = new URL(window.location.href);
-    const params = url.searchParams;
-    const paramNames = ['route', 'path', 'to', 'r', 'preview', 'previewRoute', 'preferredPreviewRoute'];
-    let paramRoute: string | null = null;
-    for (const key of paramNames) {
-      const val = params.get(key);
-      if (val && val.startsWith('/')) {
-        paramRoute = val;
-        break;
-      }
-    }
-
-    const hashRaw = window.location.hash || '';
-    const hash = hashRaw.toLowerCase();
-    const stored = localStorage.getItem('preferredPreviewRoute');
-    const cookie = getRouteCookie();
-    const currentPath = window.location.pathname;
+    const fullUrl = window.location.href;
+    console.log('Full URL:', fullUrl);
     
-    console.log('=== PREVIEW ROUTE DEBUG ===');
-    console.log('Search params:', url.search);
-    console.log('Param route:', paramRoute);
-    console.log('Hash:', hash);
-    console.log('LocalStorage raw:', stored);
-    console.log('Cookie raw:', cookie);
-    console.log('Current path:', currentPath);
-    console.log('========================');
-
-    if (paramRoute) {
-      console.log('Using URL param route:', paramRoute);
-      return paramRoute;
-    }
-
-    if (hash === '#onboarding-step-5') {
-      return '/onboarding/step-5';
-    }
-
-    if (hashRaw.startsWith('#/')) {
-      const fromHash = hashRaw.slice(1);
-      if (fromHash.startsWith('/')) {
-        console.log('Using hash path:', fromHash);
-        return fromHash;
-      }
-    }
-
+    // Method 1: Current path
+    const currentPath = window.location.pathname;
     if (currentPath && currentPath !== '/' && currentPath.startsWith('/')) {
       console.log('Using current path:', currentPath);
       return currentPath;
     }
 
-    const lsRoute = stored?.toLowerCase();
-    const ckRoute = cookie?.toLowerCase();
+    // Method 2: Extract route from URL using patterns
+    // Matches: /onboarding/step-2, /messages, /reminders, etc.
+    const routePatterns = [
+      /\/(onboarding\/[^"?\s&]+)/,
+      /\/(messages)[^/\w]/,
+      /\/(reminders)[^/\w]/,
+      /\/(chatbot)[^/\w]/,
+      /\/(guests)[^/\w]/,
+      /\/(settings)[^/\w]/,
+      /\/(homepage)[^/\w]/
+    ];
 
-    if (lsRoute && lsRoute.startsWith('/')) {
-      console.log('Using localStorage route:', lsRoute);
-      return lsRoute;
+    for (const pattern of routePatterns) {
+      const match = fullUrl.match(pattern);
+      if (match && match[1]) {
+        const route = '/' + match[1];
+        console.log('Extracted route from URL:', route);
+        return route;
+      }
     }
-    if (ckRoute && ckRoute.startsWith('/')) {
-      console.log('Using cookie route:', ckRoute);
-      return ckRoute;
+
+    // Method 3: URL parameters
+    const url = new URL(fullUrl);
+    const params = url.searchParams;
+    for (const key of ['route', 'path', 'preview']) {
+      const val = params.get(key);
+      if (val && val.startsWith('/')) {
+        console.log('Using URL param:', val);
+        return val;
+      }
+    }
+
+    // Method 4: LocalStorage fallback
+    const stored = localStorage.getItem('preferredPreviewRoute');
+    if (stored && stored.startsWith('/')) {
+      console.log('Using localStorage:', stored);
+      return stored;
     }
 
     console.log('Using default: /homepage');
     return '/homepage';
   } catch (e) {
-    console.log('[routing] getDefaultRoute error', e);
+    console.log('Route error:', e);
     return '/homepage';
   }
 };
