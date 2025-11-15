@@ -11,6 +11,14 @@ export default function Step5HomepageTour() {
   const { updateWedding } = useWedding();
 
   const handleNext = () => {
+    if (currentTooltip === 1) {
+      // Trigger skip intro when moving from Step 1 to Step 2
+      const skipButton = document.querySelector('button') as HTMLButtonElement | null;
+      if (skipButton && skipButton.textContent?.includes('Skip intro')) {
+        skipButton.click();
+      }
+    }
+    
     if (currentTooltip < 3) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
@@ -89,11 +97,11 @@ export default function Step5HomepageTour() {
           </div>
         )}
 
-        {/* Tooltip 2: Auto-Answered Questions (previously step 3) */}
+        {/* Tooltip 2: Auto-Answered Questions */}
         {currentTooltip === 2 && (
-          <div className="absolute top-[420px] left-1/2 -translate-x-1/2 z-50">
+          <div className="absolute top-[380px] left-1/2 -translate-x-1/2 z-50">
             <TourTooltip
-              target="top"
+              target="bottom"
               title="Auto-Answered Questions"
               description="See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
               step={2}
@@ -105,11 +113,11 @@ export default function Step5HomepageTour() {
           </div>
         )}
 
-        {/* Tooltip 3: Needs Attention section (previously step 2) */}
+        {/* Tooltip 3: Needs Attention Items */}
         {currentTooltip === 3 && (
-          <div className="absolute top-[450px] left-1/2 -translate-x-1/2 z-50">
+          <div className="absolute top-[460px] left-1/2 -translate-x-1/2 z-50">
             <TourTooltip
-              target="left"
+              target="bottom"
               title="Needs Your Attention Items"
               description="When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
               step={3}
