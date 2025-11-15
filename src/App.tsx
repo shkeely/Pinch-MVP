@@ -15,6 +15,7 @@ import Step2 from "./pages/onboarding/Step2";
 import Step3 from "./pages/onboarding/Step3";
 import Step4 from "./pages/onboarding/Step4";
 import Step5HomepageTour from "./pages/onboarding/Step5HomepageTour";
+import Step6ConversationsTour from "./pages/onboarding/Step6ConversationsTour";
 import Dashboard1 from "./pages/Dashboard1";
 import Dashboard1Alt from "./pages/Dashboard1Alt";
 import Dashboard1AltSimplified from "./pages/Dashboard1Alt-Simplified";
@@ -150,7 +151,8 @@ const App = () => (
             <Route path="/onboarding/step-4" element={<Step4 />} />
             <Route path="/onboarding/step-5" element={<Step5HomepageTour />} />
             <Route path="/onboarding/Step-5" element={<Step5HomepageTour />} />
-            <Route path="/onboarding/step-6" element={<Homepage />} />
+            <Route path="/onboarding/step-6" element={<Step6ConversationsTour />} />
+            <Route path="/onboarding/Step-6" element={<Step6ConversationsTour />} />
             <Route path="/dashboard1" element={<Dashboard1 />} />
             <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
             <Route path="/dashboard-alt" element={<DashboardAlt />} />
