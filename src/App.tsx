@@ -45,33 +45,37 @@ const getRouteCookie = (): string | null => {
 
 const getDefaultRoute = () => {
   try {
+    const hash = window.location?.hash?.toLowerCase?.() || '';
     const stored = localStorage.getItem('preferredPreviewRoute');
     const cookie = getRouteCookie();
     
-    console.log('========== PREVIEW ROUTE DEBUG ==========');
+    console.log('=== PREVIEW ROUTE DEBUG ===');
+    console.log('Hash:', hash);
     console.log('LocalStorage raw:', stored);
     console.log('Cookie raw:', cookie);
-    console.log('Current URL:', window.location.href);
-    console.log('========================================');
+    console.log('Window location:', window.location.pathname);
+    console.log('========================');
     
-    const hash = window.location?.hash?.toLowerCase?.() || '';
     if (hash === '#onboarding-step-5') {
       return '/onboarding/step-5';
     }
     
-    if (stored && stored.startsWith('/')) {
-      console.log('✓ Using localStorage route:', stored);
-      return stored;
+    const lsRoute = stored?.toLowerCase();
+    const ckRoute = cookie?.toLowerCase();
+    
+    if (lsRoute && lsRoute.startsWith('/')) {
+      console.log('Using localStorage route:', lsRoute);
+      return lsRoute;
     }
-    if (cookie && cookie.startsWith('/')) {
-      console.log('✓ Using cookie route:', cookie);
-      return cookie;
+    if (ckRoute && ckRoute.startsWith('/')) {
+      console.log('Using cookie route:', ckRoute);
+      return ckRoute;
     }
     
-    console.log('⚠ Using default: /homepage');
+    console.log('Using default: /homepage');
     return '/homepage';
   } catch (e) {
-    console.log('[routing] error', e);
+    console.log('[routing] getDefaultRoute error', e);
     return '/homepage';
   }
 };
