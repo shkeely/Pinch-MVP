@@ -150,9 +150,7 @@ const App = () => (
             <Route path="/onboarding/step-3" element={<Step3 />} />
             <Route path="/onboarding/step-4" element={<Step4 />} />
             <Route path="/onboarding/step-5" element={<Step5HomepageTour />} />
-            <Route path="/onboarding/Step-5" element={<Step5HomepageTour />} />
             <Route path="/onboarding/step-6" element={<Step6ConversationsTour />} />
-            <Route path="/onboarding/Step-6" element={<Step6ConversationsTour />} />
             <Route path="/dashboard1" element={<Dashboard1 />} />
             <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
             <Route path="/dashboard-alt" element={<DashboardAlt />} />
