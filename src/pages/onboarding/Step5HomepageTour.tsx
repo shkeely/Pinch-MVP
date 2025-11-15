@@ -102,7 +102,7 @@ export default function Step5HomepageTour() {
 
         {/* Tooltip 2: Auto-Answered Questions */}
         {currentTooltip === 2 && (
-          <div className="absolute top-[450px] left-1/2 -translate-x-1/2 z-50">
+          <div className="absolute top-[410px] left-1/2 -translate-x-1/2 z-50">
             <TourTooltip
               target="bottom"
               title="Auto-Answered Questions"
