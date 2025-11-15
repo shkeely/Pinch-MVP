@@ -81,13 +81,6 @@ const getDefaultRoute = () => {
 };
 
 const RouteWatcher = () => {
-  const location = useLocation();
-  
-  useEffect(() => {
-    console.log('[RouteWatcher] Current path:', location.pathname);
-    // Removed localStorage updates - let Lovable control preview routing
-  }, [location.pathname]);
-  
   return null;
 };
 
@@ -99,7 +92,6 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <RouteWatcher />
           <Routes>
             <Route path="/" element={<Navigate to={getDefaultRoute()} replace />} />
             <Route path="/landing" element={<Index />} />
