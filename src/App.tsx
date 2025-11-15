@@ -45,31 +45,58 @@ const getRouteCookie = (): string | null => {
 
 const getDefaultRoute = () => {
   try {
-    const currentPath = window.location.pathname;
-    const hash = window.location?.hash?.toLowerCase?.() || '';
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+    const paramNames = ['route', 'path', 'to', 'r', 'preview', 'previewRoute', 'preferredPreviewRoute'];
+    let paramRoute: string | null = null;
+    for (const key of paramNames) {
+      const val = params.get(key);
+      if (val && val.startsWith('/')) {
+        paramRoute = val;
+        break;
+      }
+    }
+
+    const hashRaw = window.location.hash || '';
+    const hash = hashRaw.toLowerCase();
     const stored = localStorage.getItem('preferredPreviewRoute');
     const cookie = getRouteCookie();
+    const currentPath = window.location.pathname;
     
     console.log('=== PREVIEW ROUTE DEBUG ===');
-    console.log('Current path:', currentPath);
+    console.log('Search params:', url.search);
+    console.log('Param route:', paramRoute);
     console.log('Hash:', hash);
     console.log('LocalStorage raw:', stored);
     console.log('Cookie raw:', cookie);
+    console.log('Current path:', currentPath);
     console.log('========================');
-    
-    // If we have a valid current path (not just "/"), use it
+
+    if (paramRoute) {
+      console.log('Using URL param route:', paramRoute);
+      return paramRoute;
+    }
+
+    if (hash === '#onboarding-step-5') {
+      return '/onboarding/step-5';
+    }
+
+    if (hashRaw.startsWith('#/')) {
+      const fromHash = hashRaw.slice(1);
+      if (fromHash.startsWith('/')) {
+        console.log('Using hash path:', fromHash);
+        return fromHash;
+      }
+    }
+
     if (currentPath && currentPath !== '/' && currentPath.startsWith('/')) {
       console.log('Using current path:', currentPath);
       return currentPath;
     }
-    
-    if (hash === '#onboarding-step-5') {
-      return '/onboarding/step-5';
-    }
-    
+
     const lsRoute = stored?.toLowerCase();
     const ckRoute = cookie?.toLowerCase();
-    
+
     if (lsRoute && lsRoute.startsWith('/')) {
       console.log('Using localStorage route:', lsRoute);
       return lsRoute;
@@ -78,7 +105,7 @@ const getDefaultRoute = () => {
       console.log('Using cookie route:', ckRoute);
       return ckRoute;
     }
-    
+
     console.log('Using default: /homepage');
     return '/homepage';
   } catch (e) {
