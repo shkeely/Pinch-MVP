@@ -7,7 +7,7 @@ import NotificationsPopover from './NotificationsPopover';
 import AccountPopover from './AccountPopover';
 
 const navItems = [
-  { label: 'Homepage', path: '/dashboard1-alt' },
+  { label: 'Homepage', path: '/homepage' },
   { label: 'Messages', path: '/messages' },
   { label: 'Reminders', path: '/reminders' },
   { label: 'Chatbot', path: '/chatbot' },
