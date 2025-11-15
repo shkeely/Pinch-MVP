@@ -250,11 +250,11 @@ export default function Step6ConversationsTour() {
           </div>
         </div>
 
-        {/* Tooltip 1: Conversation List - Top of page */}
+        {/* Tooltip 1: Conversation List - Next to Messages header */}
         {currentTooltip === 1 && (
-          <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="fixed top-32 left-[500px] z-50">
             <TourTooltip
-              target="top"
+              target="bottom"
               title="All Guest Conversations"
               description="Every SMS conversation with your guests appears here. See who's asking what in real-time."
               step={1}
