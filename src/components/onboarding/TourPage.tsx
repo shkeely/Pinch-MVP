@@ -28,40 +28,6 @@ export function TourPage({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header Section */}
-      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col items-center text-center space-y-4">
-            {/* Tutorial Mode Badge */}
-            <Badge 
-              variant="secondary" 
-              className="bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20 px-4 py-1 text-sm font-medium animate-fade-in"
-            >
-              Tutorial Mode
-            </Badge>
-
-            {/* Title and Description */}
-            <div className="space-y-2 max-w-3xl animate-fade-in">
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold">
-                {title}
-              </h1>
-              <p className="text-base sm:text-lg text-muted-foreground">
-                {description}
-              </p>
-            </div>
-
-            {/* Progress Indicator */}
-            <div className="w-full max-w-2xl animate-fade-in">
-              <OnboardingStepper 
-                currentStep={stepNumber} 
-                totalSteps={7}
-                tourMode={true}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Content Area */}
       <div className="relative">
         {/* Semi-transparent overlay */}
@@ -74,34 +40,56 @@ export function TourPage({
       </div>
 
       {/* Footer Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            {/* Left side: Previous button */}
+      <div className="fixed bottom-0 left-0 right-0 border-t bg-background shadow-lg z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4">
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-center justify-between gap-6">
+            {/* Left: Previous button */}
             <Button
               variant="outline"
               onClick={onPrevious}
-              className="w-full sm:w-auto order-2 sm:order-1"
+              className="flex-shrink-0"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Previous
             </Button>
 
-            {/* Center: Skip Tour button (only on first tour step) */}
+            {/* Center: Progress indicator */}
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium whitespace-nowrap">
+                Tour {tourStep} of 7
+              </span>
+              <div className="flex items-center gap-1.5">
+                {[1, 2, 3, 4, 5, 6, 7].map((step) => (
+                  <div
+                    key={step}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      step < tourStep
+                        ? 'bg-primary'
+                        : step === tourStep
+                        ? 'bg-primary ring-2 ring-primary/30'
+                        : 'bg-border'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Center-right: Skip Tour button */}
             {showSkipButton && onSkipTour && (
               <Button
                 variant="ghost"
                 onClick={onSkipTour}
-                className="w-full sm:w-auto order-3 sm:order-2 text-muted-foreground hover:text-foreground"
+                className="text-sm text-muted-foreground hover:text-foreground flex-shrink-0"
               >
                 Skip Tour
               </Button>
             )}
 
-            {/* Right side: Next button */}
+            {/* Right: Next button */}
             <Button
               onClick={onNext}
-              className="w-full sm:w-auto order-1 sm:order-3"
+              className="flex-shrink-0"
               style={{
                 backgroundColor: '#5b6850',
                 color: 'white'
@@ -110,6 +98,67 @@ export function TourPage({
               Next
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
+          </div>
+
+          {/* Mobile Layout */}
+          <div className="flex md:hidden flex-col gap-3">
+            {/* Row 1: Progress */}
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-sm font-medium whitespace-nowrap">
+                Tour {tourStep} of 7
+              </span>
+              <div className="flex items-center gap-1.5">
+                {[1, 2, 3, 4, 5, 6, 7].map((step) => (
+                  <div
+                    key={step}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      step < tourStep
+                        ? 'bg-primary'
+                        : step === tourStep
+                        ? 'bg-primary ring-2 ring-primary/30'
+                        : 'bg-border'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Row 2: Navigation */}
+            <div className="flex items-center justify-between gap-2">
+              <Button
+                variant="outline"
+                onClick={onPrevious}
+                size="sm"
+                className="flex-1"
+              >
+                <ArrowLeft className="mr-1 h-4 w-4" />
+                Previous
+              </Button>
+
+              {showSkipButton && onSkipTour && (
+                <Button
+                  variant="ghost"
+                  onClick={onSkipTour}
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  Skip
+                </Button>
+              )}
+
+              <Button
+                onClick={onNext}
+                size="sm"
+                className="flex-1"
+                style={{
+                  backgroundColor: '#5b6850',
+                  color: 'white'
+                }}
+              >
+                Next
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
