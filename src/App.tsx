@@ -31,65 +31,19 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Cookie helpers for cross-context route persistence
-const setRouteCookie = (path: string) => {
-  try {
-    if (!path || !path.startsWith('/')) return;
-    document.cookie = `preferredPreviewRoute=${encodeURIComponent(path)}; Max-Age=604800; Path=/; SameSite=Lax`;
-    console.log('[routing] cookie set preferredPreviewRoute', path);
-  } catch (e) {
-    console.log('[routing] cookie set error', e);
-  }
-};
-
-const getRouteCookie = (): string | null => {
-  try {
-    const match = document.cookie.split('; ').find(c => c.startsWith('preferredPreviewRoute='));
-    if (!match) return null;
-    const val = decodeURIComponent(match.split('=')[1] || '');
-    return val || null;
-  } catch (e) {
-    console.log('[routing] cookie read error', e);
-    return null;
-  }
-};
-
 const getDefaultRoute = () => {
-  try {
-    const hash = window.location?.hash?.toLowerCase?.() || '';
-    if (hash === '#onboarding-step-5') {
-      console.log('[routing] hash indicates onboarding step 5');
-      return '/onboarding/step-5';
-    }
-    const stored = localStorage.getItem('preferredPreviewRoute');
-    const lsRoute = stored?.toLowerCase();
-    const ckRoute = getRouteCookie()?.toLowerCase();
-    console.log('[routing] preferredPreviewRoute:', lsRoute, 'cookie:', ckRoute, 'hash:', hash);
-    
-    if (lsRoute && lsRoute.startsWith('/')) return lsRoute;
-    if (ckRoute && ckRoute.startsWith('/')) return ckRoute;
-    return '/homepage';
-  } catch (e) {
-    console.log('[routing] getDefaultRoute error', e);
-    return '/homepage';
+  const hash = window.location?.hash?.toLowerCase?.() || '';
+  if (hash === '#onboarding-step-5') {
+    return '/onboarding/step-5';
   }
+  return '/homepage';
 };
 
 const RouteWatcher = () => {
   const location = useLocation();
   
   useEffect(() => {
-    const path = location.pathname.toLowerCase();
-    console.log('[routing] RouteWatcher path:', path);
-    if (path === '/onboarding/step-5') {
-      console.log('[routing] setting preferredPreviewRoute to /onboarding/step-5');
-      localStorage.setItem('preferredPreviewRoute', '/onboarding/step-5');
-      setRouteCookie('/onboarding/step-5');
-    } else if (!path.startsWith('/onboarding') && path !== '/') {
-      console.log('[routing] updating preferredPreviewRoute to', path);
-      localStorage.setItem('preferredPreviewRoute', path);
-      setRouteCookie(path);
-    }
+    console.log('[routing] Current path:', location.pathname);
   }, [location.pathname]);
   
   return null;
