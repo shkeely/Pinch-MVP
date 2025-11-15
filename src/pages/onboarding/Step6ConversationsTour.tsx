@@ -191,53 +191,30 @@ export default function Step6ConversationsTour() {
 
                   {/* Conversation Thread */}
                   <div className="space-y-4 min-h-[400px]">
-                    {/* Guest Message */}
-                    <div className="flex justify-start">
-                      <div className="bg-muted rounded-lg p-3 max-w-[80%]">
-                        <p className="text-sm text-foreground">
-                          {selectedConversation.question}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {selectedConversation.timestamp}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* AI Response (if auto-answered) */}
-                    {selectedConversation.status === 'auto' && (
-                      <div className="flex justify-end">
-                        <div className="bg-primary/10 rounded-lg p-3 max-w-[80%]">
-                          <div className="flex items-center gap-2 mb-2" id="confidence-indicator">
-                            <Badge 
-                              className={`text-xs ${getConfidenceBadgeColor(selectedConversation.confidence)}`}
-                            >
-                              {selectedConversation.confidencePercent}
-                            </Badge>
-                            <span className="text-xs text-muted-foreground">Pinch</span>
-                          </div>
-                          <p className="text-sm text-foreground">
-                            {selectedConversation.answer}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {selectedConversation.timestamp}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Escalated Notice */}
-                    {selectedConversation.status === 'escalated' && (
-                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                        <p className="text-sm text-orange-800">
-                          ⚠️ This conversation needs your attention
-                        </p>
-                      </div>
-                    )}
+...
                   </div>
                 </div>
+              </Card>
 
-                {/* Tooltip 2: Conversation Thread */}
-                {currentTooltip === 2 && (
+              {/* Tooltip 2: Conversation Thread - Mobile positioned at bottom */}
+              {currentTooltip === 2 && (
+                <div className="fixed bottom-4 left-1/2 -translate-x-1/2 lg:hidden z-[60] w-[calc(100vw-2rem)]">
+                  <TourTooltip
+                    target="top"
+                    title="Conversation Thread"
+                    description="See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
+                    step={2}
+                    totalSteps={3}
+                    onNext={handleNext}
+                    onPrev={handlePrevious}
+                    className="relative"
+                  />
+                </div>
+              )}
+
+              {/* Tooltip 2: Conversation Thread - Desktop positioned inside card */}
+              {currentTooltip === 2 && (
+                <div className="hidden lg:block absolute -left-4 top-1/2 -translate-y-1/2 z-[60]">
                   <TourTooltip
                     target="left"
                     title="Conversation Thread"
@@ -246,17 +223,16 @@ export default function Step6ConversationsTour() {
                     totalSteps={3}
                     onNext={handleNext}
                     onPrev={handlePrevious}
-                    className="z-[60]"
                   />
-                )}
-              </Card>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Tooltip 1: Conversation List - Next to Messages header */}
         {currentTooltip === 1 && (
-          <div className="fixed top-32 left-4 sm:left-8 md:left-[500px] z-50 max-w-[calc(100vw-2rem)]">
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:top-32 md:left-[500px] md:translate-x-0 z-50 w-[calc(100vw-2rem)] md:w-auto">
             <TourTooltip
               target="right"
               title="All Guest Conversations"
@@ -266,13 +242,14 @@ export default function Step6ConversationsTour() {
               onNext={handleNext}
               onPrev={handlePrevious}
               highlight={true}
+              className="md:block"
             />
           </div>
         )}
 
         {/* Tooltip 3: Status Tags */}
         {currentTooltip === 3 && (
-          <div className="fixed top-1/2 left-4 sm:left-8 transform -translate-y-1/2 z-50 max-w-[calc(100vw-2rem)]">
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:top-1/2 md:left-8 md:-translate-y-1/2 md:translate-x-0 z-50 w-[calc(100vw-2rem)] md:w-auto">
             <TourTooltip
               target="right"
               title="Auto vs Escalated"
@@ -282,6 +259,7 @@ export default function Step6ConversationsTour() {
               onNext={handleNext}
               onPrev={handlePrevious}
               highlight={true}
+              className="md:block"
             />
           </div>
         )}
