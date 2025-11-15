@@ -98,7 +98,7 @@ export default function Homepage() {
           >
             <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
               <CollapsibleTrigger asChild>
-                <button className="w-full p-6 text-center transition-all hover:border-primary/50">
+                <button id="tour-btn-1" className="w-full p-6 text-center transition-all hover:border-primary/50">
                   <div className="flex items-center justify-between">
                     <span className="flex-1 text-xl font-semibold text-foreground">
                       Pinch answered {homepage.handledToday.length} guest questions
@@ -151,7 +151,7 @@ export default function Homepage() {
           >
               <div className={`w-full border-2 border-destructive/50 hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
-                  <button className="w-full p-6 text-center transition-all hover:border-destructive">
+                  <button id="tour-btn-2" className="w-full p-6 text-center transition-all hover:border-destructive">
                     <div className="flex items-center justify-between">
                       <span className="flex-1 text-xl font-semibold text-foreground">
                         {homepage.needsAttention.length} things need your attention.

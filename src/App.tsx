@@ -30,6 +30,14 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const getDefaultRoute = () => {
+  try {
+    return localStorage.getItem('preferredPreviewRoute') || '/homepage';
+  } catch {
+    return '/homepage';
+  }
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <WeddingProvider>
@@ -39,7 +47,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/homepage" replace />} />
+            <Route path="/" element={<Navigate to={getDefaultRoute()} replace />} />
             <Route path="/landing" element={<Index />} />
             <Route path="/homepage" element={<Homepage />} />
             <Route path="/onboarding/step-1a" element={<Step1A />} />
