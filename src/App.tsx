@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { WeddingProvider } from "@/contexts/WeddingContext";
 import { FakeDataProvider } from "@/contexts/FakeDataContext";
 import Index from "./pages/Index";
@@ -38,6 +39,20 @@ const getDefaultRoute = () => {
   }
 };
 
+const RouteWatcher = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    if (location.pathname === '/onboarding/step-5') {
+      localStorage.setItem('preferredPreviewRoute', '/onboarding/step-5');
+    } else if (location.pathname !== '/' && localStorage.getItem('preferredPreviewRoute')) {
+      localStorage.removeItem('preferredPreviewRoute');
+    }
+  }, [location.pathname]);
+  
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <WeddingProvider>
@@ -46,6 +61,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <RouteWatcher />
           <Routes>
             <Route path="/" element={<Navigate to={getDefaultRoute()} replace />} />
             <Route path="/landing" element={<Index />} />
