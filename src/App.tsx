@@ -33,11 +33,18 @@ const queryClient = new QueryClient();
 
 const getDefaultRoute = () => {
   try {
+    const hash = window.location?.hash?.toLowerCase?.() || '';
+    if (hash === '#onboarding-step-5') {
+      console.log('[routing] hash indicates onboarding step 5');
+      return '/onboarding/step-5';
+    }
     const stored = localStorage.getItem('preferredPreviewRoute');
     const route = stored?.toLowerCase();
+    console.log('[routing] preferredPreviewRoute:', route, 'hash:', hash);
     if (route === '/onboarding/step-5') return '/onboarding/step-5';
     return '/homepage';
-  } catch {
+  } catch (e) {
+    console.log('[routing] getDefaultRoute error', e);
     return '/homepage';
   }
 };
@@ -47,9 +54,12 @@ const RouteWatcher = () => {
   
   useEffect(() => {
     const path = location.pathname.toLowerCase();
+    console.log('[routing] RouteWatcher path:', path);
     if (path === '/onboarding/step-5') {
+      console.log('[routing] setting preferredPreviewRoute to /onboarding/step-5');
       localStorage.setItem('preferredPreviewRoute', '/onboarding/step-5');
     } else if (!path.startsWith('/onboarding') && path !== '/') {
+      console.log('[routing] removing preferredPreviewRoute');
       localStorage.removeItem('preferredPreviewRoute');
     }
   }, [location.pathname]);
@@ -78,6 +88,7 @@ const App = () => (
             <Route path="/onboarding/step-4" element={<Step4 />} />
             <Route path="/onboarding/step-5" element={<Step5HomepageTour />} />
             <Route path="/onboarding/Step-5" element={<Step5HomepageTour />} />
+            <Route path="/onboarding/step-6" element={<Homepage />} />
             <Route path="/dashboard1" element={<Dashboard1 />} />
             <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
             <Route path="/dashboard-alt" element={<DashboardAlt />} />

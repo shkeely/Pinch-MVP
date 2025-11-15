@@ -13,6 +13,20 @@ export default function Step5HomepageTour() {
   const { updateWedding } = useWedding();
 
   // Set preferred preview route for "Open in new tab"
+  useEffect(() => {
+    const targetHash = '#onboarding-step-5';
+    const current = window.location?.hash?.toLowerCase?.() || '';
+    if (current !== targetHash) {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${targetHash}`);
+      console.log('[routing] set hash to', targetHash);
+    }
+    return () => {
+      if ((window.location?.hash?.toLowerCase?.() || '') === targetHash) {
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+        console.log('[routing] cleared onboarding hash');
+      }
+    };
+  }, []);
 
   // Compute and set tooltip position dynamically
   useLayoutEffect(() => {
