@@ -1,12 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TourPage } from '@/components/onboarding/TourPage';
 import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
 
+interface SpotlightStyle {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  borderRadius: string;
+}
+
 export default function Step5NavigationBar() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
+  const [spotlightStyle, setSpotlightStyle] = useState<SpotlightStyle | null>(null);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
   const totalSteps = 9;
@@ -54,20 +63,131 @@ export default function Step5NavigationBar() {
     navigate('/homepage');
   };
 
-  // Spotlight positions for each step (approximate pixel positions from left)
-  const spotlightConfig: Record<number, { left?: string; right?: string; width: string; top: string; height: string }> = {
-    1: { left: '0', width: '100%', top: '0', height: '64px' }, // Entire nav bar
-    2: { left: '120px', width: '100px', top: '0', height: '64px' }, // Homepage
-    3: { left: '220px', width: '100px', top: '0', height: '64px' }, // Messages
-    4: { left: '420px', width: '120px', top: '0', height: '64px' }, // Reminders
-    5: { left: '320px', width: '100px', top: '0', height: '64px' }, // Chatbot
-    6: { left: '520px', width: '100px', top: '0', height: '64px' }, // Guests
-    7: { right: '180px', width: '40px', top: '12px', height: '40px' }, // Settings
-    8: { right: '120px', width: '40px', top: '12px', height: '40px' }, // Notifications
-    9: { right: '40px', width: '40px', top: '12px', height: '40px' }, // Profile
+  // Helper functions for dynamic positioning
+  const getRect = (el: Element | null): DOMRect | null => {
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    return {
+      ...rect,
+      left: rect.left + window.scrollX,
+      top: rect.top + window.scrollY,
+    } as DOMRect;
   };
 
-  const currentSpotlight = spotlightConfig[currentTooltip];
+  const padRect = (rect: DOMRect, padding: number): DOMRect => {
+    return {
+      ...rect,
+      left: rect.left - padding,
+      top: rect.top - padding,
+      width: rect.width + padding * 2,
+      height: rect.height + padding * 2,
+    } as DOMRect;
+  };
+
+  const circleFromRect = (rect: DOMRect, padding: number): DOMRect => {
+    const size = Math.max(rect.width, rect.height) + padding * 2;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    return {
+      ...rect,
+      left: centerX - size / 2,
+      top: centerY - size / 2,
+      width: size,
+      height: size,
+    } as DOMRect;
+  };
+
+  const isVisible = (rect: DOMRect | null): boolean => {
+    return rect ? rect.width > 0 && rect.height > 0 : false;
+  };
+
+  // Calculate spotlight position dynamically
+  const calculateSpotlight = () => {
+    const header = document.querySelector('header');
+    if (!header) return;
+
+    const navLabels = ['Homepage', 'Messages', 'Chatbot', 'Reminders', 'Guests'];
+    let targetEl: Element | null = null;
+    let rect: DOMRect | null = null;
+    let borderRadius = '12px';
+    let padding = 10;
+
+    // Step 1: Entire header
+    if (currentTooltip === 1) {
+      rect = getRect(header);
+      if (rect) rect = padRect(rect, 8);
+      borderRadius = '12px';
+    }
+    // Steps 2-6: Nav pills
+    else if (currentTooltip >= 2 && currentTooltip <= 6) {
+      const label = navLabels[currentTooltip - 2];
+      const navButtons = Array.from(header.querySelectorAll('nav button'));
+      targetEl = navButtons.find(btn => btn.textContent?.trim() === label) || null;
+      
+      rect = getRect(targetEl);
+      
+      // Mobile fallback: try hamburger button
+      if (!isVisible(rect)) {
+        const hamburger = header.querySelector('.md\\:hidden button');
+        rect = getRect(hamburger);
+      }
+      
+      // Final fallback: header
+      if (!isVisible(rect)) {
+        rect = getRect(header);
+        if (rect) rect = padRect(rect, 8);
+      } else {
+        rect = padRect(rect, 8);
+        borderRadius = `${(rect.height / 2)}px`;
+      }
+    }
+    // Steps 7-9: Right action buttons
+    else if (currentTooltip >= 7 && currentTooltip <= 9) {
+      const rightButtons = Array.from(header.querySelectorAll('header > div:last-child button'));
+      const index = currentTooltip === 7 ? 0 : currentTooltip === 8 ? 1 : 2;
+      targetEl = rightButtons[index] || null;
+      
+      rect = getRect(targetEl);
+      
+      // Fallback to header if not visible
+      if (!isVisible(rect)) {
+        rect = getRect(header);
+        if (rect) rect = padRect(rect, 8);
+      } else {
+        rect = circleFromRect(rect, 8);
+        borderRadius = '9999px';
+      }
+      
+      padding = 8;
+    }
+
+    if (rect && isVisible(rect)) {
+      setSpotlightStyle({
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        borderRadius,
+      });
+    }
+  };
+
+  // Recalculate on tooltip change or resize
+  useLayoutEffect(() => {
+    calculateSpotlight();
+    
+    const handleResize = () => calculateSpotlight();
+    window.addEventListener('resize', handleResize);
+    
+    const header = document.querySelector('header');
+    const resizeObserver = new ResizeObserver(calculateSpotlight);
+    if (header) resizeObserver.observe(header);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
+    };
+  }, [currentTooltip]);
 
   // Tooltip content based on current step
   const tooltipContent = {
@@ -124,19 +244,17 @@ export default function Step5NavigationBar() {
       <div className="relative min-h-screen bg-background">
         <TopNav />
         
-        {/* Full dark overlay */}
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm pointer-events-none z-40" />
-        
-        {/* Spotlight element that creates a clear window */}
-        {currentSpotlight && (
+        {/* Spotlight element with purple stroke and shadow */}
+        {spotlightStyle && (
           <div 
-            className="fixed pointer-events-none z-[41] transition-all duration-500 rounded-md"
+            className="fixed pointer-events-none z-40 transition-all duration-300 will-change-[left,top,width,height]"
             style={{
-              left: currentSpotlight.left || `calc(100% - ${currentSpotlight.right} - ${currentSpotlight.width})`,
-              top: currentSpotlight.top,
-              width: currentSpotlight.width,
-              height: currentSpotlight.height,
-              boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.6)',
+              left: `${spotlightStyle.left}px`,
+              top: `${spotlightStyle.top}px`,
+              width: `${spotlightStyle.width}px`,
+              height: `${spotlightStyle.height}px`,
+              borderRadius: spotlightStyle.borderRadius,
+              boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.6), 0 0 0 3px #a855f7, 0 10px 30px rgba(0, 0, 0, 0.35)',
             }}
           />
         )}
