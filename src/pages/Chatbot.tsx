@@ -85,7 +85,7 @@ export default function Chatbot() {
       <TopNav />
       
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between" data-tour-id="chatbot-overview">
           <div>
             <h1 className="text-4xl font-serif font-bold mb-2">AI Chatbot</h1>
             <p className="text-muted-foreground">
@@ -130,13 +130,13 @@ export default function Chatbot() {
             </div>
 
             {/* Chatbot Name */}
-            <Card className="p-6 bg-white dark:bg-card">
+            <Card className="p-6 bg-white dark:bg-card" data-tour-id="chatbot-name">
               <h3 className="font-semibold mb-3">Chatbot Name</h3>
               <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter chatbot name" />
             </Card>
 
             {/* Reply Mode */}
-            <Card className="p-6 bg-white dark:bg-card">
+            <Card className="p-6 bg-white dark:bg-card" data-tour-id="message-handling">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium">Message Handling</h4>
                 <Button
@@ -167,14 +167,14 @@ export default function Chatbot() {
             </Card>
 
             {/* Chatbot Brain Card */}
-            <Card className="p-6 bg-white dark:bg-card">
+            <Card className="p-6 bg-white dark:bg-card" data-tour-id="knowledge-base">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
                 <h2 className="text-xl font-semibold">Chatbot Brain</h2>
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-[#fcfbf8]">
+                <div className="flex items-center justify-between p-4 rounded-lg bg-[#fcfbf8]" data-tour-id="wedding-details">
                   <div className="flex items-center gap-3">
                     <MessageSquare className="w-5 h-5 text-muted-foreground" />
                     <div>
@@ -201,6 +201,7 @@ export default function Chatbot() {
                 variant="outline" 
                 className="w-full mt-4"
                 onClick={() => setKnowledgeBaseOpen(true)}
+                data-tour-id="manage-faqs"
               >
                 Update Chatbot Brain
               </Button>
@@ -214,7 +215,7 @@ export default function Chatbot() {
           {/* Right Column - Chat Simulation */}
           <div className="lg:sticky lg:top-8 h-fit space-y-4">
             {/* Status Card */}
-            <Card className="p-4">
+            <Card className="p-4" data-tour-id="chatbot-status">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
@@ -229,7 +230,7 @@ export default function Chatbot() {
               </div>
             </Card>
 
-            <Card className="overflow-hidden bg-white dark:bg-card border-2 shadow-lg">
+            <Card className="overflow-hidden bg-white dark:bg-card border-2 shadow-lg" data-tour-id="chat-simulation">
               <div className="p-4 border-b bg-white dark:bg-muted/30 flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{chatbotName}</h2>
                 <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-semibold px-4 py-1.5 text-sm">
