@@ -25,7 +25,7 @@ export default function TopNav() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+    <header data-tour-id="navbar" className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
       <div className="w-full max-w-none grid grid-cols-[auto_1fr_auto] h-16 items-center px-4 md:px-6">
         {/* Mobile: Hamburger Menu */}
         <div className="flex items-center gap-3 md:hidden">
@@ -42,6 +42,7 @@ export default function TopNav() {
                   return (
                     <button
                       key={item.path}
+                      data-tour-id={item.label.toLowerCase()}
                       onClick={() => handleNavigation(item.path)}
                       className={`
                         px-4 py-3 text-base font-medium rounded-lg transition-colors text-left
@@ -72,6 +73,7 @@ export default function TopNav() {
             return (
               <button
                 key={item.path}
+                data-tour-id={item.label.toLowerCase()}
                 onClick={() => navigate(item.path)}
                 className={`
                   px-3 lg:px-6 py-1.5 lg:py-2 text-xs lg:text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
@@ -90,6 +92,7 @@ export default function TopNav() {
         {/* Right Actions */}
         <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
           <Button 
+            data-tour-id="settings"
             variant="ghost" 
             size="icon" 
             className="hidden md:flex rounded-full"
@@ -98,9 +101,9 @@ export default function TopNav() {
             <Settings className="w-5 h-5" />
           </Button>
           
-          <NotificationsPopover />
+          <div data-tour-id="notifications"><NotificationsPopover /></div>
           
-          <AccountPopover />
+          <div data-tour-id="profile"><AccountPopover /></div>
         </div>
       </div>
     </header>
