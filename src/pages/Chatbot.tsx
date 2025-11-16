@@ -7,7 +7,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2 } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown } from 'lucide-react';
 import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
 import { ShareChatbotDialog } from '@/components/chatbot/ShareChatbotDialog';
 import { MessageHandlingDialog } from '@/components/chatbot/MessageHandlingDialog';
@@ -43,6 +44,8 @@ export default function Chatbot() {
   const [feedbackDialogOpen, setFeedbackDialogOpen] = useState(false);
   const [selectedMessageForFeedback, setSelectedMessageForFeedback] = useState('');
   const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
+  const [restrictedQuestionsOpen, setRestrictedQuestionsOpen] = useState(false);
+  const [escalationCategoriesOpen, setEscalationCategoriesOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([{
     role: 'user',
     content: 'What time is the wedding?',
@@ -216,7 +219,7 @@ export default function Chatbot() {
                       <p className="text-sm italic text-muted-foreground pl-13 mb-3">
                         "{tone.example}"
                       </p>
-                      <Button variant="secondary" size="sm" className="w-full" onClick={() => handleShowExamples(tone.id)}>
+                      <Button variant="outline" size="sm" className="w-full border-accent text-foreground hover:bg-accent/10" onClick={() => handleShowExamples(tone.id)}>
                         See Examples
                       </Button>
                     </Card>;
@@ -373,16 +376,6 @@ export default function Chatbot() {
               </div>
 
               <div className="h-[500px] overflow-y-auto p-6 space-y-4 bg-background">
-                {/* Quick Test Questions */}
-                <div className="mb-4 pb-4 border-b">
-                  <p className="text-xs font-medium text-muted-foreground mb-2">Try These Common Questions</p>
-                  <div className="flex flex-wrap gap-2">
-                    {quickTestQuestions.map((question, idx) => <Button key={idx} variant="secondary" size="sm" className="text-xs" onClick={() => handleQuickQuestion(question)}>
-                        {question}
-                      </Button>)}
-                  </div>
-                </div>
-                
                 {chatMessages.map((msg, idx) => <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] ${msg.role === 'user' ? '' : 'space-y-2'}`}>
                       <div className={`rounded-2xl p-4 ${msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
@@ -402,7 +395,17 @@ export default function Chatbot() {
                   </div>)}
               </div>
 
-              <div className="p-4 border-t bg-white dark:bg-muted/30">
+              <div className="p-4 border-t bg-white dark:bg-muted/30 space-y-3">
+                {/* Quick Test Questions */}
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-2">Try asking these:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {quickTestQuestions.map((question, idx) => <Button key={idx} variant="outline" size="sm" className="text-xs border-muted-foreground/30 text-muted-foreground hover:bg-muted hover:text-foreground" onClick={() => handleQuickQuestion(question)}>
+                        {question}
+                      </Button>)}
+                  </div>
+                </div>
+                
                 <div className="flex gap-2">
                   <Input value={testMessage} onChange={e => setTestMessage(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSendTest()} placeholder="Type a test question..." className="flex-1" />
                   <Button onClick={handleSendTest} size="icon">
