@@ -6,7 +6,7 @@ import { useWedding } from '@/contexts/WeddingContext';
 import { cn } from '@/lib/utils';
 import Homepage from '@/pages/Homepage';
 
-export default function Step5HomepageTour() {
+export default function Step10Homepage() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const [tooltipTop, setTooltipTop] = useState<number | null>(null);
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function Step5HomepageTour() {
 
   // Set preferred preview route for "Open in new tab"
   useEffect(() => {
-    const targetHash = '#onboarding-step-5';
+    const targetHash = '#onboarding-step-10';
     const current = window.location?.hash?.toLowerCase?.() || '';
     if (current !== targetHash) {
       window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${targetHash}`);
@@ -95,9 +95,9 @@ export default function Step5HomepageTour() {
     if (currentTooltip < 4) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
-      // Last tooltip - advance to Step 6
+      // Last tooltip - advance to Step 11
       updateWedding({ 
-        onboardingStep: 6,
+        onboardingStep: 11,
         tourProgress: { 
           homepage: true,
           conversations: false,
@@ -108,7 +108,7 @@ export default function Step5HomepageTour() {
           analytics: false,
         }
       });
-      navigate('/onboarding/step-6');
+      navigate('/onboarding/step-11');
     }
   };
 
@@ -116,9 +116,9 @@ export default function Step5HomepageTour() {
     if (currentTooltip > 1) {
       setCurrentTooltip(currentTooltip - 1);
     } else {
-      // Go back to Step 4
-      updateWedding({ onboardingStep: 4 });
-      navigate('/onboarding/step-4');
+      // Go back to Step 9
+      updateWedding({ onboardingStep: 9 });
+      navigate('/onboarding/step-9');
     }
   };
 
@@ -136,14 +136,14 @@ export default function Step5HomepageTour() {
   };
 
   const handlePagePrevious = () => {
-    // Go back to Step 4
-    updateWedding({ onboardingStep: 4 });
-    navigate('/onboarding/step-4');
+    // Go back to Step 9
+    updateWedding({ onboardingStep: 9 });
+    navigate('/onboarding/step-9');
   };
 
   return (
     <TourPage
-      stepNumber={5}
+      stepNumber={10}
       title="Welcome to Your Homepage"
       description="Let's explore your homepage and see how Pinch keeps you organized"
       onNext={handlePageNext}

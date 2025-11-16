@@ -90,7 +90,7 @@ export default function Step7GuestPageTour() {
     } else {
       // Go back to Step 6
       updateWedding({ onboardingStep: 6 });
-      navigate('/onboarding/step-6-conversations-tour');
+      navigate('/onboarding/step-6');
     }
   };
 

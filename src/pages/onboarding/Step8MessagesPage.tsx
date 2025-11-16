@@ -12,7 +12,7 @@ import { TourPage } from '@/components/onboarding/TourPage';
 import { useWedding } from '@/contexts/WeddingContext';
 import { FAKE_DATA } from '@/data/fakeData';
 
-export default function Step6ConversationsTour() {
+export default function Step8MessagesPage() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const [tooltipTop, setTooltipTop] = useState(0);
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Step6ConversationsTour() {
   const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
 
   useEffect(() => {
-    window.location.hash = '#step-6';
+    window.location.hash = '#step-8';
   }, []);
 
   useLayoutEffect(() => {
@@ -43,8 +43,8 @@ export default function Step6ConversationsTour() {
     if (currentTooltip < 3) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
-      updateWedding({ onboardingStep: 7 });
-      navigate('/onboarding/step-7');
+      updateWedding({ onboardingStep: 9 });
+      navigate('/onboarding/step-9');
     }
   };
 
@@ -52,8 +52,8 @@ export default function Step6ConversationsTour() {
     if (currentTooltip > 1) {
       setCurrentTooltip(currentTooltip - 1);
     } else {
-      updateWedding({ onboardingStep: 5 });
-      navigate('/onboarding/step-5');
+      updateWedding({ onboardingStep: 7 });
+      navigate('/onboarding/step-7');
     }
   };
 
@@ -81,7 +81,7 @@ export default function Step6ConversationsTour() {
 
   return (
     <TourPage
-      stepNumber={6}
+      stepNumber={8}
       title="Guest Conversations"
       description="See how Pinch handles your guest messages"
       onNext={currentTooltip === 3 ? handleNext : undefined}
