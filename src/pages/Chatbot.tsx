@@ -259,7 +259,7 @@ export default function Chatbot() {
 
             {/* Do's & Don'ts */}
             <Card className="p-6 bg-white dark:bg-card">
-              <h3 className="font-semibold mb-2">Questions to Avoid</h3>
+              <h3 className="font-semibold mb-2">Topics to Avoid            </h3>
               <p className="text-sm text-muted-foreground mb-4">Set boundaries for what Pinch shouldn't answer</p>
               <div className="space-y-2 mb-4">
                 {restrictedQuestions.map((question, idx) => <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
