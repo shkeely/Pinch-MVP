@@ -54,6 +54,89 @@ export default function Step5NavigationBar() {
     navigate('/homepage');
   };
 
+  // Spotlight positions for each step (approximate pixel positions from left)
+  const spotlightConfig: Record<number, { left?: string; right?: string; width: string; top: string; height: string }> = {
+    1: { left: '0', width: '100%', top: '0', height: '64px' }, // Entire nav bar
+    2: { left: '120px', width: '100px', top: '0', height: '64px' }, // Homepage
+    3: { left: '220px', width: '100px', top: '0', height: '64px' }, // Messages
+    4: { left: '420px', width: '120px', top: '0', height: '64px' }, // Reminders
+    5: { left: '320px', width: '100px', top: '0', height: '64px' }, // Chatbot
+    6: { left: '520px', width: '100px', top: '0', height: '64px' }, // Guests
+    7: { right: '180px', width: '40px', top: '12px', height: '40px' }, // Settings
+    8: { right: '120px', width: '40px', top: '12px', height: '40px' }, // Notifications
+    9: { right: '40px', width: '40px', top: '12px', height: '40px' }, // Profile
+  };
+
+  const currentSpotlight = spotlightConfig[currentTooltip];
+  
+  // Calculate spotlight position for clip-path
+  const getSpotlightPosition = () => {
+    if (!currentSpotlight) return '';
+    
+    const horizontalPos = currentSpotlight.left 
+      ? currentSpotlight.left 
+      : `calc(100% - ${currentSpotlight.right} - ${currentSpotlight.width})`;
+    
+    const horizontalEnd = currentSpotlight.left
+      ? `calc(${currentSpotlight.left} + ${currentSpotlight.width})`
+      : `calc(100% - ${currentSpotlight.right})`;
+    
+    return `polygon(
+      0% 0%, 
+      0% 100%, 
+      ${horizontalPos} 100%, 
+      ${horizontalPos} ${currentSpotlight.top},
+      ${horizontalEnd} ${currentSpotlight.top},
+      ${horizontalEnd} calc(${currentSpotlight.top} + ${currentSpotlight.height}),
+      ${horizontalPos} calc(${currentSpotlight.top} + ${currentSpotlight.height}),
+      ${horizontalPos} 100%,
+      100% 100%, 
+      100% 0%
+    )`;
+  };
+
+  // Tooltip content based on current step
+  const tooltipContent = {
+    1: {
+      title: "Navigation Bar",
+      description: "Use the navigation bar at the top to move between different sections of Pinch. Let's explore the key areas you'll use most often."
+    },
+    2: {
+      title: "Homepage",
+      description: "Your main dashboard. Designed for quick updates - see what needs your attention at a glance."
+    },
+    3: {
+      title: "Messages",
+      description: "View all guest conversations. See every question asked and how Pinch responded."
+    },
+    4: {
+      title: "Reminders",
+      description: "Set up scheduled messages for your guests. RSVP reminders, day-of updates, thank you notes - all automated."
+    },
+    5: {
+      title: "Chatbot",
+      description: "Configure how Pinch responds to guests. Manage your wedding knowledge base and AI settings."
+    },
+    6: {
+      title: "Guests",
+      description: "Manage your guest list. Import contacts, organize segments, and control who receives chatbot messages."
+    },
+    7: {
+      title: "Settings",
+      description: "Access planner settings, partner accounts, and notification preferences."
+    },
+    8: {
+      title: "Notifications",
+      description: "View recent alerts and updates about guest questions and system events."
+    },
+    9: {
+      title: "Your Profile",
+      description: "Manage your account, add partner details, and view information from onboarding."
+    }
+  };
+
+  const current = tooltipContent[currentTooltip as keyof typeof tooltipContent];
+
   return (
     <TourPage
       stepNumber={5}
@@ -67,143 +150,29 @@ export default function Step5NavigationBar() {
       <div className="relative min-h-screen bg-background">
         <TopNav />
         
-        {/* Blank page - only tooltips below */}
+        {/* Dark overlay with spotlight cutout */}
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-500 pointer-events-none z-40"
+          style={{
+            clipPath: getSpotlightPosition()
+          }}
+        />
+        
+        {/* Blank page below nav */}
         <main className="relative min-h-[calc(100vh-64px)]">
-          
-          {/* Tooltip 1: Navigation Bar Introduction */}
-          {currentTooltip === 1 && (
-            <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50">
-              <TourTooltip
-                target="bottom"
-                title="Navigation Bar"
-                description="Use the navigation bar at the top to move between different sections of Pinch. Let's explore the key areas you'll use most often."
-                step={1}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                highlight={false}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 2: Homepage Nav Item */}
-          {currentTooltip === 2 && (
-            <div className="fixed top-20 left-[15%] -translate-x-1/2 z-50">
-              <TourTooltip
-                target="bottom"
-                title="Homepage"
-                description="Your main dashboard. Designed for quick updates - see what needs your attention at a glance."
-                step={2}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 3: Messages Nav Item */}
-          {currentTooltip === 3 && (
-            <div className="fixed top-20 left-[27%] -translate-x-1/2 z-50">
-              <TourTooltip
-                target="bottom"
-                title="Messages"
-                description="View all guest conversations. See every question asked and how Pinch responded."
-                step={3}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 4: Reminders Nav Item */}
-          {currentTooltip === 4 && (
-            <div className="fixed top-20 left-[50%] -translate-x-1/2 z-50">
-              <TourTooltip
-                target="bottom"
-                title="Reminders"
-                description="Set up scheduled messages for your guests. RSVP reminders, day-of updates, thank you notes - all automated."
-                step={4}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 5: Chatbot Nav Item */}
-          {currentTooltip === 5 && (
-            <div className="fixed top-20 left-[39%] -translate-x-1/2 z-50">
-              <TourTooltip
-                target="bottom"
-                title="Chatbot"
-                description="Configure how Pinch responds to guests. Manage your wedding knowledge base and AI settings."
-                step={5}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 6: Guests Nav Item */}
-          {currentTooltip === 6 && (
-            <div className="fixed top-20 left-[62%] -translate-x-1/2 z-50">
-              <TourTooltip
-                target="bottom"
-                title="Guests"
-                description="Manage your guest list. Import contacts, organize segments, and control who receives chatbot messages."
-                step={6}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 7: Settings Icon */}
-          {currentTooltip === 7 && (
-            <div className="fixed top-20 right-[180px] z-50">
-              <TourTooltip
-                target="bottom"
-                title="Settings"
-                description="Access planner settings, partner accounts, and notification preferences."
-                step={7}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 8: Notifications Icon */}
-          {currentTooltip === 8 && (
-            <div className="fixed top-20 right-[120px] z-50">
-              <TourTooltip
-                target="bottom"
-                title="Notifications"
-                description="View recent alerts and updates about guest questions and system events."
-                step={8}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 9: Profile Icon */}
-          {currentTooltip === 9 && (
-            <div className="fixed top-20 right-[40px] z-50">
-              <TourTooltip
-                target="bottom"
-                title="Your Profile"
-                description="Manage your account, add partner details, and view information from onboarding."
-                step={9}
-                totalSteps={totalSteps}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
+          {/* Centered tooltip that stays in place */}
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+            <TourTooltip
+              target="top"
+              title={current.title}
+              description={current.description}
+              step={currentTooltip}
+              totalSteps={totalSteps}
+              onNext={handleNext}
+              onPrev={currentTooltip > 1 ? handlePrevious : undefined}
+              highlight={true}
+            />
+          </div>
         </main>
       </div>
     </TourPage>
