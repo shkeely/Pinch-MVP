@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TourPage } from '@/components/onboarding/TourPage';
-import { TourTooltip } from '@/components/onboarding/TourTooltip';
+import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
 
@@ -9,6 +9,7 @@ export default function Step5NavigationBar() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
+  const totalSteps = 9;
 
   useEffect(() => {
     const targetHash = '#onboarding-step-5';
@@ -24,21 +25,9 @@ export default function Step5NavigationBar() {
   }, []);
 
   const handleNext = () => {
-    if (currentTooltip < 4) {
+    if (currentTooltip < totalSteps) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
-      updateWedding({ 
-        onboardingStep: 6,
-        tourProgress: { 
-          homepage: false,
-          conversations: false,
-          guestPage: false,
-          weddingInfo: false,
-          chatbotSettings: false,
-          reminders: false,
-          analytics: false,
-        }
-      });
       navigate('/onboarding/step-6');
     }
   };
@@ -46,9 +35,6 @@ export default function Step5NavigationBar() {
   const handlePrevious = () => {
     if (currentTooltip > 1) {
       setCurrentTooltip(currentTooltip - 1);
-    } else {
-      updateWedding({ onboardingStep: 4 });
-      navigate('/onboarding/step-4');
     }
   };
 
@@ -81,84 +67,138 @@ export default function Step5NavigationBar() {
       <div className="relative min-h-screen bg-background">
         <TopNav />
         
-        <main className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Navigation Overview</h1>
-            
-            <div className="space-y-6">
-              <div className="p-6 bg-card rounded-lg border">
-                <h2 className="text-xl font-semibold mb-4">Main Navigation</h2>
-                <p className="text-muted-foreground">
-                  The navigation bar at the top of the screen provides quick access to all major sections of Pinch.
-                </p>
-              </div>
-
-              <div className="p-6 bg-card rounded-lg border">
-                <h2 className="text-xl font-semibold mb-4">Key Sections</h2>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li>• <strong>Homepage</strong> - Your main dashboard</li>
-                  <li>• <strong>Messages</strong> - Guest conversations</li>
-                  <li>• <strong>Guests</strong> - Manage your guest list</li>
-                  <li>• <strong>Chatbot</strong> - Configure AI responses</li>
-                  <li>• <strong>Reminders</strong> - Scheduled messages</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Tooltip 1: Navigation Overview */}
+        {/* Blank page - only tooltips below */}
+        <main className="relative min-h-[calc(100vh-64px)]">
+          
+          {/* Tooltip 1: Navigation Bar Introduction */}
           {currentTooltip === 1 && (
-            <div className="fixed top-20 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:max-w-md z-50">
+            <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50">
               <TourTooltip
                 target="bottom"
                 title="Navigation Bar"
                 description="Use the navigation bar at the top to move between different sections of Pinch. Let's explore the key areas you'll use most often."
                 step={1}
-                totalSteps={4}
+                totalSteps={totalSteps}
                 onNext={handleNext}
+                highlight={false}
               />
             </div>
           )}
 
-          {/* Tooltip 2: Messages */}
+          {/* Tooltip 2: Homepage Nav Item */}
           {currentTooltip === 2 && (
-            <div className="fixed top-20 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:max-w-md z-50">
+            <div className="fixed top-20 left-[15%] -translate-x-1/2 z-50">
+              <TourTooltip
+                target="bottom"
+                title="Homepage"
+                description="Your main dashboard. Designed for quick updates - see what needs your attention at a glance."
+                step={2}
+                totalSteps={totalSteps}
+                onNext={handleNext}
+                onPrev={handlePrevious}
+              />
+            </div>
+          )}
+
+          {/* Tooltip 3: Messages Nav Item */}
+          {currentTooltip === 3 && (
+            <div className="fixed top-20 left-[27%] -translate-x-1/2 z-50">
               <TourTooltip
                 target="bottom"
                 title="Messages"
-                description="View and manage all conversations with your guests. The AI handles responses automatically, but you can jump in anytime."
-                step={2}
-                totalSteps={4}
-                onNext={handleNext}
-                onPrev={handlePrevious}
-              />
-            </div>
-          )}
-
-          {/* Tooltip 3: Guests */}
-          {currentTooltip === 3 && (
-            <div className="fixed top-20 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:max-w-md z-50">
-              <TourTooltip
-                target="bottom"
-                title="Guest Management"
-                description="Add guests, organize them into segments, and send targeted messages. This is where you'll import your guest list."
+                description="View all guest conversations. See every question asked and how Pinch responded."
                 step={3}
-                totalSteps={4}
+                totalSteps={totalSteps}
                 onNext={handleNext}
                 onPrev={handlePrevious}
               />
             </div>
           )}
 
-          {/* Tooltip 4: Chatbot */}
+          {/* Tooltip 4: Reminders Nav Item */}
           {currentTooltip === 4 && (
-            <div className="fixed top-20 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:max-w-md z-50">
+            <div className="fixed top-20 left-[50%] -translate-x-1/2 z-50">
               <TourTooltip
                 target="bottom"
-                title="Chatbot Configuration"
-                description="Customize how your AI assistant responds to guests. Add your wedding details, FAQs, and set response preferences."
+                title="Reminders"
+                description="Set up scheduled messages for your guests. RSVP reminders, day-of updates, thank you notes - all automated."
                 step={4}
-                totalSteps={4}
+                totalSteps={totalSteps}
+                onNext={handleNext}
+                onPrev={handlePrevious}
+              />
+            </div>
+          )}
+
+          {/* Tooltip 5: Chatbot Nav Item */}
+          {currentTooltip === 5 && (
+            <div className="fixed top-20 left-[39%] -translate-x-1/2 z-50">
+              <TourTooltip
+                target="bottom"
+                title="Chatbot"
+                description="Configure how Pinch responds to guests. Manage your wedding knowledge base and AI settings."
+                step={5}
+                totalSteps={totalSteps}
+                onNext={handleNext}
+                onPrev={handlePrevious}
+              />
+            </div>
+          )}
+
+          {/* Tooltip 6: Guests Nav Item */}
+          {currentTooltip === 6 && (
+            <div className="fixed top-20 left-[62%] -translate-x-1/2 z-50">
+              <TourTooltip
+                target="bottom"
+                title="Guests"
+                description="Manage your guest list. Import contacts, organize segments, and control who receives chatbot messages."
+                step={6}
+                totalSteps={totalSteps}
+                onNext={handleNext}
+                onPrev={handlePrevious}
+              />
+            </div>
+          )}
+
+          {/* Tooltip 7: Settings Icon */}
+          {currentTooltip === 7 && (
+            <div className="fixed top-20 right-[180px] z-50">
+              <TourTooltip
+                target="bottom"
+                title="Settings"
+                description="Access planner settings, partner accounts, and notification preferences."
+                step={7}
+                totalSteps={totalSteps}
+                onNext={handleNext}
+                onPrev={handlePrevious}
+              />
+            </div>
+          )}
+
+          {/* Tooltip 8: Notifications Icon */}
+          {currentTooltip === 8 && (
+            <div className="fixed top-20 right-[120px] z-50">
+              <TourTooltip
+                target="bottom"
+                title="Notifications"
+                description="View recent alerts and updates about guest questions and system events."
+                step={8}
+                totalSteps={totalSteps}
+                onNext={handleNext}
+                onPrev={handlePrevious}
+              />
+            </div>
+          )}
+
+          {/* Tooltip 9: Profile Icon */}
+          {currentTooltip === 9 && (
+            <div className="fixed top-20 right-[40px] z-50">
+              <TourTooltip
+                target="bottom"
+                title="Your Profile"
+                description="Manage your account, add partner details, and view information from onboarding."
+                step={9}
+                totalSteps={totalSteps}
                 onNext={handleNext}
                 onPrev={handlePrevious}
               />
