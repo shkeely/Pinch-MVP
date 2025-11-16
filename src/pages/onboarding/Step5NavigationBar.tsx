@@ -54,20 +54,20 @@ export default function Step5NavigationBar() {
     navigate('/homepage');
   };
 
-  // Spotlight positions for each step (approximate pixel positions from left)
-  const spotlightConfig: Record<number, { left?: string; right?: string; width: string; top: string; height: string }> = {
+  // Purple circle positions for each step
+  const circleConfig: Record<number, { left?: string; right?: string; width: string; top: string; height: string }> = {
     1: { left: '0', width: '100%', top: '0', height: '64px' }, // Entire nav bar
-    2: { left: '120px', width: '100px', top: '0', height: '64px' }, // Homepage
-    3: { left: '220px', width: '100px', top: '0', height: '64px' }, // Messages
-    4: { left: '420px', width: '120px', top: '0', height: '64px' }, // Reminders
-    5: { left: '320px', width: '100px', top: '0', height: '64px' }, // Chatbot
-    6: { left: '520px', width: '100px', top: '0', height: '64px' }, // Guests
+    2: { left: '120px', width: '100px', top: '16px', height: '32px' }, // Homepage
+    3: { left: '220px', width: '100px', top: '16px', height: '32px' }, // Messages
+    4: { left: '420px', width: '120px', top: '16px', height: '32px' }, // Reminders
+    5: { left: '320px', width: '100px', top: '16px', height: '32px' }, // Chatbot
+    6: { left: '520px', width: '100px', top: '16px', height: '32px' }, // Guests
     7: { right: '180px', width: '40px', top: '12px', height: '40px' }, // Settings
     8: { right: '120px', width: '40px', top: '12px', height: '40px' }, // Notifications
     9: { right: '40px', width: '40px', top: '12px', height: '40px' }, // Profile
   };
 
-  const currentSpotlight = spotlightConfig[currentTooltip];
+  const currentCircle = circleConfig[currentTooltip];
 
   // Tooltip content based on current step
   const tooltipContent = {
@@ -124,19 +124,18 @@ export default function Step5NavigationBar() {
       <div className="relative min-h-screen bg-background">
         <TopNav />
         
-        {/* Full dark overlay */}
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm pointer-events-none z-40" />
-        
-        {/* Spotlight element that creates a clear window */}
-        {currentSpotlight && (
+        {/* Purple circle highlight around nav item */}
+        {currentCircle && (
           <div 
-            className="fixed pointer-events-none z-[41] transition-all duration-500 rounded-md"
+            className="fixed pointer-events-none z-50 transition-all duration-500 rounded-full animate-pulse"
             style={{
-              left: currentSpotlight.left || `calc(100% - ${currentSpotlight.right} - ${currentSpotlight.width})`,
-              top: currentSpotlight.top,
-              width: currentSpotlight.width,
-              height: currentSpotlight.height,
-              boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.6)',
+              left: currentCircle.left || `calc(100% - ${currentCircle.right} - ${currentCircle.width})`,
+              top: currentCircle.top,
+              width: currentCircle.width,
+              height: currentCircle.height,
+              border: '4px solid #9333EA',
+              background: 'transparent',
+              boxShadow: '0 0 20px rgba(147, 51, 234, 0.5)',
             }}
           />
         )}
@@ -145,16 +144,48 @@ export default function Step5NavigationBar() {
         <main className="relative min-h-[calc(100vh-64px)]">
           {/* Centered tooltip that stays in place */}
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
-            <TourTooltip
-              target="top"
-              title={current.title}
-              description={current.description}
-              step={currentTooltip}
-              totalSteps={totalSteps}
-              onNext={handleNext}
-              onPrev={currentTooltip > 1 ? handlePrevious : undefined}
-              highlight={true}
-            />
+            <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
+              {/* Arrow pointing up */}
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 -top-3"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderBottom: '10px solid #9333EA',
+                }}
+              />
+              
+              {/* Tooltip content */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground">{current.title}</h3>
+                <p className="text-muted-foreground">{current.description}</p>
+                
+                {/* Navigation buttons */}
+                <div className="flex items-center justify-between pt-4">
+                  <div className="text-sm text-muted-foreground">
+                    Step {currentTooltip} of {totalSteps}
+                  </div>
+                  <div className="flex gap-2">
+                    {currentTooltip > 1 && (
+                      <button
+                        onClick={handlePrevious}
+                        className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        Previous
+                      </button>
+                    )}
+                    <button
+                      onClick={handleNext}
+                      className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                    >
+                      {currentTooltip < totalSteps ? 'Next' : 'Continue'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
       </div>
