@@ -54,21 +54,46 @@ export default function Step5NavigationBar() {
     navigate('/homepage');
   };
 
-  // Purple circle positions for each step
-  const circleConfig: Record<number, { left?: string; right?: string; width: string; top: string; height: string }> = {
-    1: { left: '0', width: '100%', top: '0', height: '64px' }, // Entire nav bar
-    2: { left: '120px', width: '100px', top: '16px', height: '32px' }, // Homepage
-    3: { left: '220px', width: '100px', top: '16px', height: '32px' }, // Messages
-    4: { left: '420px', width: '120px', top: '16px', height: '32px' }, // Reminders
-    5: { left: '320px', width: '100px', top: '16px', height: '32px' }, // Chatbot
-    6: { left: '520px', width: '100px', top: '16px', height: '32px' }, // Guests
-    7: { right: '180px', width: '40px', top: '12px', height: '40px' }, // Settings
-    8: { right: '120px', width: '40px', top: '12px', height: '40px' }, // Notifications
-    9: { right: '40px', width: '40px', top: '12px', height: '40px' }, // Profile
+  // Step target mapping and dynamic highlight rect
+  const stepTargets: Record<number, string> = {
+    1: 'navbar',
+    2: 'homepage',
+    3: 'messages',
+    4: 'reminders',
+    5: 'chatbot',
+    6: 'guests',
+    7: 'settings',
+    8: 'notifications',
+    9: 'profile',
   };
 
-  const currentCircle = circleConfig[currentTooltip];
+  const [highlightRect, setHighlightRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
 
+  useEffect(() => {
+    const updateRect = () => {
+      const targetId = stepTargets[currentTooltip];
+      const el = targetId ? document.querySelector<HTMLElement>(`[data-tour-id="${targetId}"]`) : null;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const padding = 8;
+        setHighlightRect({
+          left: rect.left - padding,
+          top: rect.top - padding,
+          width: rect.width + padding * 2,
+          height: rect.height + padding * 2,
+        });
+      } else {
+        setHighlightRect(null);
+      }
+    };
+    updateRect();
+    window.addEventListener('resize', updateRect);
+    window.addEventListener('scroll', updateRect, true);
+    return () => {
+      window.removeEventListener('resize', updateRect);
+      window.removeEventListener('scroll', updateRect, true);
+    };
+  }, [currentTooltip]);
   // Tooltip content based on current step
   const tooltipContent = {
     1: {
@@ -125,14 +150,14 @@ export default function Step5NavigationBar() {
         <TopNav />
         
         {/* Purple circle highlight around nav item */}
-        {currentCircle && (
+        {highlightRect && (
           <div 
             className="fixed pointer-events-none z-50 transition-all duration-500 rounded-full animate-pulse"
             style={{
-              left: currentCircle.left || `calc(100% - ${currentCircle.right} - ${currentCircle.width})`,
-              top: currentCircle.top,
-              width: currentCircle.width,
-              height: currentCircle.height,
+              left: `${highlightRect.left}px`,
+              top: `${highlightRect.top}px`,
+              width: `${highlightRect.width}px`,
+              height: `${highlightRect.height}px`,
               border: '4px solid #9333EA',
               background: 'transparent',
               boxShadow: '0 0 20px rgba(147, 51, 234, 0.5)',
