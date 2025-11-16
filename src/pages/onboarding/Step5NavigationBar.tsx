@@ -75,13 +75,30 @@ export default function Step5NavigationBar() {
       const el = targetId ? document.querySelector<HTMLElement>(`[data-tour-id="${targetId}"]`) : null;
       if (el) {
         const rect = el.getBoundingClientRect();
-        const padding = 8;
-        setHighlightRect({
-          left: rect.left - padding,
-          top: rect.top - padding,
-          width: rect.width + padding * 2,
-          height: rect.height + padding * 2,
-        });
+        
+        // Icon buttons need fixed-size centered circles
+        const isIcon = ['settings', 'notifications', 'profile'].includes(targetId);
+        
+        if (isIcon) {
+          // Fixed 56px circle, perfectly centered on icon
+          const circleSize = 56;
+          setHighlightRect({
+            left: rect.left + (rect.width / 2) - (circleSize / 2),
+            top: rect.top + (rect.height / 2) - (circleSize / 2),
+            width: circleSize,
+            height: circleSize,
+          });
+        } else {
+          // Text tabs get snug padding: 16px horizontal, 8px vertical
+          const horizontalPadding = 16;
+          const verticalPadding = 8;
+          setHighlightRect({
+            left: rect.left - horizontalPadding,
+            top: rect.top - verticalPadding,
+            width: rect.width + horizontalPadding * 2,
+            height: rect.height + verticalPadding * 2,
+          });
+        }
       } else {
         setHighlightRect(null);
       }
