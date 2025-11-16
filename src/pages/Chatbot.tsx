@@ -52,44 +52,56 @@ export default function Chatbot() {
     content: "We'd love to see you there! The ceremony starts at the scheduled time.",
     timestamp: '01:17 PM'
   }]);
-  const [restrictedQuestions, setRestrictedQuestions] = useState([
-    "How much did the wedding cost?",
-    "Can I bring extra guests not on my RSVP?",
-    "What are you serving for dinner?"
-  ]);
-  const [escalationCategories, setEscalationCategories] = useState([
-    { name: "Personal requests (gift questions, seating changes)", enabled: true },
-    { name: "Vendor information", enabled: true },
-    { name: "Plus-one modifications", enabled: true },
-    { name: "Dietary restrictions", enabled: false },
-    { name: "Budget or cost questions", enabled: true }
-  ]);
+  const [restrictedQuestions, setRestrictedQuestions] = useState(["How much did the wedding cost?", "Can I bring extra guests not on my RSVP?", "What are you serving for dinner?"]);
+  const [escalationCategories, setEscalationCategories] = useState([{
+    name: "Personal requests (gift questions, seating changes)",
+    enabled: true
+  }, {
+    name: "Vendor information",
+    enabled: true
+  }, {
+    name: "Plus-one modifications",
+    enabled: true
+  }, {
+    name: "Dietary restrictions",
+    enabled: false
+  }, {
+    name: "Budget or cost questions",
+    enabled: true
+  }]);
   const toneExamples = {
-    warm: [
-      { q: "Where can I park?", a: "We're so glad you're coming! There's free parking available at the venue. Just look for the lot on the north side - we'll have signs to guide you. Can't wait to see you there! 💕" },
-      { q: "What time is the ceremony?", a: "We'd love to see you there! The ceremony starts at 4 PM. We recommend arriving 15-20 minutes early to get settled in." },
-      { q: "Can I bring my kids?", a: "We totally understand! This is an adults-only celebration, so we ask that you arrange childcare for the little ones. We know it can be tricky, but we really appreciate your understanding!" }
-    ],
-    formal: [
-      { q: "Where can I park?", a: "Complimentary parking is available on the premises. Please utilize the designated parking area located on the north side of the venue. Attendants will be available to assist you upon arrival." },
-      { q: "What time is the ceremony?", a: "The ceremony will commence at 4:00 PM sharp. We kindly request that guests arrive by 3:45 PM to allow time for seating." },
-      { q: "Can I bring my kids?", a: "We respectfully request that this celebration be adults-only. We appreciate your understanding and hope you'll be able to arrange appropriate care for your children." }
-    ],
-    fun: [
-      { q: "Where can I park?", a: "Park your ride at the venue lot on the north side! It's free and easy. Just follow the signs and you'll be partying in no time! 🎉" },
-      { q: "What time is the ceremony?", a: "Party starts at 4! Grab your dancing shoes and show up around 3:45 so you don't miss the magic! ✨" },
-      { q: "Can I bring my kids?", a: "This one's for the grown-ups! Time to get a babysitter and let loose on the dance floor! We promise it'll be worth it! 🕺💃" }
-    ]
+    warm: [{
+      q: "Where can I park?",
+      a: "We're so glad you're coming! There's free parking available at the venue. Just look for the lot on the north side - we'll have signs to guide you. Can't wait to see you there! 💕"
+    }, {
+      q: "What time is the ceremony?",
+      a: "We'd love to see you there! The ceremony starts at 4 PM. We recommend arriving 15-20 minutes early to get settled in."
+    }, {
+      q: "Can I bring my kids?",
+      a: "We totally understand! This is an adults-only celebration, so we ask that you arrange childcare for the little ones. We know it can be tricky, but we really appreciate your understanding!"
+    }],
+    formal: [{
+      q: "Where can I park?",
+      a: "Complimentary parking is available on the premises. Please utilize the designated parking area located on the north side of the venue. Attendants will be available to assist you upon arrival."
+    }, {
+      q: "What time is the ceremony?",
+      a: "The ceremony will commence at 4:00 PM sharp. We kindly request that guests arrive by 3:45 PM to allow time for seating."
+    }, {
+      q: "Can I bring my kids?",
+      a: "We respectfully request that this celebration be adults-only. We appreciate your understanding and hope you'll be able to arrange appropriate care for your children."
+    }],
+    fun: [{
+      q: "Where can I park?",
+      a: "Park your ride at the venue lot on the north side! It's free and easy. Just follow the signs and you'll be partying in no time! 🎉"
+    }, {
+      q: "What time is the ceremony?",
+      a: "Party starts at 4! Grab your dancing shoes and show up around 3:45 so you don't miss the magic! ✨"
+    }, {
+      q: "Can I bring my kids?",
+      a: "This one's for the grown-ups! Time to get a babysitter and let loose on the dance floor! We promise it'll be worth it! 🕺💃"
+    }]
   };
-
-  const quickTestQuestions = [
-    "Where can I park?",
-    "What time is the ceremony?",
-    "Can I bring my kids?",
-    "What's the dress code?",
-    "Where should I stay?"
-  ];
-
+  const quickTestQuestions = ["Where can I park?", "What time is the ceremony?", "Can I bring my kids?", "What's the dress code?", "Where should I stay?"];
   const handleSendTest = () => {
     if (!testMessage.trim()) return;
     const newUserMsg = {
@@ -117,7 +129,6 @@ export default function Chatbot() {
       setChatMessages(prev => [...prev, aiMsg]);
     }, 800);
   };
-
   const handleQuickQuestion = (question: string) => {
     setTestMessage(question);
     const newUserMsg = {
@@ -129,7 +140,6 @@ export default function Chatbot() {
       })
     };
     setChatMessages(prev => [...prev, newUserMsg]);
-
     setTimeout(() => {
       const response = tones.find(t => t.id === selectedTone)?.example || "Thank you for your message!";
       const aiMsg = {
@@ -143,11 +153,9 @@ export default function Chatbot() {
       setChatMessages(prev => [...prev, aiMsg]);
     }, 800);
   };
-
   const handleShowExamples = (toneId: string) => {
     const examples = toneExamples[toneId as keyof typeof toneExamples];
     const newMessages: any[] = [];
-    
     examples.forEach((ex, idx) => {
       const time = new Date();
       time.setMinutes(time.getMinutes() - (examples.length - idx) * 2);
@@ -155,7 +163,6 @@ export default function Chatbot() {
         hour: '2-digit',
         minute: '2-digit'
       });
-      
       newMessages.push({
         role: 'user',
         content: ex.q,
@@ -167,12 +174,9 @@ export default function Chatbot() {
         timestamp
       });
     });
-    
     setChatMessages(newMessages);
   };
-  
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <TopNav />
       
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
@@ -183,10 +187,7 @@ export default function Chatbot() {
               Configure your AI wedding concierge
             </p>
           </div>
-          <Button 
-            onClick={() => setShareChatbotOpen(true)}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
+          <Button onClick={() => setShareChatbotOpen(true)} className="bg-primary hover:bg-primary/90 text-primary-foreground">
             <Share2 className="w-4 h-4 mr-2" />
             Share Chatbot
           </Button>
@@ -215,12 +216,7 @@ export default function Chatbot() {
                       <p className="text-sm italic text-muted-foreground pl-13 mb-3">
                         "{tone.example}"
                       </p>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="w-full"
-                        onClick={() => handleShowExamples(tone.id)}
-                      >
+                      <Button variant="secondary" size="sm" className="w-full" onClick={() => handleShowExamples(tone.id)}>
                         See Examples
                       </Button>
                     </Card>;
@@ -238,16 +234,12 @@ export default function Chatbot() {
             <Card className="p-6 bg-white dark:bg-card" data-tour-id="message-handling">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium">Message Handling</h4>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setMessageHandlingOpen(true)}
-                >
+                <Button variant="ghost" size="sm" onClick={() => setMessageHandlingOpen(true)}>
                   <Settings2 className="w-4 h-4 mr-2" />
                   Edit
                 </Button>
               </div>
-              <RadioGroup value={replyMode} onValueChange={(value) => setReplyMode(value as 'auto' | 'approval')}>
+              <RadioGroup value={replyMode} onValueChange={value => setReplyMode(value as 'auto' | 'approval')}>
                 <div className="flex items-start space-x-3 mb-4">
                   <RadioGroupItem value="auto" id="auto" className="mt-0.5" />
                   <div className="flex-1">
@@ -270,60 +262,45 @@ export default function Chatbot() {
               <h3 className="font-semibold mb-2">Questions to Avoid</h3>
               <p className="text-sm text-muted-foreground mb-4">Set boundaries for what Pinch shouldn't answer</p>
               <div className="space-y-2 mb-4">
-                {restrictedQuestions.map((question, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                {restrictedQuestions.map((question, idx) => <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
                     <p className="text-sm">{question}</p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setRestrictedQuestions(prev => prev.filter((_, i) => i !== idx))}
-                    >
+                    <Button variant="ghost" size="sm" onClick={() => setRestrictedQuestions(prev => prev.filter((_, i) => i !== idx))}>
                       Remove
                     </Button>
-                  </div>
-                ))}
+                  </div>)}
               </div>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  const newQuestion = prompt("Enter a question to avoid:");
-                  if (newQuestion) setRestrictedQuestions(prev => [...prev, newQuestion]);
-                }}
-              >
+              <Button variant="outline" className="w-full" onClick={() => {
+              const newQuestion = prompt("Enter a question to avoid:");
+              if (newQuestion) setRestrictedQuestions(prev => [...prev, newQuestion]);
+            }}>
                 + Add Don't
               </Button>
             </Card>
 
             {/* Escalation Categories */}
             <Card className="p-6 bg-white dark:bg-card">
-              <h3 className="font-semibold mb-2">Auto-Escalate These Topics</h3>
+              <h3 className="font-semibold mb-2">Auto-Escalate    </h3>
               <p className="text-sm text-muted-foreground mb-4">Questions in these categories will automatically be sent to you for review</p>
               <div className="space-y-3">
-                {escalationCategories.map((category, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                {escalationCategories.map((category, idx) => <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
                     <p className="text-sm flex-1">{category.name}</p>
-                    <Switch
-                      checked={category.enabled}
-                      onCheckedChange={(checked) => {
-                        setEscalationCategories(prev => prev.map((cat, i) => 
-                          i === idx ? { ...cat, enabled: checked } : cat
-                        ));
-                      }}
-                    />
-                  </div>
-                ))}
+                    <Switch checked={category.enabled} onCheckedChange={checked => {
+                  setEscalationCategories(prev => prev.map((cat, i) => i === idx ? {
+                    ...cat,
+                    enabled: checked
+                  } : cat));
+                }} />
+                  </div>)}
               </div>
-              <Button
-                variant="outline"
-                className="w-full mt-4"
-                onClick={() => {
-                  const newCategory = prompt("Enter a category to auto-escalate:");
-                  if (newCategory) {
-                    setEscalationCategories(prev => [...prev, { name: newCategory, enabled: true }]);
-                  }
-                }}
-              >
+              <Button variant="outline" className="w-full mt-4" onClick={() => {
+              const newCategory = prompt("Enter a category to auto-escalate:");
+              if (newCategory) {
+                setEscalationCategories(prev => [...prev, {
+                  name: newCategory,
+                  enabled: true
+                }]);
+              }
+            }}>
                 + Add Category
               </Button>
             </Card>
@@ -359,12 +336,7 @@ export default function Chatbot() {
                 </div>
               </div>
 
-              <Button 
-                variant="outline" 
-                className="w-full mt-4"
-                onClick={() => setKnowledgeBaseOpen(true)}
-                data-tour-id="manage-faqs"
-              >
+              <Button variant="outline" className="w-full mt-4" onClick={() => setKnowledgeBaseOpen(true)} data-tour-id="manage-faqs">
                 Update Chatbot Brain
               </Button>
             </Card>
@@ -405,17 +377,9 @@ export default function Chatbot() {
                 <div className="mb-4 pb-4 border-b">
                   <p className="text-xs font-medium text-muted-foreground mb-2">Try These Common Questions</p>
                   <div className="flex flex-wrap gap-2">
-                    {quickTestQuestions.map((question, idx) => (
-                      <Button
-                        key={idx}
-                        variant="secondary"
-                        size="sm"
-                        className="text-xs"
-                        onClick={() => handleQuickQuestion(question)}
-                      >
+                    {quickTestQuestions.map((question, idx) => <Button key={idx} variant="secondary" size="sm" className="text-xs" onClick={() => handleQuickQuestion(question)}>
                         {question}
-                      </Button>
-                    ))}
+                      </Button>)}
                   </div>
                 </div>
                 
@@ -426,20 +390,13 @@ export default function Chatbot() {
                       </div>
                       <div className="flex items-center justify-between px-2">
                         <p className="text-xs text-muted-foreground">{msg.timestamp}</p>
-                        {msg.role === 'assistant' && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-auto py-1 px-2 text-xs"
-                            onClick={() => {
-                              setSelectedMessageForFeedback(msg.content);
-                              setSelectedMessageIndex(idx);
-                              setFeedbackDialogOpen(true);
-                            }}
-                          >
+                        {msg.role === 'assistant' && <Button variant="ghost" size="sm" className="h-auto py-1 px-2 text-xs" onClick={() => {
+                      setSelectedMessageForFeedback(msg.content);
+                      setSelectedMessageIndex(idx);
+                      setFeedbackDialogOpen(true);
+                    }}>
                             Give Feedback
-                          </Button>
-                        )}
+                          </Button>}
                       </div>
                     </div>
                   </div>)}
@@ -459,33 +416,18 @@ export default function Chatbot() {
       </main>
 
       {/* Dialogs */}
-      <KnowledgeBaseDialog 
-        open={knowledgeBaseOpen} 
-        onOpenChange={setKnowledgeBaseOpen}
-      />
-      <ShareChatbotDialog
-        open={shareChatbotOpen}
-        onOpenChange={setShareChatbotOpen}
-      />
-      <MessageHandlingDialog
-        open={messageHandlingOpen}
-        onOpenChange={setMessageHandlingOpen}
-      />
-      <FeedbackDialog
-        open={feedbackDialogOpen}
-        onOpenChange={setFeedbackDialogOpen}
-        messageContent={selectedMessageForFeedback}
-        onApplyChanges={(newContent, tone) => {
-          if (selectedMessageIndex !== null) {
-            const updatedMessages = [...chatMessages];
-            updatedMessages[selectedMessageIndex] = {
-              ...updatedMessages[selectedMessageIndex],
-              content: newContent
-            };
-            setChatMessages(updatedMessages);
-          }
-        }}
-      />
-    </div>
-  );
+      <KnowledgeBaseDialog open={knowledgeBaseOpen} onOpenChange={setKnowledgeBaseOpen} />
+      <ShareChatbotDialog open={shareChatbotOpen} onOpenChange={setShareChatbotOpen} />
+      <MessageHandlingDialog open={messageHandlingOpen} onOpenChange={setMessageHandlingOpen} />
+      <FeedbackDialog open={feedbackDialogOpen} onOpenChange={setFeedbackDialogOpen} messageContent={selectedMessageForFeedback} onApplyChanges={(newContent, tone) => {
+      if (selectedMessageIndex !== null) {
+        const updatedMessages = [...chatMessages];
+        updatedMessages[selectedMessageIndex] = {
+          ...updatedMessages[selectedMessageIndex],
+          content: newContent
+        };
+        setChatMessages(updatedMessages);
+      }
+    }} />
+    </div>;
 }
