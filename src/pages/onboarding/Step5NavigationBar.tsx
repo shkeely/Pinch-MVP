@@ -68,32 +68,6 @@ export default function Step5NavigationBar() {
   };
 
   const currentSpotlight = spotlightConfig[currentTooltip];
-  
-  // Calculate spotlight position for clip-path
-  const getSpotlightPosition = () => {
-    if (!currentSpotlight) return '';
-    
-    const horizontalPos = currentSpotlight.left 
-      ? currentSpotlight.left 
-      : `calc(100% - ${currentSpotlight.right} - ${currentSpotlight.width})`;
-    
-    const horizontalEnd = currentSpotlight.left
-      ? `calc(${currentSpotlight.left} + ${currentSpotlight.width})`
-      : `calc(100% - ${currentSpotlight.right})`;
-    
-    return `polygon(
-      0% 0%, 
-      0% 100%, 
-      ${horizontalPos} 100%, 
-      ${horizontalPos} ${currentSpotlight.top},
-      ${horizontalEnd} ${currentSpotlight.top},
-      ${horizontalEnd} calc(${currentSpotlight.top} + ${currentSpotlight.height}),
-      ${horizontalPos} calc(${currentSpotlight.top} + ${currentSpotlight.height}),
-      ${horizontalPos} 100%,
-      100% 100%, 
-      100% 0%
-    )`;
-  };
 
   // Tooltip content based on current step
   const tooltipContent = {
@@ -150,13 +124,22 @@ export default function Step5NavigationBar() {
       <div className="relative min-h-screen bg-background">
         <TopNav />
         
-        {/* Dark overlay with spotlight cutout */}
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-all duration-500 pointer-events-none z-40"
-          style={{
-            clipPath: getSpotlightPosition()
-          }}
-        />
+        {/* Full dark overlay */}
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm pointer-events-none z-40" />
+        
+        {/* Spotlight element that creates a clear window */}
+        {currentSpotlight && (
+          <div 
+            className="fixed pointer-events-none z-[41] transition-all duration-500 rounded-md"
+            style={{
+              left: currentSpotlight.left || `calc(100% - ${currentSpotlight.right} - ${currentSpotlight.width})`,
+              top: currentSpotlight.top,
+              width: currentSpotlight.width,
+              height: currentSpotlight.height,
+              boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.6)',
+            }}
+          />
+        )}
         
         {/* Blank page below nav */}
         <main className="relative min-h-[calc(100vh-64px)]">
