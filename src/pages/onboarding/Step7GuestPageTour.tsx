@@ -7,6 +7,8 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { UserPlus, Upload, Pencil, Settings } from 'lucide-react';
 import {
   Table,
@@ -29,6 +31,7 @@ interface Guest {
 
 export default function Step7GuestPageTour() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
+  const [multiSegmentMode, setMultiSegmentMode] = useState(false);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
 
@@ -148,7 +151,7 @@ export default function Step7GuestPageTour() {
 
             {/* Tooltip 1: Overview */}
             {currentTooltip === 1 && (
-              <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-0 lg:mt-4 lg:translate-x-0 z-50">
+              <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-4 z-50">
                 <TourTooltip
                   target="bottom"
                   title="Overview of Guest Page"
@@ -187,22 +190,27 @@ export default function Step7GuestPageTour() {
 
                 {/* Tooltip 2: Import CSV */}
                 {currentTooltip === 2 && (
-                  <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:left-0 lg:-translate-y-full lg:-mt-4 lg:translate-x-0 z-50">
+                  <div className="fixed top-[calc(theme(spacing.4)+60px)] left-4 right-4 max-w-[calc(100vw-32px)] md:left-1/2 md:-translate-x-1/2 md:top-32 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-full lg:-mt-4 z-50">
                     <TourTooltip
                       target="bottom"
                       title="Import Your Guest List"
-                      description="Upload a CSV file with your guest names and phone numbers. We'll show you the exact format needed. Don't have your list ready? You can use sample data for now with fake phone numbers."
+                      description="Choose to upload your real guest list now, or use sample data to explore features first. You can always import your real list later."
                       step={currentTooltip}
                       totalSteps={6}
                       onNext={handleNext}
                       onPrev={handlePrevious}
+                      buttonText="Upload Your Guest List"
+                      secondaryButton={{
+                        text: "Use Fake Data (Tutorial Only)",
+                        onClick: handleNext
+                      }}
                     />
                   </div>
                 )}
 
                 {/* Tooltip 3: Segments */}
                 {currentTooltip === 3 && (
-                  <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-0 lg:mt-4 lg:translate-x-0 lg:translate-y-0 z-50">
+                  <div className="fixed top-[calc(theme(spacing.4)+300px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-4 z-50">
                     <TourTooltip
                       target="bottom"
                       title="Review Segments"
@@ -217,9 +225,9 @@ export default function Step7GuestPageTour() {
 
                 {/* Tooltip 4: Edit Segments */}
                 {currentTooltip === 4 && (
-                  <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:right-0 lg:left-auto lg:mr-0 lg:-translate-y-full lg:-mt-4 lg:translate-x-0 z-50">
+                  <div className="fixed top-1/2 -translate-y-1/2 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:right-[calc(100%+16px)] lg:left-auto lg:-translate-y-full lg:-mt-4 lg:translate-x-0 z-50">
                     <TourTooltip
-                      target="left"
+                      target="right"
                       title="Add or Edit Segments"
                       description="Click here to create new segments or modify existing ones. Segments make it easy to send specific messages to the right groups."
                       step={currentTooltip}
@@ -233,29 +241,43 @@ export default function Step7GuestPageTour() {
             </div>
           </Card>
 
-          {/* Action Buttons */}
-          <div className="mb-4 flex flex-wrap gap-2" id="tour-send-message-area">
-            <Button variant="outline" size="sm">
-              Send Message to Guests
-            </Button>
-            <Button variant="outline" size="sm">
-              Copy Chatbot Link
-            </Button>
+          {/* Action Buttons with Multi-Segment Toggle */}
+          <div className="mb-4 space-y-3" id="tour-send-message-area">
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm">
+                Send Message to Guests
+              </Button>
+              <Button variant="outline" size="sm">
+                Copy Chatbot Link
+              </Button>
+            </div>
 
-            {/* Tooltip 6: Send Message */}
-            {currentTooltip === 6 && (
-              <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-0 lg:mt-4 lg:translate-x-0 lg:translate-y-0 z-50">
-                <TourTooltip
-                  target="top"
-                  title="Multiple Segment Messaging"
-                  description="Toggle this ON to send the same message to multiple segments at once. Great for announcements that go to several groups!"
-                  step={currentTooltip}
-                  totalSteps={6}
-                  onNext={handleNext}
-                  onPrev={handlePrevious}
-                />
-              </div>
-            )}
+            {/* Multi-Segment Toggle */}
+            <div className="flex items-center space-x-2 relative" id="tour-multi-segment-toggle">
+              <Switch 
+                id="multi-segment"
+                checked={multiSegmentMode}
+                onCheckedChange={setMultiSegmentMode}
+              />
+              <Label htmlFor="multi-segment" className="text-sm cursor-pointer">
+                Send to Multiple Segments
+              </Label>
+
+              {/* Tooltip 6: Multiple Segment Toggle */}
+              {currentTooltip === 6 && (
+                <div className="fixed bottom-[calc(100vh-400px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-0 lg:mt-4 lg:translate-x-0 lg:translate-y-0 z-50">
+                  <TourTooltip
+                    target="top"
+                    title="Multiple Segment Messaging"
+                    description="Toggle this ON to send the same message to multiple segments at once. Great for announcements that go to several groups!"
+                    step={currentTooltip}
+                    totalSteps={6}
+                    onNext={handleNext}
+                    onPrev={handlePrevious}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Guests Table */}
@@ -309,9 +331,9 @@ export default function Step7GuestPageTour() {
 
                 {/* Tooltip 5: Edit Guest */}
                 {currentTooltip === 5 && (
-                  <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-8 lg:right-0 lg:left-auto lg:mr-4 lg:translate-x-0 lg:translate-y-0 z-50">
+                  <div className="fixed bottom-[calc(100vh-500px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-8 lg:right-[calc(100%+16px)] lg:left-auto lg:translate-x-0 lg:translate-y-0 z-50">
                     <TourTooltip
-                      target="left"
+                      target="right"
                       title="Try Changing a Guest's Segment"
                       description="Click the edit icon next to any guest to change their segment, contact info, or other details."
                       step={currentTooltip}

@@ -15,6 +15,10 @@ interface TourTooltipProps {
   highlight?: boolean;
   className?: string;
   buttonText?: string;
+  secondaryButton?: {
+    text: string;
+    onClick: () => void;
+  };
 }
 
 export function TourTooltip({
@@ -28,6 +32,7 @@ export function TourTooltip({
   highlight = true,
   className,
   buttonText,
+  secondaryButton,
 }: TourTooltipProps) {
   // Position classes based on target direction
   const positionClasses = {
@@ -71,34 +76,63 @@ export function TourTooltip({
             </p>
 
             {/* Navigation Buttons */}
-            <div className="flex items-center justify-between gap-2 pt-2">
-              {step > 1 && onPrev ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onPrev}
-                  className="flex-1"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Previous
-                </Button>
-              ) : (
-                <div className="flex-1" />
+            <div className="flex flex-col gap-2 pt-2">
+              {secondaryButton && (
+                <div className="flex flex-col gap-2">
+                  <Button
+                    size="sm"
+                    onClick={onNext}
+                    className="w-full"
+                    style={{
+                      backgroundColor: '#5b6850',
+                      color: 'white',
+                    }}
+                  >
+                    {buttonText || 'Continue'}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={secondaryButton.onClick}
+                    className="w-full"
+                  >
+                    {secondaryButton.text}
+                  </Button>
+                </div>
               )}
+              
+              {!secondaryButton && (
+                <div className="flex items-center justify-between gap-2">
+                  {step > 1 && onPrev ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={onPrev}
+                      className="flex-1"
+                    >
+                      <ArrowLeft className="mr-2 h-4 w-4" />
+                      Previous
+                    </Button>
+                  ) : (
+                    <div className="flex-1" />
+                  )}
 
-              {onNext && (
-                <Button
-                  size="sm"
-                  onClick={onNext}
-                  className="flex-1"
-                  style={{
-                    backgroundColor: '#5b6850',
-                    color: 'white',
-                  }}
-                >
-                  {buttonText || (step === totalSteps ? 'Finish' : 'Next')}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                  {onNext && (
+                    <Button
+                      size="sm"
+                      onClick={onNext}
+                      className="flex-1"
+                      style={{
+                        backgroundColor: '#5b6850',
+                        color: 'white',
+                      }}
+                    >
+                      {buttonText || (step === totalSteps ? 'Finish' : 'Next')}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
               )}
             </div>
           </CardContent>
