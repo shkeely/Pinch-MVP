@@ -262,50 +262,68 @@ export default function Chatbot() {
 
             {/* Do's & Don'ts */}
             <Card className="p-6 bg-white dark:bg-card">
-              <h3 className="font-semibold mb-2">Topics to Avoid            </h3>
-              <p className="text-sm text-muted-foreground mb-4">Set boundaries for what Pinch shouldn't answer</p>
-              <div className="space-y-2 mb-4">
-                {restrictedQuestions.map((question, idx) => <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
-                    <p className="text-sm">{question}</p>
-                    <Button variant="ghost" size="sm" onClick={() => setRestrictedQuestions(prev => prev.filter((_, i) => i !== idx))}>
-                      Remove
-                    </Button>
-                  </div>)}
-              </div>
-              <Button variant="outline" className="w-full" onClick={() => {
-              const newQuestion = prompt("Enter a question to avoid:");
-              if (newQuestion) setRestrictedQuestions(prev => [...prev, newQuestion]);
-            }}>
-                + Add Don't
-              </Button>
+              <Collapsible open={restrictedQuestionsOpen} onOpenChange={setRestrictedQuestionsOpen}>
+                <CollapsibleTrigger className="flex items-center justify-between w-full cursor-pointer">
+                  <div className="text-left">
+                    <h3 className="font-semibold mb-2">Topics to Avoid</h3>
+                    <p className="text-sm text-muted-foreground">Set boundaries for what Pinch shouldn't answer</p>
+                  </div>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${restrictedQuestionsOpen ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-4">
+                  <div className="space-y-2 mb-4">
+                    {restrictedQuestions.map((question, idx) => <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                        <p className="text-sm">{question}</p>
+                        <Button variant="ghost" size="sm" onClick={() => setRestrictedQuestions(prev => prev.filter((_, i) => i !== idx))}>
+                          Remove
+                        </Button>
+                      </div>)}
+                  </div>
+                  <Button variant="outline" className="w-full" onClick={() => {
+                  const newQuestion = prompt("Enter a question to avoid:");
+                  if (newQuestion) setRestrictedQuestions(prev => [...prev, newQuestion]);
+                }}>
+                    + Add Don't
+                  </Button>
+                </CollapsibleContent>
+              </Collapsible>
             </Card>
 
             {/* Escalation Categories */}
             <Card className="p-6 bg-white dark:bg-card">
-              <h3 className="font-semibold mb-2">Auto-Escalate    </h3>
-              <p className="text-sm text-muted-foreground mb-4">Questions in these categories will automatically be sent to you for review</p>
-              <div className="space-y-3">
-                {escalationCategories.map((category, idx) => <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
-                    <p className="text-sm flex-1">{category.name}</p>
-                    <Switch checked={category.enabled} onCheckedChange={checked => {
-                  setEscalationCategories(prev => prev.map((cat, i) => i === idx ? {
-                    ...cat,
-                    enabled: checked
-                  } : cat));
-                }} />
-                  </div>)}
-              </div>
-              <Button variant="outline" className="w-full mt-4" onClick={() => {
-              const newCategory = prompt("Enter a category to auto-escalate:");
-              if (newCategory) {
-                setEscalationCategories(prev => [...prev, {
-                  name: newCategory,
-                  enabled: true
-                }]);
-              }
-            }}>
-                + Add Category
-              </Button>
+              <Collapsible open={escalationCategoriesOpen} onOpenChange={setEscalationCategoriesOpen}>
+                <CollapsibleTrigger className="flex items-center justify-between w-full cursor-pointer">
+                  <div className="text-left">
+                    <h3 className="font-semibold mb-2">Auto-Escalate</h3>
+                    <p className="text-sm text-muted-foreground">Questions in these categories will automatically be sent to you for review</p>
+                  </div>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${escalationCategoriesOpen ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-4">
+                  <div className="space-y-3">
+                    {escalationCategories.map((category, idx) => <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                        <p className="text-sm flex-1">{category.name}</p>
+                        <Switch checked={category.enabled} onCheckedChange={checked => {
+                      setEscalationCategories(prev => prev.map((cat, i) => i === idx ? {
+                        ...cat,
+                        enabled: checked
+                      } : cat));
+                    }} />
+                      </div>)}
+                  </div>
+                  <Button variant="outline" className="w-full mt-4" onClick={() => {
+                  const newCategory = prompt("Enter a category to auto-escalate:");
+                  if (newCategory) {
+                    setEscalationCategories(prev => [...prev, {
+                      name: newCategory,
+                      enabled: true
+                    }]);
+                  }
+                }}>
+                    + Add Category
+                  </Button>
+                </CollapsibleContent>
+              </Collapsible>
             </Card>
 
             {/* Chatbot Brain Card */}
