@@ -111,15 +111,9 @@ const getDefaultRoute = () => {
       }
     }
 
-    // Method 4: LocalStorage fallback
-    const stored = localStorage.getItem('preferredPreviewRoute');
-    if (stored && stored.startsWith('/')) {
-      console.log('Using localStorage:', stored);
-      return stored;
-    }
-
-    console.log('Using default: /homepage');
-    return '/homepage';
+    // Default: send everyone to landing page
+    console.log('Using default: /landing');
+    return '/landing';
   } catch (e) {
     console.log('Route error:', e);
     return '/homepage';
