@@ -116,7 +116,7 @@ const getDefaultRoute = () => {
     return '/landing';
   } catch (e) {
     console.log('Route error:', e);
-    return '/homepage';
+    return '/landing';
   }
 };
 
