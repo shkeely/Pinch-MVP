@@ -151,7 +151,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, on
           </div>
 
           {/* Chatbot Brain List */}
-          <div className="space-y-3">
+          <div className="space-y-3" data-tour-id="knowledge-items">
             {knowledgeBases.map((kb) => {
               const Icon = kb.icon;
               return (
