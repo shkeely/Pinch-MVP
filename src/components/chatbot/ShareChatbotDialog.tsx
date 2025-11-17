@@ -30,7 +30,7 @@ export function ShareChatbotDialog({ open, onOpenChange }: ShareChatbotDialogPro
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Share Your Wedding Chatbot</DialogTitle>
+          <DialogTitle>Share Your AI Concierge</DialogTitle>
           <DialogDescription>
             Share this link with your guests so they can ask questions about your wedding
           </DialogDescription>
@@ -38,7 +38,7 @@ export function ShareChatbotDialog({ open, onOpenChange }: ShareChatbotDialogPro
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="chatbot-url">Chatbot Link</Label>
+            <Label htmlFor="chatbot-url">Concierge Link</Label>
             <div className="flex gap-2">
               <Input
                 id="chatbot-url"

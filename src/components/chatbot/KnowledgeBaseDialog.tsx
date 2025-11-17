@@ -130,9 +130,9 @@ export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, on
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-serif">Chatbot Brain Management</DialogTitle>
+          <DialogTitle className="text-2xl font-serif">Concierge Brain Management</DialogTitle>
           <DialogDescription>
-            Configure what information your AI chatbot can access to answer guest questions
+            Configure what information your AI concierge can access to answer guest questions
           </DialogDescription>
         </DialogHeader>
 
@@ -150,7 +150,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, on
             </div>
           </div>
 
-          {/* Chatbot Brain List */}
+          {/* Concierge Brain Sources */}
           <div className="space-y-3" data-tour-id="knowledge-items">
             {knowledgeBases.map((kb) => {
               const Icon = kb.icon;
@@ -289,7 +289,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, on
         </div>
       </DialogContent>
 
-      {/* Chatbot Brain Editor Dialog */}
+      {/* Knowledge Source Editor Dialog */}
       {editingKB && (
         <KnowledgeBaseEditor
           open={!!editingKB}

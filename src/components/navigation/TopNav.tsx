@@ -9,8 +9,8 @@ import AccountPopover from './AccountPopover';
 const navItems = [
   { label: 'Homepage', path: '/homepage' },
   { label: 'Messages', path: '/messages' },
-  { label: 'Reminders', path: '/reminders' },
-  { label: 'Chatbot', path: '/chatbot' },
+  { label: 'Announcements', path: '/reminders' },
+  { label: 'Concierge', path: '/chatbot' },
   { label: 'Guests', path: '/guests' },
 ];
 

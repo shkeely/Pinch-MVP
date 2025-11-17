@@ -38,7 +38,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
   };
 
   const handleApproveAll = () => {
-    toast.success("Chatbot Brain updated successfully!");
+    toast.success("Concierge Brain updated successfully!");
     setFeedback('');
     setShowRecommendations(false);
     setRecommendations([]);
@@ -81,7 +81,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
             Give Feedback
           </DialogTitle>
           <DialogDescription>
-            Help improve AI responses by providing feedback. This will update the chatbot's chatbot brain.
+            Help improve AI responses by providing feedback. This will update the concierge's brain.
           </DialogDescription>
         </DialogHeader>
 
@@ -111,7 +111,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles className="w-5 h-5 text-purple-600" />
-                <h3 className="font-semibold">Recommended Chatbot Brain Changes</h3>
+                <h3 className="font-semibold">Recommended Concierge Brain Changes</h3>
               </div>
               
               {recommendations.map((rec, idx) => (

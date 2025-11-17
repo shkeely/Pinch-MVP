@@ -80,9 +80,9 @@ export default function Step11Finish() {
   const nextSteps = [
     {
       icon: Brain,
-      title: 'Complete Your Chatbot Brain',
-      description: 'Add more wedding details so Pinch can answer more questions automatically',
-      buttonText: 'Go to Chatbot Brain',
+      title: 'Complete Your Concierge Brain',
+      description: 'Add custom FAQs and wedding details to help your AI concierge answer guest questions accurately.',
+      buttonText: 'Go to Concierge Brain',
       onClick: () => {
         handleCloseRecommendations();
         navigate('/chatbot');

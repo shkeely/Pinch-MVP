@@ -57,7 +57,7 @@ export default function Step6ChatbotSetup() {
 
   // State for chatbot page
   const [selectedTone, setSelectedTone] = useState('warm');
-  const [chatbotName, setChatbotName] = useState('Wedding Assistant');
+  const [chatbotName, setChatbotName] = useState('Concierge');
   const [replyMode, setReplyMode] = useState<'auto' | 'approval'>('auto');
   const [chatbotActive, setChatbotActive] = useState(true);
   const [testMessage, setTestMessage] = useState('');
@@ -309,13 +309,13 @@ export default function Step6ChatbotSetup() {
       position: 'right' as const
     },
     6: {
-      title: "Your Wedding Knowledge Base",
+      title: "Your Concierge Brain",
       description: "This is Pinch's brain! Let's explore how to add and organize your wedding information.",
       position: 'right' as const
     },
     '7a': {
-      title: "Open Chatbot Brain",
-      description: "Click 'Update Chatbot Brain' to open the knowledge base editor where you can manage all your wedding information.",
+      title: "Open Concierge Brain",
+      description: "Click 'Update Concierge Brain' to open the editor where you can manage all your wedding information.",
       position: 'right' as const
     },
     '7b': {
@@ -325,7 +325,7 @@ export default function Step6ChatbotSetup() {
     },
     '7c': {
       title: "Web Scraper",
-      description: "Already have a wedding website? Use the web scraper to automatically pull information and populate your knowledge base. Just paste your URL!",
+      description: "Already have a wedding website? Use the web scraper to automatically pull information and populate your concierge brain. Just paste your URL!",
       position: 'top' as const
     },
     '7d': {
@@ -339,13 +339,13 @@ export default function Step6ChatbotSetup() {
       position: 'bottom' as const
     },
     8: {
-      title: "Test Your Chatbot!",
+      title: "Test Your Concierge!",
       description: "Click quick question buttons or type your own. See how Pinch responds based on your settings and info!",
       position: 'left' as const
     },
     9: {
       title: "Activate When Ready",
-      description: "When you're happy with responses, toggle this to Active and your chatbot will start answering real guest texts!",
+      description: "When you're happy with responses, toggle this to Active and your concierge will start answering real guest texts!",
       position: 'left' as const
     }
   };
@@ -510,11 +510,11 @@ export default function Step6ChatbotSetup() {
               </Collapsible>
             </Card>
 
-            {/* Chatbot Brain Card */}
+            {/* Concierge Brain Card */}
             <Card className="p-6 bg-white dark:bg-card" data-tour-id="chatbot-brain">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
-                <h2 className="text-xl font-semibold">Chatbot Brain</h2>
+                <h2 className="text-xl font-semibold">Concierge Brain</h2>
               </div>
 
               <div className="space-y-4" data-tour-id="chatbot-brain-categories">
@@ -550,7 +550,7 @@ export default function Step6ChatbotSetup() {
                 data-tour-id="update-brain-button"
                 onClick={() => setKnowledgeBaseOpen(true)}
               >
-                Update Chatbot Brain
+                Update Concierge Brain
               </Button>
             </Card>
 
@@ -742,8 +742,8 @@ export default function Step6ChatbotSetup() {
         );
       })()}
 
-      {/* Knowledge Base Dialog */}
-      <KnowledgeBaseDialog 
+      {/* Knowledge Source Dialog */}
+      <KnowledgeBaseDialog
         open={knowledgeBaseOpen} 
         onOpenChange={(open) => {
           // Keep dialog open during tour steps 7b-7e

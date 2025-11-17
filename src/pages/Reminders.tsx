@@ -174,9 +174,9 @@ export default function Reminders() {
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-6xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-2">Guest Reminders</h1>
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold mb-2">Automated Announcements</h1>
             <p className="text-muted-foreground">
-              Schedule and manage automated text reminders for your guests
+              Keep your guests informed with personalized, automated announcements
             </p>
           </div>
           <Button 
@@ -184,7 +184,7 @@ export default function Reminders() {
             onClick={() => setIsCreateDialogOpen(true)}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Schedule Reminder
+            Schedule Announcement
           </Button>
         </div>
 
@@ -400,7 +400,7 @@ export default function Reminders() {
           reminder={null}
           onSave={(newReminder) => {
             setReminders([...reminders, { ...newReminder, id: Math.max(...reminders.map(r => r.id)) + 1 }]);
-            toast.success('Reminder created successfully');
+            toast.success('Announcement created successfully');
           }}
         />
       </main>
