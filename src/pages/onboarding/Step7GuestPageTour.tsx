@@ -209,7 +209,7 @@ export default function Step7GuestPageTour() {
                       description="Choose to upload your real guest list now, or use sample data to explore features first. You can always import your real list later."
                       step={currentTooltip}
                       totalSteps={6}
-                      onNext={handleNext}
+                      onNext={() => setImportDialogOpen(true)}
                       onPrev={handlePrevious}
                       buttonText="Upload Your Guest List"
                       secondaryButton={{
