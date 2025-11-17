@@ -173,14 +173,19 @@ export default function Step6ChatbotSetup() {
     if (currentTooltip === '7e') {
       setKnowledgeBaseOpen(false);
       setTimeout(() => {
-        setCurrentTooltip('8');
+        setCurrentTooltip(8);
       }, 300);
       return;
     }
     
-    if (currentIndex < stepSequence.length - 1) {
-      setCurrentTooltip(stepSequence[currentIndex + 1]);
-    } else {
+    // Explicit handling for step 8 → 9
+    if (currentTooltip === 8) {
+      setCurrentTooltip(9);
+      return;
+    }
+    
+    // Explicit handling for step 9 → navigate to next page
+    if (currentTooltip === 9) {
       updateWedding({ 
         onboardingStep: 7,
         tourProgress: { 
@@ -194,6 +199,12 @@ export default function Step6ChatbotSetup() {
         }
       });
       navigate('/onboarding/step-7');
+      return;
+    }
+    
+    // Default handling for other steps
+    if (currentIndex >= 0 && currentIndex < stepSequence.length - 1) {
+      setCurrentTooltip(stepSequence[currentIndex + 1]);
     }
   };
 
