@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
 
 const tones = [
   {
@@ -61,6 +62,7 @@ export default function Step6ChatbotSetup() {
   const [testMessage, setTestMessage] = useState('');
   const [restrictedQuestionsOpen, setRestrictedQuestionsOpen] = useState(false);
   const [escalationCategoriesOpen, setEscalationCategoriesOpen] = useState(false);
+  const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     {
       role: 'user',
@@ -496,6 +498,7 @@ export default function Step6ChatbotSetup() {
                 variant="outline"
                 className="w-full mt-4"
                 data-tour-id="update-brain-button"
+                onClick={() => setKnowledgeBaseOpen(true)}
               >
                 Update Chatbot Brain
               </Button>
@@ -676,6 +679,12 @@ export default function Step6ChatbotSetup() {
           </button>
         </div>
       </div>
+
+      {/* Knowledge Base Dialog */}
+      <KnowledgeBaseDialog 
+        open={knowledgeBaseOpen} 
+        onOpenChange={setKnowledgeBaseOpen} 
+      />
     </div>
   );
 }
