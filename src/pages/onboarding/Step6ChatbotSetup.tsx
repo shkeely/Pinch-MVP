@@ -101,10 +101,11 @@ export default function Step6ChatbotSetup() {
         5: 'escalation-categories',
         6: 'chatbot-brain',
         '7a': 'update-brain-button',
-        '7b': 'edit-category-button',
-        '7c': 'web-scraper',
-        '7d': 'knowledge-items',
-        '7e': 'add-category-button',
+        '7b': 'knowledge-categories',
+        '7c': 'edit-category-button',
+        '7d': 'web-scraper',
+        '7e': 'knowledge-items',
+        '7f': 'add-category-button',
         8: 'chat-simulation',
         9: 'chatbot-status',
       };
@@ -147,17 +148,25 @@ export default function Step6ChatbotSetup() {
     }
   }, [knowledgeBaseOpen, currentTooltip]);
 
-  // Category edit no longer auto-advances the tour from categories.
-  // Kept state for potential future interactions.
+  // Watch for category edit to advance from 7c to 7d (Web Scraper)
+  useEffect(() => {
+    if (categoryExpanded && currentTooltip === '7c') {
+      setTimeout(() => setCurrentTooltip('7d'), 300);
+    }
+  }, [categoryExpanded, currentTooltip]);
 
   const handleNext = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
     
     // Prevent auto-advance for steps that require user interaction
     if (currentTooltip === '7a') {
-      // User must click "Update Chatbot Brain" button
+      // User must click "Update Concierge Brain" button
+      return;
+    }
+    if (currentTooltip === '7c') {
+      // User must click "Edit Items" on a category
       return;
     }
     
@@ -202,7 +211,7 @@ export default function Step6ChatbotSetup() {
 
   const handlePrevious = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
     
     if (currentIndex > 0) {
@@ -316,16 +325,21 @@ export default function Step6ChatbotSetup() {
       position: 'top' as const
     },
     '7c': {
+      title: "Edit a Category",
+      description: "Click 'Edit Items' on any category to view and manage the knowledge items inside.",
+      position: 'top' as const
+    },
+    '7d': {
       title: "Web Scraper",
       description: "Already have a wedding website? Use the web scraper to automatically pull information and populate your concierge brain. Just paste your URL!",
       position: 'top' as const
     },
-    '7d': {
+    '7e': {
       title: "Knowledge Items",
       description: "These are the individual facts Pinch uses to answer questions. You can add, edit, or delete items to keep information accurate and up-to-date.",
       position: 'right' as const
     },
-    '7e': {
+    '7f': {
       title: "Add Custom Categories",
       description: "Need a category we don't have? Click 'Add Category' to create custom ones like 'Hotel Blocks', 'Gift Registry', or 'Wedding Party Bios'.",
       position: 'bottom' as const
@@ -619,7 +633,7 @@ export default function Step6ChatbotSetup() {
 
       {/* Purple highlight circle */}
       {highlightRect && (() => {
-        const isInDialog = ['7b', '7c', '7d', '7e'].includes(String(currentTooltip));
+        const isInDialog = ['7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
         const highlightZIndex = isInDialog ? 'z-[90]' : 'z-50';
         
         return (
@@ -640,7 +654,7 @@ export default function Step6ChatbotSetup() {
 
       {/* Centered tooltip */}
       {(() => {
-        const isInDialog = ['7b', '7c', '7d', '7e'].includes(String(currentTooltip));
+        const isInDialog = ['7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
         const tooltipZIndex = isInDialog ? 'z-[100]' : 'z-50';
         
         return (
@@ -712,7 +726,7 @@ export default function Step6ChatbotSetup() {
                   className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                 >
                   {(() => {
-                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
                     const currentIndex = stepSequence.indexOf(currentTooltip);
                     return currentIndex < stepSequence.length - 1 ? 'Next' : 'Continue';
                   })()}
@@ -738,14 +752,15 @@ export default function Step6ChatbotSetup() {
       <KnowledgeBaseDialog
         open={knowledgeBaseOpen} 
         onOpenChange={(open) => {
-          // Keep dialog open during tour steps 7b-7e
-          const isInDialogTour = ['7b', '7c', '7d', '7e'].includes(String(currentTooltip));
+          // Keep dialog open during tour steps 7b-7f
+          const isInDialogTour = ['7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
           if (!isInDialogTour || open) {
             setKnowledgeBaseOpen(open);
           }
         }}
-        inTourMode={['7b', '7c', '7d', '7e'].includes(String(currentTooltip))}
+        inTourMode={['7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip))}
         onCategoryEdit={() => setCategoryExpanded(true)}
+        currentTourStep={String(currentTooltip)}
       />
 
       {/* Tour Footer Navigation */}
