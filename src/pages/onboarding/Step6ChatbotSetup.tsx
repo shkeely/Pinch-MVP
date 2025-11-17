@@ -140,32 +140,24 @@ export default function Step6ChatbotSetup() {
     };
   }, [currentTooltip, knowledgeBaseOpen]);
 
-  // Watch for dialog opening to advance from 7a to 7d (Knowledge Items)
+  // Watch for dialog opening to advance from 7a to 7b (Knowledge Categories)
   useEffect(() => {
     if (knowledgeBaseOpen && currentTooltip === '7a') {
-      setTimeout(() => setCurrentTooltip('7d'), 500);
+      setTimeout(() => setCurrentTooltip('7b'), 500);
     }
   }, [knowledgeBaseOpen, currentTooltip]);
 
-  // Watch for category edit to advance from 7b to 7c
-  useEffect(() => {
-    if (categoryExpanded && currentTooltip === '7b') {
-      setTimeout(() => setCurrentTooltip('7c'), 300);
-    }
-  }, [categoryExpanded, currentTooltip]);
+  // Category edit no longer auto-advances the tour from categories.
+  // Kept state for potential future interactions.
 
   const handleNext = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
     
     // Prevent auto-advance for steps that require user interaction
     if (currentTooltip === '7a') {
       // User must click "Update Chatbot Brain" button
-      return;
-    }
-    if (currentTooltip === '7b') {
-      // User must click "Edit" on a category
       return;
     }
     
@@ -210,7 +202,7 @@ export default function Step6ChatbotSetup() {
 
   const handlePrevious = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
     
     if (currentIndex > 0) {
@@ -319,8 +311,8 @@ export default function Step6ChatbotSetup() {
       position: 'right' as const
     },
     '7b': {
-      title: "Edit a Category",
-      description: "Each category (like Venue, Timing, Dress Code) holds related information. Click 'Edit' on any category to view and modify the knowledge items inside.",
+      title: "Knowledge Categories",
+      description: "Your wedding info is organized into categories (like Venue, Timing, Dress Code). Browse categories to see what’s included.",
       position: 'top' as const
     },
     '7c': {
@@ -720,7 +712,7 @@ export default function Step6ChatbotSetup() {
                   className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                 >
                   {(() => {
-                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
+                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
                     const currentIndex = stepSequence.indexOf(currentTooltip);
                     return currentIndex < stepSequence.length - 1 ? 'Next' : 'Continue';
                   })()}
