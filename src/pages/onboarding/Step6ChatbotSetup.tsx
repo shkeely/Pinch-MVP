@@ -244,7 +244,7 @@ export default function Step6ChatbotSetup() {
       position: 'right' as const
     },
     6: {
-      title: "Your Wedding Knowledge Base",
+      title: "Your Chatbot Brain",
       description: "This is Pinch's brain! Add wedding details here - venue, timing, parking, dress code, etc.",
       position: 'right' as const
     },
