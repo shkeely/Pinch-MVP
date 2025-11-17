@@ -126,7 +126,7 @@ export default function Step6ChatbotSetup() {
     };
 
     // Initial update with delay to allow for dialog rendering
-    const timeoutId = setTimeout(updateRect, 100);
+    const timeoutId = setTimeout(updateRect, 400);
     updateRect();
     
     window.addEventListener('resize', updateRect);
@@ -587,9 +587,13 @@ export default function Step6ChatbotSetup() {
       </main>
 
       {/* Purple highlight circle */}
-      {highlightRect && (
-        <div
-          className="fixed pointer-events-none z-50 transition-all duration-500 rounded-lg animate-pulse"
+      {highlightRect && (() => {
+        const isInDialog = ['7b', '7c', '7d', '7e'].includes(String(currentTooltip));
+        const highlightZIndex = isInDialog ? 'z-[90]' : 'z-50';
+        
+        return (
+          <div
+            className={`fixed pointer-events-none transition-all duration-500 rounded-lg animate-pulse ${highlightZIndex}`}
           style={{
             left: `${highlightRect.left}px`,
             top: `${highlightRect.top}px`,
@@ -599,11 +603,17 @@ export default function Step6ChatbotSetup() {
             background: 'transparent',
             boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), inset 0 0 20px rgba(147, 51, 234, 0.1)',
           }}
-        />
-      )}
+          />
+        );
+      })()}
 
       {/* Centered tooltip */}
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none">
+      {(() => {
+        const isInDialog = ['7b', '7c', '7d', '7e'].includes(String(currentTooltip));
+        const tooltipZIndex = isInDialog ? 'z-[100]' : 'z-50';
+        
+        return (
+          <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${tooltipZIndex} pointer-events-none`}>
         <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '3px solid #9333EA' }}>
           {/* Arrow pointing to highlighted element */}
           {current.position === 'below' && (
@@ -690,6 +700,8 @@ export default function Step6ChatbotSetup() {
           </button>
         </div>
       </div>
+        );
+      })()}
 
       {/* Knowledge Base Dialog */}
       <KnowledgeBaseDialog 
