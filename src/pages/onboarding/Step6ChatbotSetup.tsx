@@ -704,7 +704,7 @@ export default function Step6ChatbotSetup() {
               </div>
               <div className="flex gap-2">
                 {(() => {
-                  const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+                  const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
                   const currentIndex = stepSequence.indexOf(currentTooltip);
                   return currentIndex > 0 && (
                     <button
@@ -720,7 +720,7 @@ export default function Step6ChatbotSetup() {
                   className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                 >
                   {(() => {
-                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
                     const currentIndex = stepSequence.indexOf(currentTooltip);
                     return currentIndex < stepSequence.length - 1 ? 'Next' : 'Continue';
                   })()}
