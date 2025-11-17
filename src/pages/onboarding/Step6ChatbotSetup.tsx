@@ -744,6 +744,59 @@ export default function Step6ChatbotSetup() {
         inTourMode={['7b', '7c', '7d', '7e'].includes(String(currentTooltip))}
         onCategoryEdit={() => setCategoryExpanded(true)}
       />
+
+      {/* Tour Footer Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border py-4 px-6 z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Previous Button */}
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={handlePrevious}
+            disabled={currentTooltip === 1}
+            className="min-w-[140px]"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Previous
+          </Button>
+
+          {/* Center: Tour Progress */}
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-muted-foreground">Tour 2 of 7</span>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5, 6, 7].map((step) => (
+                <div
+                  key={step}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    step === 2 ? 'bg-primary' : 'bg-muted'
+                  }`}
+                />
+              ))}
+            </div>
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/onboarding/step-10-homepage')}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Skip Tour
+            </Button>
+          </div>
+
+          {/* Next Button */}
+          <Button
+            size="lg"
+            onClick={handleNext}
+            className="min-w-[140px]"
+          >
+            Next
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
