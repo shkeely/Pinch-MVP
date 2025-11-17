@@ -156,7 +156,7 @@ export default function Step6ChatbotSetup() {
 
   const handleNext = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
     
     // Prevent auto-advance for steps that require user interaction
@@ -210,7 +210,7 @@ export default function Step6ChatbotSetup() {
 
   const handlePrevious = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
     
     if (currentIndex > 0) {
