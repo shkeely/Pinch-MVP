@@ -102,7 +102,7 @@ export function AISuggestionModal({
                   Pro Tip
                 </p>
                 <p className="text-sm text-purple-700 dark:text-purple-300 mt-1">
-                  Adding this information to your chatbot brain will help Pinch answer similar questions automatically in the future.
+                  Adding this information to your concierge brain will help Pinch answer similar questions automatically in the future.
                 </p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export function AISuggestionModal({
             className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white"
           >
             <Sparkles className="h-4 w-4 mr-2" />
-            Add to Chatbot Brain
+            Add to Concierge Brain
           </Button>
         </DialogFooter>
       </DialogContent>

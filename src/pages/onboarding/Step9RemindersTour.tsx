@@ -258,23 +258,23 @@ export default function Step9RemindersTour() {
 
   const tooltipContent: Record<number, { title: string; description: string; position: string }> = {
     1: {
-      title: 'Reminders Overview',
-      description: 'Automate your wedding communications! Send timely reminders for RSVPs, event details, and thank you messages.',
+      title: 'Announcements Overview',
+      description: 'Automate your wedding communications! Send timely announcements for RSVPs, event details, and thank you messages.',
       position: 'below',
     },
     2: {
       title: 'Choose Your Communication Style',
-      description: 'Select a package that matches your needs. Standard works great for most couples, but you can customize individual reminders later!',
+      description: 'Select a package that matches your needs. Standard works great for most couples, but you can customize individual announcements later!',
       position: 'below',
     },
     3: {
       title: 'Review Package Details',
-      description: 'See all the reminders included in your selected package. Each message is pre-filled with your wedding details and can be customized.',
+      description: 'See all the announcements included in your selected package. Each message is pre-filled with your wedding details and can be customized.',
       position: 'below',
     },
     4: {
       title: 'Customize & Schedule',
-      description: 'Edit messages, adjust schedules, or activate the package. You can also customize individual reminders or add more as needed.',
+      description: 'Edit messages, adjust schedules, or activate the package. You can also customize individual announcements or add more as needed.',
       position: 'below',
     },
   };
@@ -324,7 +324,7 @@ export default function Step9RemindersTour() {
                     <p className="text-sm text-muted-foreground mb-4">{pkg.description}</p>
 
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold mb-2">Included reminders:</h4>
+                      <h4 className="text-sm font-semibold mb-2">Included announcements:</h4>
                       <ul className="space-y-1">
                         {pkg.reminders.map((reminder, idx) => (
                           <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">

@@ -34,7 +34,7 @@ const tones = [{
 }];
 export default function Chatbot() {
   const [selectedTone, setSelectedTone] = useState('warm');
-  const [chatbotName, setChatbotName] = useState('Wedding Assistant');
+  const [chatbotName, setChatbotName] = useState('Concierge');
   const [replyMode, setReplyMode] = useState<'auto' | 'approval'>('auto');
   const [chatbotActive, setChatbotActive] = useState(true);
   const [testMessage, setTestMessage] = useState('');
@@ -185,14 +185,14 @@ export default function Chatbot() {
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
         <div className="mb-8 flex items-center justify-between" data-tour-id="chatbot-overview">
           <div>
-            <h1 className="text-4xl font-serif font-bold mb-2">AI Chatbot</h1>
+            <h1 className="text-4xl font-serif font-bold mb-2">AI Concierge Configuration</h1>
             <p className="text-muted-foreground">
-              Configure your AI wedding concierge
+              Customize how your AI concierge responds to guest questions
             </p>
           </div>
           <Button onClick={() => setShareChatbotOpen(true)} className="bg-primary hover:bg-primary/90 text-primary-foreground">
             <Share2 className="w-4 h-4 mr-2" />
-            Share Chatbot
+            Share Concierge
           </Button>
         </div>
 
@@ -227,10 +227,10 @@ export default function Chatbot() {
               </div>
             </div>
 
-            {/* Chatbot Name */}
+            {/* Concierge Name */}
             <Card className="p-6 bg-white dark:bg-card" data-tour-id="chatbot-name">
-              <h3 className="font-semibold mb-3">Chatbot Name</h3>
-              <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter chatbot name" />
+              <h3 className="font-semibold mb-3">Concierge Name</h3>
+              <Input value={chatbotName} onChange={e => setChatbotName(e.target.value)} placeholder="Enter concierge name" />
             </Card>
 
             {/* Reply Mode */}
@@ -326,11 +326,11 @@ export default function Chatbot() {
               </Collapsible>
             </Card>
 
-            {/* Chatbot Brain Card */}
+            {/* Concierge Brain Card */}
             <Card className="p-6 bg-white dark:bg-card" data-tour-id="knowledge-base">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
-                <h2 className="text-xl font-semibold">Chatbot Brain</h2>
+                <h2 className="text-xl font-semibold">Concierge Brain</h2>
               </div>
 
               <div className="space-y-4">
@@ -358,7 +358,7 @@ export default function Chatbot() {
               </div>
 
               <Button variant="outline" className="w-full mt-4" onClick={() => setKnowledgeBaseOpen(true)} data-tour-id="manage-faqs">
-                Update Chatbot Brain
+                Update Concierge Brain
               </Button>
             </Card>
 

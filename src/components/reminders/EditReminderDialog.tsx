@@ -69,7 +69,7 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
 
     onSave(formData);
     onOpenChange(false);
-    toast.success("Reminder updated successfully");
+    toast.success("Announcement updated successfully");
   };
 
   const handleSaveDraft = () => {
@@ -97,9 +97,9 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-card max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Reminder</DialogTitle>
+          <DialogTitle>Edit Announcement</DialogTitle>
           <DialogDescription>
-            Update reminder details and schedule
+            Update announcement details and schedule
           </DialogDescription>
         </DialogHeader>
 
@@ -110,7 +110,7 @@ export default function EditReminderDialog({ open, onOpenChange, reminder, onSav
               id="title"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="Reminder title"
+              placeholder="Announcement title"
             />
           </div>
 

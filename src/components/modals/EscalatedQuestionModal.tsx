@@ -126,7 +126,7 @@ export function EscalatedQuestionModal({
             className="w-full sm:w-auto border-purple-300 text-purple-700 hover:bg-purple-50"
           >
             <Lightbulb className="h-4 w-4 mr-2" />
-            Add to Chatbot Brain
+            Add to Concierge Brain
           </Button>
           <Button 
             onClick={handleReplyManually}
