@@ -172,13 +172,10 @@ export default function Step6ChatbotSetup() {
     
     // Close editor after knowledge items, return to main dialog for 7f
     if (currentTooltip === '7e') {
-      // Close the category editor to return to main dialog
-      setCategoryExpanded(false);
-      setTimeout(() => {
-        if (currentIndex < stepSequence.length - 1) {
-          setCurrentTooltip(stepSequence[currentIndex + 1]);
-        }
-      }, 300);
+      // Just advance to 7f - the dialog will handle closing the editor
+      if (currentIndex < stepSequence.length - 1) {
+        setCurrentTooltip(stepSequence[currentIndex + 1]);
+      }
       return;
     }
     
