@@ -140,10 +140,10 @@ export default function Step6ChatbotSetup() {
     };
   }, [currentTooltip, knowledgeBaseOpen]);
 
-  // Watch for dialog opening to advance from 7a to 7b
+  // Watch for dialog opening to advance from 7a to 7d (Knowledge Items)
   useEffect(() => {
     if (knowledgeBaseOpen && currentTooltip === '7a') {
-      setTimeout(() => setCurrentTooltip('7b'), 500);
+      setTimeout(() => setCurrentTooltip('7d'), 500);
     }
   }, [knowledgeBaseOpen, currentTooltip]);
 
