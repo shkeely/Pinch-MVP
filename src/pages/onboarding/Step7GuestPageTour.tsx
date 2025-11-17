@@ -18,6 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
 
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
 
@@ -32,6 +33,7 @@ interface Guest {
 export default function Step7GuestPageTour() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const [multiSegmentMode, setMultiSegmentMode] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
 
@@ -110,6 +112,11 @@ export default function Step7GuestPageTour() {
     navigate('/dashboard');
   };
 
+  const handleImportGuests = (guests: Omit<Guest, 'id'>[]) => {
+    console.log('Importing guests:', guests);
+    setImportDialogOpen(false);
+  };
+
   return (
     <TourPage
       stepNumber={7}
@@ -134,7 +141,12 @@ export default function Step7GuestPageTour() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" id="tour-import-btn">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  id="tour-import-btn"
+                  onClick={() => setImportDialogOpen(true)}
+                >
                   <Upload className="mr-2 h-4 w-4" />
                   Import CSV
                 </Button>
@@ -348,6 +360,13 @@ export default function Step7GuestPageTour() {
           </Card>
         </main>
       </div>
+
+      {/* Import Guests Dialog */}
+      <ImportGuestsDialog 
+        open={importDialogOpen}
+        onOpenChange={setImportDialogOpen}
+        onImport={handleImportGuests}
+      />
     </TourPage>
   );
 }
