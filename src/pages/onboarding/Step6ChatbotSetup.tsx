@@ -51,7 +51,7 @@ export default function Step6ChatbotSetup() {
   const [highlightRect, setHighlightRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
-  const totalSteps = 7;
+  const totalSteps = 8;
 
   // State for chatbot page
   const [selectedTone, setSelectedTone] = useState('warm');
@@ -91,13 +91,14 @@ export default function Step6ChatbotSetup() {
   useEffect(() => {
     const updateRect = () => {
       const stepTargets: Record<number, string> = {
-        1: 'chatbot-overview',
-        2: 'wedding-details',
-        3: 'manage-faqs',
-        4: 'message-handling',
-        5: 'chat-simulation',
-        6: 'chatbot-name',
-        7: 'chatbot-status',
+        1: 'response-tone',
+        2: 'chatbot-name',
+        3: 'message-handling',
+        4: 'restricted-questions',
+        5: 'escalation-categories',
+        6: 'chatbot-brain',
+        7: 'chat-simulation',
+        8: 'chatbot-status',
       };
 
       const targetId = stepTargets[currentTooltip];
@@ -218,38 +219,43 @@ export default function Step6ChatbotSetup() {
 
   const tooltipContent = {
     1: {
-      title: "Meet Your AI Wedding Assistant",
-      description: "Pinch is your AI chatbot that answers guest questions via SMS. Let's configure how it works for your wedding!",
+      title: "You Already Chose Your Tone!",
+      description: "You selected your tone earlier in setup. Want to change it? Select a different option and see how it affects responses!",
       position: 'below' as const
     },
     2: {
-      title: "Add Your Wedding Information",
-      description: "Fill in details about your venue, timing, dress code, parking, etc. This is what Pinch uses to answer guest questions.",
+      title: "Name Your Assistant",
+      description: "Give your chatbot a name! Guests see this when they text. 'Wedding Assistant' works great, or get creative!",
       position: 'right' as const
     },
     3: {
-      title: "Organize Into Categories",
-      description: "Click 'Update Chatbot Brain' to see different categories like Venue, Timing, Accommodations. You can edit items or scrape information again if needed.",
+      title: "Auto-Reply or Approve First?",
+      description: "Auto-Reply sends responses instantly. Choose 'Notify Me' if you want to review messages before they go to guests.",
       position: 'right' as const
     },
     4: {
-      title: "Auto-Reply vs Manual Approval",
-      description: "Auto-Reply lets Pinch answer automatically. If you prefer to review messages before they're sent, switch to 'Notify Me for Message Approval' instead.",
+      title: "Set Question Boundaries",
+      description: "Tell Pinch what questions to avoid answering. Add topics like budget questions or anything you'd rather handle personally.",
       position: 'right' as const
     },
     5: {
-      title: "Try It Out!",
-      description: "Use the simulation on the right to test how Pinch responds. Ask it questions about your wedding to see if it has the right information.",
-      position: 'left' as const
+      title: "Auto-Escalate Topics",
+      description: "These question types will automatically be sent to you instead of auto-answered. Toggle categories on/off as needed.",
+      position: 'right' as const
     },
     6: {
-      title: "Name Your Assistant",
-      description: "Give your chatbot a name! It'll use this name when texting with guests. 'Wedding Assistant' works great, or get creative!",
+      title: "Your Wedding Knowledge Base",
+      description: "This is Pinch's brain! Add wedding details here - venue, timing, parking, dress code, etc.",
       position: 'right' as const
     },
     7: {
-      title: "Activate & Test with Real Questions",
-      description: "Toggle the chatbot status to 'Active' when you're ready. After testing in simulation, click 'Give Feedback' to help Pinch improve its responses.",
+      title: "Test Your Chatbot!",
+      description: "Click quick question buttons or type your own. See how Pinch responds based on your settings and info!",
+      position: 'left' as const
+    },
+    8: {
+      title: "Activate When Ready",
+      description: "When you're happy with responses, toggle this to Active and your chatbot will start answering real guest texts!",
       position: 'left' as const
     }
   };
@@ -284,7 +290,7 @@ export default function Step6ChatbotSetup() {
           {/* Left Column - Settings */}
           <div className="space-y-6">
             {/* Tone Selection */}
-            <div>
+            <div data-tour-id="response-tone">
               <h2 className="text-xl font-semibold mb-4">Response Tone</h2>
               <div className="grid md:grid-cols-3 gap-4">
                 {tones.map(tone => {
@@ -385,8 +391,34 @@ export default function Step6ChatbotSetup() {
               </Collapsible>
             </Card>
 
+            {/* Escalation Categories */}
+            <Card className="p-6 bg-white dark:bg-card" data-tour-id="escalation-categories">
+              <Collapsible open={escalationCategoriesOpen} onOpenChange={setEscalationCategoriesOpen}>
+                <CollapsibleTrigger className="flex items-center justify-between w-full cursor-pointer">
+                  <div className="text-left">
+                    <h3 className="font-semibold mb-2">Auto-Escalate</h3>
+                    <p className="text-sm text-muted-foreground">Questions in these categories will automatically be sent to you for review</p>
+                  </div>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${escalationCategoriesOpen ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-4">
+                  <div className="space-y-3">
+                    {escalationCategories.map((category, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted">
+                        <p className="text-sm flex-1">{category.name}</p>
+                        <Switch checked={category.enabled} disabled />
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="w-full mt-4" disabled>
+                    + Add Category
+                  </Button>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+
             {/* Chatbot Brain Card */}
-            <Card className="p-6 bg-white dark:bg-card" data-tour-id="knowledge-base">
+            <Card className="p-6 bg-white dark:bg-card" data-tour-id="chatbot-brain">
               <div className="flex items-center gap-3 mb-6">
                 <Sparkles className="w-5 h-5 text-accent" />
                 <h2 className="text-xl font-semibold">Chatbot Brain</h2>
