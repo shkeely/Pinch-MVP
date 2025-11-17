@@ -266,7 +266,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
               onClick={() => setShowAddNew(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Custom Chatbot Brain
+              Add category
             </Button>
           )}
 
