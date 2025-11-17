@@ -362,6 +362,29 @@ export default function Step6ChatbotSetup() {
               </RadioGroup>
             </Card>
 
+            {/* Topics to Avoid */}
+            <Card className="p-6 bg-white dark:bg-card" data-tour-id="restricted-questions">
+              <Collapsible open={restrictedQuestionsOpen} onOpenChange={setRestrictedQuestionsOpen}>
+                <CollapsibleTrigger className="flex items-center justify-between w-full cursor-pointer">
+                  <div className="text-left">
+                    <h3 className="font-semibold mb-2">Topics to Avoid</h3>
+                    <p className="text-sm text-muted-foreground">Set boundaries for what Pinch shouldn't answer</p>
+                  </div>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${restrictedQuestionsOpen ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-4">
+                  <div className="space-y-2 mb-4">
+                    {restrictedQuestions.map((question, idx) => (
+                      <div key={idx} className="p-3 rounded-lg bg-muted">
+                        <p className="text-sm">{question}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="w-full" disabled>+ Add Don't</Button>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+
             {/* Chatbot Brain Card */}
             <Card className="p-6 bg-white dark:bg-card" data-tour-id="knowledge-base">
               <div className="flex items-center gap-3 mb-6">
