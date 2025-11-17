@@ -53,6 +53,7 @@ export default function Step6ChatbotSetup() {
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
   const totalSteps = 9;
+  const [categoryExpanded, setCategoryExpanded] = useState(false);
 
   // State for chatbot page
   const [selectedTone, setSelectedTone] = useState('warm');
@@ -139,10 +140,34 @@ export default function Step6ChatbotSetup() {
     };
   }, [currentTooltip, knowledgeBaseOpen]);
 
+  // Watch for dialog opening to advance from 7a to 7b
+  useEffect(() => {
+    if (knowledgeBaseOpen && currentTooltip === '7a') {
+      setTimeout(() => setCurrentTooltip('7b'), 500);
+    }
+  }, [knowledgeBaseOpen, currentTooltip]);
+
+  // Watch for category edit to advance from 7b to 7c
+  useEffect(() => {
+    if (categoryExpanded && currentTooltip === '7b') {
+      setTimeout(() => setCurrentTooltip('7c'), 300);
+    }
+  }, [categoryExpanded, currentTooltip]);
+
   const handleNext = () => {
     // Define step sequence including sub-steps
     const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
+    
+    // Prevent auto-advance for steps that require user interaction
+    if (currentTooltip === '7a') {
+      // User must click "Update Chatbot Brain" button
+      return;
+    }
+    if (currentTooltip === '7b') {
+      // User must click "Edit" on a category
+      return;
+    }
     
     if (currentIndex < stepSequence.length - 1) {
       setCurrentTooltip(stepSequence[currentIndex + 1]);
@@ -276,7 +301,7 @@ export default function Step6ChatbotSetup() {
     '7b': {
       title: "Edit a Category",
       description: "Each category (like Venue, Timing, Dress Code) holds related information. Click 'Edit' on any category to view and modify the knowledge items inside.",
-      position: 'right' as const
+      position: 'top' as const
     },
     '7c': {
       title: "Web Scraper",
@@ -503,13 +528,7 @@ export default function Step6ChatbotSetup() {
                 variant="outline"
                 className="w-full mt-4"
                 data-tour-id="update-brain-button"
-                onClick={() => {
-                  setKnowledgeBaseOpen(true);
-                  // Auto-progress to step 7b when opening dialog during tour
-                  if (currentTooltip === '7a') {
-                    setTimeout(() => setCurrentTooltip('7b'), 200);
-                  }
-                }}
+                onClick={() => setKnowledgeBaseOpen(true)}
               >
                 Update Chatbot Brain
               </Button>
@@ -706,7 +725,15 @@ export default function Step6ChatbotSetup() {
       {/* Knowledge Base Dialog */}
       <KnowledgeBaseDialog 
         open={knowledgeBaseOpen} 
-        onOpenChange={setKnowledgeBaseOpen} 
+        onOpenChange={(open) => {
+          // Keep dialog open during tour steps 7b-7e
+          const isInDialogTour = ['7b', '7c', '7d', '7e'].includes(String(currentTooltip));
+          if (!isInDialogTour || open) {
+            setKnowledgeBaseOpen(open);
+          }
+        }}
+        inTourMode={['7b', '7c', '7d', '7e'].includes(String(currentTooltip))}
+        onCategoryEdit={() => setCategoryExpanded(true)}
       />
     </div>
   );
