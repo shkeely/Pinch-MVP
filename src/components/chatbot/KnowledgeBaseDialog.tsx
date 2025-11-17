@@ -39,9 +39,10 @@ interface KnowledgeBaseDialogProps {
   onOpenChange: (open: boolean) => void;
   inTourMode?: boolean;
   onCategoryEdit?: () => void;
+  currentTourStep?: string;
 }
 
-export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, onCategoryEdit }: KnowledgeBaseDialogProps) {
+export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, onCategoryEdit, currentTourStep }: KnowledgeBaseDialogProps) {
   const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([
     {
       id: '1',
@@ -151,7 +152,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, on
           </div>
 
           {/* Concierge Brain Sources */}
-          <div className="space-y-3" data-tour-id="knowledge-items">
+          <div className="space-y-3" data-tour-id="knowledge-categories">
             {knowledgeBases.map((kb) => {
               const Icon = kb.icon;
               return (
@@ -293,7 +294,13 @@ export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, on
       {editingKB && (
         <KnowledgeBaseEditor
           open={!!editingKB}
-          onOpenChange={(open) => !open && setEditingKB(null)}
+          onOpenChange={(open) => {
+            // Keep editor open during tour steps 7d and 7e
+            const isInEditorTour = ['7d', '7e'].includes(currentTourStep || '');
+            if (!isInEditorTour || open) {
+              !open && setEditingKB(null);
+            }
+          }}
           knowledgeBaseName={editingKB.name}
           knowledgeBaseId={editingKB.id}
         />
