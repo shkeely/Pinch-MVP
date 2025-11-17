@@ -59,8 +59,8 @@ export default function Step5NavigationBar() {
     1: 'navbar',
     2: 'homepage',
     3: 'messages',
-    4: 'reminders',
-    5: 'chatbot',
+    4: 'announcements',
+    5: 'concierge',
     6: 'guests',
     7: 'settings',
     8: 'notifications',
@@ -130,7 +130,7 @@ export default function Step5NavigationBar() {
       description: "Set up scheduled messages for your guests. RSVP reminders, day-of updates, thank you notes - all automated."
     },
     5: {
-      title: "Chatbot",
+      title: "Concierge",
       description: "Manage what your chatbot knows about your wedding, notification settings, etc."
     },
     6: {
