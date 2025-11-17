@@ -18,6 +18,7 @@ import Step5NavigationBar from "./pages/onboarding/Step5NavigationBar";
 import Step6ChatbotSetup from "./pages/onboarding/Step6ChatbotSetup";
 import Step7GuestPageTour from "./pages/onboarding/Step7GuestPageTour";
 import Step8MessagesPage from "./pages/onboarding/Step8MessagesPage";
+import Step9RemindersTour from "./pages/onboarding/Step9RemindersTour";
 import Step10Homepage from "./pages/onboarding/Step10Homepage";
 import Dashboard1 from "./pages/Dashboard1";
 import Dashboard1Alt from "./pages/Dashboard1Alt";
@@ -156,6 +157,7 @@ const App = () => (
             <Route path="/onboarding/step-6" element={<Step6ChatbotSetup />} />
             <Route path="/onboarding/step-7" element={<Step7GuestPageTour />} />
             <Route path="/onboarding/step-8" element={<Step8MessagesPage />} />
+            <Route path="/onboarding/step-9" element={<Step9RemindersTour />} />
             <Route path="/onboarding/step-10" element={<Step10Homepage />} />
             <Route path="/dashboard1" element={<Dashboard1 />} />
             <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
