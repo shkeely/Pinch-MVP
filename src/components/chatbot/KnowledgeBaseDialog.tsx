@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -95,6 +95,13 @@ export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, on
   const [newKBName, setNewKBName] = useState('');
   const [newKBDescription, setNewKBDescription] = useState('');
   const [editingKB, setEditingKB] = useState<{ id: string; name: string } | null>(null);
+
+  // Close editor when tour moves from 7e to 7f
+  useEffect(() => {
+    if (currentTourStep === '7f' && editingKB) {
+      setEditingKB(null);
+    }
+  }, [currentTourStep, editingKB]);
 
   const toggleKnowledgeBase = (id: string) => {
     setKnowledgeBases(prev =>
