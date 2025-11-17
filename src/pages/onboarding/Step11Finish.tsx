@@ -9,7 +9,7 @@ import confetti from 'canvas-confetti';
 
 export default function Step11Finish() {
   const navigate = useNavigate();
-  const { wedding, updateWedding } = useWedding();
+  const { updateWedding } = useWedding();
   const fakeData = useFakeData();
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function Step11Finish() {
     navigate('/onboarding/step-10');
   };
 
-  const allNextSteps = [
+  const nextSteps = [
     {
       icon: Brain,
       title: 'Complete Your Chatbot Brain',
@@ -97,7 +97,6 @@ export default function Step11Finish() {
         handleCloseRecommendations();
         navigate('/guests');
       },
-      showIf: wedding.tourMode, // Only show if fake data was used
     },
     {
       icon: Settings,
@@ -110,9 +109,6 @@ export default function Step11Finish() {
       },
     },
   ];
-
-  // Filter steps based on showIf condition
-  const nextSteps = allNextSteps.filter(step => step.showIf !== false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-primary/10 flex items-center justify-center p-4">
