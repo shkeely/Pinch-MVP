@@ -13,7 +13,7 @@ interface ShareChatbotDialogProps {
 
 export function ShareChatbotDialog({ open, onOpenChange }: ShareChatbotDialogProps) {
   const [copied, setCopied] = useState(false);
-  const chatbotUrl = "https://wedding-assistant.app/chat/abc123";
+  const chatbotUrl = `${window.location.origin}/landing`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(chatbotUrl);
