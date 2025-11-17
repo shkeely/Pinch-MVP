@@ -169,6 +169,15 @@ export default function Step6ChatbotSetup() {
       return;
     }
     
+    // Close dialog before advancing to step 8
+    if (currentTooltip === '7e') {
+      setKnowledgeBaseOpen(false);
+      setTimeout(() => {
+        setCurrentTooltip('8');
+      }, 300);
+      return;
+    }
+    
     if (currentIndex < stepSequence.length - 1) {
       setCurrentTooltip(stepSequence[currentIndex + 1]);
     } else {
