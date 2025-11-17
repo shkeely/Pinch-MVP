@@ -197,6 +197,25 @@ export default function Step6ChatbotSetup() {
     }, 800);
   };
 
+  const handleQuickQuestion = (question: string) => {
+    const newUserMsg = {
+      role: 'user',
+      content: question,
+      timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+    };
+    setChatMessages(prev => [...prev, newUserMsg]);
+    
+    setTimeout(() => {
+      const response = tones.find(t => t.id === selectedTone)?.example || "Thank you for your message!";
+      const aiMsg = {
+        role: 'assistant',
+        content: response,
+        timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+      };
+      setChatMessages(prev => [...prev, aiMsg]);
+    }, 800);
+  };
+
   const tooltipContent = {
     1: {
       title: "Meet Your AI Wedding Assistant",
