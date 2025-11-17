@@ -37,9 +37,11 @@ interface KnowledgeBase {
 interface KnowledgeBaseDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  inTourMode?: boolean;
+  onCategoryEdit?: () => void;
 }
 
-export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogProps) {
+export function KnowledgeBaseDialog({ open, onOpenChange, inTourMode = false, onCategoryEdit }: KnowledgeBaseDialogProps) {
   const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([
     {
       id: '1',
@@ -201,6 +203,9 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setEditingKB({ id: kb.id, name: kb.name });
+                                if (onCategoryEdit) {
+                                  onCategoryEdit();
+                                }
                               }}
                               data-tour-id="edit-category-button"
                             >
