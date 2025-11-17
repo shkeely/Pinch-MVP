@@ -125,14 +125,19 @@ export default function Step6ChatbotSetup() {
       }
     };
 
+    // Initial update with delay to allow for dialog rendering
+    const timeoutId = setTimeout(updateRect, 100);
     updateRect();
+    
     window.addEventListener('resize', updateRect);
     window.addEventListener('scroll', updateRect, true);
+
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener('resize', updateRect);
       window.removeEventListener('scroll', updateRect, true);
     };
-  }, [currentTooltip]);
+  }, [currentTooltip, knowledgeBaseOpen]);
 
   const handleNext = () => {
     // Define step sequence including sub-steps
@@ -498,7 +503,13 @@ export default function Step6ChatbotSetup() {
                 variant="outline"
                 className="w-full mt-4"
                 data-tour-id="update-brain-button"
-                onClick={() => setKnowledgeBaseOpen(true)}
+                onClick={() => {
+                  setKnowledgeBaseOpen(true);
+                  // Auto-progress to step 7b when opening dialog during tour
+                  if (currentTooltip === '7a') {
+                    setTimeout(() => setCurrentTooltip('7b'), 200);
+                  }
+                }}
               >
                 Update Chatbot Brain
               </Button>
