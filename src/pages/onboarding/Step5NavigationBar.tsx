@@ -126,7 +126,7 @@ export default function Step5NavigationBar() {
       description: "View all guest conversations. See every question asked and how Pinch responded."
     },
     4: {
-      title: "Reminders",
+      title: "Announcements",
       description: "Set up scheduled messages for your guests. RSVP reminders, day-of updates, thank you notes - all automated."
     },
     5: {
