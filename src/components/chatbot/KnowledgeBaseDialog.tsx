@@ -202,6 +202,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
                                 e.stopPropagation();
                                 setEditingKB({ id: kb.id, name: kb.name });
                               }}
+                              data-tour-id="edit-category-button"
                             >
                               <Settings className="w-3 h-3 mr-1" />
                               <span className="text-xs">Edit Items</span>
@@ -264,6 +265,7 @@ export function KnowledgeBaseDialog({ open, onOpenChange }: KnowledgeBaseDialogP
               variant="outline"
               className="w-full border-dashed"
               onClick={() => setShowAddNew(true)}
+              data-tour-id="add-category-button"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add category

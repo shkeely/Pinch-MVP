@@ -47,7 +47,7 @@ const escalationCategories = [
 const quickTestQuestions = ["Where can I park?", "What time is the ceremony?", "Can I bring my kids?", "What's the dress code?", "Where should I stay?"];
 
 export default function Step6ChatbotSetup() {
-  const [currentTooltip, setCurrentTooltip] = useState(1);
+  const [currentTooltip, setCurrentTooltip] = useState<number | string>(1);
   const [highlightRect, setHighlightRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
@@ -90,14 +90,18 @@ export default function Step6ChatbotSetup() {
   // Update highlight rect when tooltip changes
   useEffect(() => {
     const updateRect = () => {
-      const stepTargets: Record<number, string> = {
+      const stepTargets: Record<number | string, string> = {
         1: 'response-tone',
         2: 'chatbot-name',
         3: 'message-handling',
         4: 'restricted-questions',
         5: 'escalation-categories',
         6: 'chatbot-brain',
-        7: 'chatbot-brain-categories',
+        '7a': 'update-brain-button',
+        '7b': 'edit-category-button',
+        '7c': 'web-scraper',
+        '7d': 'knowledge-items',
+        '7e': 'add-category-button',
         8: 'chat-simulation',
         9: 'chatbot-status',
       };
@@ -129,8 +133,12 @@ export default function Step6ChatbotSetup() {
   }, [currentTooltip]);
 
   const handleNext = () => {
-    if (currentTooltip < totalSteps) {
-      setCurrentTooltip(currentTooltip + 1);
+    // Define step sequence including sub-steps
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+    const currentIndex = stepSequence.indexOf(currentTooltip);
+    
+    if (currentIndex < stepSequence.length - 1) {
+      setCurrentTooltip(stepSequence[currentIndex + 1]);
     } else {
       updateWedding({ 
         onboardingStep: 7,
@@ -149,8 +157,12 @@ export default function Step6ChatbotSetup() {
   };
 
   const handlePrevious = () => {
-    if (currentTooltip > 1) {
-      setCurrentTooltip(currentTooltip - 1);
+    // Define step sequence including sub-steps
+    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+    const currentIndex = stepSequence.indexOf(currentTooltip);
+    
+    if (currentIndex > 0) {
+      setCurrentTooltip(stepSequence[currentIndex - 1]);
     } else {
       navigate('/onboarding/step-5');
     }
@@ -218,7 +230,7 @@ export default function Step6ChatbotSetup() {
     }, 800);
   };
 
-  const tooltipContent = {
+  const tooltipContent: Record<number | string, { title: string; description: string; position: 'below' | 'right' | 'left' | 'top' | 'bottom' }> = {
     1: {
       title: "You Already Chose Your Tone!",
       description: "You selected your tone earlier in setup. Want to change it? Select a different option and see how it affects responses!",
@@ -245,14 +257,34 @@ export default function Step6ChatbotSetup() {
       position: 'right' as const
     },
     6: {
-      title: "Your Chatbot Brain",
-      description: "This is Pinch's brain! Click 'Update Chatbot Brain' to explore categories and add your wedding information.",
+      title: "Your Wedding Knowledge Base",
+      description: "This is Pinch's brain! Let's explore how to add and organize your wedding information.",
       position: 'right' as const
     },
-    7: {
-      title: "Explore Categories",
-      description: "Inside you'll find categories like Venue, Timing, Accommodations. Click any category to edit items, use the web scraper to pull info from your wedding website, or add new custom categories!",
+    '7a': {
+      title: "Open Chatbot Brain",
+      description: "Click 'Update Chatbot Brain' to open the knowledge base editor where you can manage all your wedding information.",
       position: 'right' as const
+    },
+    '7b': {
+      title: "Edit a Category",
+      description: "Each category (like Venue, Timing, Dress Code) holds related information. Click 'Edit' on any category to view and modify the knowledge items inside.",
+      position: 'right' as const
+    },
+    '7c': {
+      title: "Web Scraper",
+      description: "Already have a wedding website? Use the web scraper to automatically pull information and populate your knowledge base. Just paste your URL!",
+      position: 'top' as const
+    },
+    '7d': {
+      title: "Knowledge Items",
+      description: "These are the individual facts Pinch uses to answer questions. You can add, edit, or delete items to keep information accurate and up-to-date.",
+      position: 'right' as const
+    },
+    '7e': {
+      title: "Add Custom Categories",
+      description: "Need a category we don't have? Click 'Add Category' to create custom ones like 'Hotel Blocks', 'Gift Registry', or 'Wedding Party Bios'.",
+      position: 'bottom' as const
     },
     8: {
       title: "Test Your Chatbot!",
@@ -266,7 +298,13 @@ export default function Step6ChatbotSetup() {
     }
   };
 
-  const current = tooltipContent[currentTooltip as keyof typeof tooltipContent];
+  const current = tooltipContent[currentTooltip];
+  
+  // Helper function to get display step number
+  const getDisplayStep = (step: number | string): number => {
+    if (typeof step === 'string' && step.startsWith('7')) return 7;
+    return typeof step === 'number' ? step : parseInt(step);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -457,7 +495,7 @@ export default function Step6ChatbotSetup() {
               <Button
                 variant="outline"
                 className="w-full mt-4"
-                data-tour-id="manage-faqs"
+                data-tour-id="update-brain-button"
               >
                 Update Chatbot Brain
               </Button>
@@ -599,22 +637,30 @@ export default function Step6ChatbotSetup() {
             {/* Navigation buttons */}
             <div className="flex items-center justify-between pt-4 border-t">
               <div className="text-sm text-muted-foreground">
-                Step {currentTooltip} of {totalSteps}
+                Step {getDisplayStep(currentTooltip)} of {totalSteps}
               </div>
               <div className="flex gap-2">
-                {currentTooltip > 1 && (
-                  <button
-                    onClick={handlePrevious}
-                    className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Previous
-                  </button>
-                )}
+                {(() => {
+                  const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+                  const currentIndex = stepSequence.indexOf(currentTooltip);
+                  return currentIndex > 0 && (
+                    <button
+                      onClick={handlePrevious}
+                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      Previous
+                    </button>
+                  );
+                })()}
                 <button
                   onClick={handleNext}
                   className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                 >
-                  {currentTooltip < totalSteps ? 'Next' : 'Continue'}
+                  {(() => {
+                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', 8, 9];
+                    const currentIndex = stepSequence.indexOf(currentTooltip);
+                    return currentIndex < stepSequence.length - 1 ? 'Next' : 'Continue';
+                  })()}
                 </button>
               </div>
             </div>

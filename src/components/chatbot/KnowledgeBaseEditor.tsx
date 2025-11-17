@@ -213,7 +213,7 @@ export function KnowledgeBaseEditor({
 
         <div className="flex-1 overflow-y-auto space-y-6 pr-2">
           {/* Web Scraper Section */}
-          <Card className="p-4 bg-muted/30">
+          <Card className="p-4 bg-muted/30" data-tour-id="web-scraper">
             <div className="flex items-center gap-2 mb-3">
               <Globe className="w-5 h-5 text-primary" />
               <h3 className="font-semibold">Auto-Import from Website</h3>
@@ -253,7 +253,7 @@ export function KnowledgeBaseEditor({
           <Separator />
 
           {/* Items List */}
-          <div>
+          <div data-tour-id="knowledge-items">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold">
                 Knowledge Items ({items.length})
