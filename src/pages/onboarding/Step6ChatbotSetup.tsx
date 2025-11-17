@@ -264,9 +264,6 @@ export default function Step6ChatbotSetup() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/60 z-40" />
-
       <TopNav />
       
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl relative z-30">
