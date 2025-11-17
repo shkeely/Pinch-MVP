@@ -51,7 +51,7 @@ export default function Step6ChatbotSetup() {
   const [highlightRect, setHighlightRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
-  const totalSteps = 8;
+  const totalSteps = 9;
 
   // State for chatbot page
   const [selectedTone, setSelectedTone] = useState('warm');
@@ -97,8 +97,9 @@ export default function Step6ChatbotSetup() {
         4: 'restricted-questions',
         5: 'escalation-categories',
         6: 'chatbot-brain',
-        7: 'chat-simulation',
-        8: 'chatbot-status',
+        7: 'chatbot-brain-categories',
+        8: 'chat-simulation',
+        9: 'chatbot-status',
       };
 
       const targetId = stepTargets[currentTooltip];
@@ -245,15 +246,20 @@ export default function Step6ChatbotSetup() {
     },
     6: {
       title: "Your Chatbot Brain",
-      description: "This is Pinch's brain! Add wedding details here - venue, timing, parking, dress code, etc.",
+      description: "This is Pinch's brain! Click 'Update Chatbot Brain' to explore categories and add your wedding information.",
       position: 'right' as const
     },
     7: {
+      title: "Explore Categories",
+      description: "Inside you'll find categories like Venue, Timing, Accommodations. Click any category to edit items, use the web scraper to pull info from your wedding website, or add new custom categories!",
+      position: 'right' as const
+    },
+    8: {
       title: "Test Your Chatbot!",
       description: "Click quick question buttons or type your own. See how Pinch responds based on your settings and info!",
       position: 'left' as const
     },
-    8: {
+    9: {
       title: "Activate When Ready",
       description: "When you're happy with responses, toggle this to Active and your chatbot will start answering real guest texts!",
       position: 'left' as const
@@ -421,7 +427,7 @@ export default function Step6ChatbotSetup() {
                 <h2 className="text-xl font-semibold">Chatbot Brain</h2>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4" data-tour-id="chatbot-brain-categories">
                 <div
                   className="flex items-center justify-between p-4 rounded-lg bg-[#fcfbf8]"
                   data-tour-id="wedding-details"
@@ -452,7 +458,6 @@ export default function Step6ChatbotSetup() {
                 variant="outline"
                 className="w-full mt-4"
                 data-tour-id="manage-faqs"
-                disabled
               >
                 Update Chatbot Brain
               </Button>
