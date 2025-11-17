@@ -9,7 +9,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2 } from 'lucide-react';
+import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const tones = [
   {
@@ -35,6 +36,16 @@ const tones = [
   }
 ];
 
+const restrictedQuestions = ["How much did the wedding cost?", "Can I bring extra guests not on my RSVP?", "What are you serving for dinner?"];
+const escalationCategories = [
+  { name: "Personal requests (gift questions, seating changes)", enabled: true },
+  { name: "Vendor information", enabled: true },
+  { name: "Plus-one modifications", enabled: true },
+  { name: "Dietary restrictions", enabled: false },
+  { name: "Budget or cost questions", enabled: true }
+];
+const quickTestQuestions = ["Where can I park?", "What time is the ceremony?", "Can I bring my kids?", "What's the dress code?", "Where should I stay?"];
+
 export default function Step6ChatbotSetup() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const [highlightRect, setHighlightRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
@@ -48,6 +59,8 @@ export default function Step6ChatbotSetup() {
   const [replyMode, setReplyMode] = useState<'auto' | 'approval'>('auto');
   const [chatbotActive, setChatbotActive] = useState(true);
   const [testMessage, setTestMessage] = useState('');
+  const [restrictedQuestionsOpen, setRestrictedQuestionsOpen] = useState(false);
+  const [escalationCategoriesOpen, setEscalationCategoriesOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     {
       role: 'user',
