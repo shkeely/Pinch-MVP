@@ -131,7 +131,7 @@ export default function Step5NavigationBar() {
     },
     5: {
       title: "Chatbot",
-      description: "Configure how Pinch responds to guests. Manage your wedding knowledge base and AI settings."
+      description: "Manage what your chatbot knows about your wedding, notification settings, etc."
     },
     6: {
       title: "Guests",
