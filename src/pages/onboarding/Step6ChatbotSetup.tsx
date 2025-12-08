@@ -204,7 +204,6 @@ export default function Step6ChatbotSetup() {
           guestPage: false,
           weddingInfo: false,
           chatbotSettings: true,
-          reminders: false,
           analytics: false,
         }
       });
@@ -232,14 +231,13 @@ export default function Step6ChatbotSetup() {
 
   const handleSkipTour = () => {
     updateWedding({ 
-      onboardingStep: 11,
+      onboardingStep: 10,
       tourProgress: { 
         homepage: true,
         conversations: true,
         guestPage: true,
         weddingInfo: true,
         chatbotSettings: true,
-        reminders: true,
         analytics: true,
       }
     });

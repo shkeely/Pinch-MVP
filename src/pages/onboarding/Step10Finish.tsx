@@ -7,14 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import confetti from 'canvas-confetti';
 
-export default function Step11Finish() {
+export default function Step10Finish() {
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
   const fakeData = useFakeData();
 
   useEffect(() => {
     // Set URL hash
-    window.location.hash = 'step-11-finish';
+    window.location.hash = 'step-10-finish';
 
     // Trigger confetti animation
     const duration = 3000;
@@ -62,7 +62,7 @@ export default function Step11Finish() {
     updateWedding({
       onboardingComplete: true,
       tourMode: false,
-      onboardingStep: 11,
+      onboardingStep: 10,
     });
 
     // Clear tour progress from localStorage
@@ -73,8 +73,8 @@ export default function Step11Finish() {
   };
 
   const handlePrevious = () => {
-    updateWedding({ onboardingStep: 10 });
-    navigate('/onboarding/step-10');
+    updateWedding({ onboardingStep: 9 });
+    navigate('/onboarding/step-9');
   };
 
   const nextSteps = [
@@ -115,7 +115,7 @@ export default function Step11Finish() {
       <div className="w-full max-w-4xl animate-fade-in">
         {/* Progress indicator */}
         <div className="mb-6 text-center">
-          <p className="text-sm text-muted-foreground">Tour: Step 7 of 7</p>
+          <p className="text-sm text-muted-foreground">Tour: Step 6 of 6</p>
         </div>
 
         <Card className="p-8 md:p-12 shadow-2xl border-primary/20 bg-background/95 backdrop-blur">

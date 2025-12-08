@@ -40,7 +40,6 @@ const defaultWedding: Wedding = {
     guestPage: false,
     weddingInfo: false,
     chatbotSettings: false,
-    reminders: false,
     analytics: false,
   },
 };

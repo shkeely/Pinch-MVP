@@ -78,7 +78,6 @@ export default function Step7GuestPageTour() {
           guestPage: true,
           weddingInfo: false,
           chatbotSettings: false,
-          reminders: false,
           analytics: false,
         }
       });
@@ -98,14 +97,13 @@ export default function Step7GuestPageTour() {
 
   const handleSkipTour = () => {
     updateWedding({ 
-      onboardingStep: 11,
+      onboardingStep: 10,
       tourProgress: { 
         homepage: true,
         conversations: true,
         guestPage: true,
         weddingInfo: true,
         chatbotSettings: true,
-        reminders: true,
         analytics: true,
       }
     });
