@@ -380,13 +380,17 @@ export default function Step7GuestPageTour() {
             
             {/* Tooltip content */}
             <div className="space-y-4">
-              <div 
-                className="flex items-center gap-3 cursor-grab active:cursor-grabbing -mx-2 -mt-2 px-2 pt-2"
-                onMouseDown={handleDragStart}
-              >
-                <GripVertical className="w-4 h-6 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0" />
-                <h3 className="text-xl font-semibold text-foreground flex-1">{current.title}</h3>
-              </div>
+                <div 
+                  className="flex items-center justify-between gap-3 -mx-2 -mt-2 px-2 pt-2"
+                >
+                  <h3 className="text-xl font-semibold text-foreground flex-1">{current.title}</h3>
+                  <div 
+                    className="cursor-grab active:cursor-grabbing p-1 rounded hover:bg-purple-50 transition-colors"
+                    onMouseDown={handleDragStart}
+                  >
+                    <GripVertical className="w-4 h-6 text-purple-600 flex-shrink-0" />
+                  </div>
+                </div>
               <p className="text-muted-foreground">{current.description}</p>
               
               {/* Navigation buttons */}
