@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import TopNav from '@/components/navigation/TopNav';
 import { TourTooltip } from '@/components/onboarding/TourTooltip';
-import { DraggableTourTooltip } from '@/components/onboarding/DraggableTourTooltip';
 import { TourPage } from '@/components/onboarding/TourPage';
 import { useWedding } from '@/contexts/WeddingContext';
 import { FAKE_DATA } from '@/data/fakeData';
@@ -235,60 +234,53 @@ export default function Step8MessagesPage() {
 
                 {/* Tooltip 2: Conversation Thread */}
                 {currentTooltip === 2 && (
-                  <DraggableTourTooltip zIndex="z-[60]">
-                    <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-                      <div className="space-y-4">
-                        <h3 className="text-xl font-semibold text-foreground">Conversation Thread</h3>
-                        <p className="text-muted-foreground">See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels.</p>
-                        <div className="flex items-center justify-between pt-4">
-                          <div className="text-sm text-muted-foreground">Step 2 of 3</div>
-                          <div className="flex gap-2">
-                            <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                            <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </DraggableTourTooltip>
+                  <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:static lg:max-w-none z-[60]">
+                    <TourTooltip
+                      target="left"
+                      title="Conversation Thread"
+                      description="See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
+                      step={2}
+                      totalSteps={3}
+                      onNext={handleNext}
+                      onPrev={handlePrevious}
+                    />
+                  </div>
                 )}
               </Card>
             </div>
           </div>
         </div>
 
-        {/* Tooltip 1: Conversation List */}
+        {/* Tooltip 1: Conversation List - Next to Messages header */}
         {currentTooltip === 1 && (
-          <DraggableTourTooltip isFirstStep={true}>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">All Guest Conversations</h3>
-                <p className="text-muted-foreground">Every SMS conversation with your guests appears here. See who's asking what in real-time.</p>
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">Step 1 of 3</div>
-                  <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                </div>
-              </div>
-            </div>
-          </DraggableTourTooltip>
+          <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:top-32 lg:left-[500px] lg:translate-x-0 z-50">
+            <TourTooltip
+              target="right"
+              title="All Guest Conversations"
+              description="Every SMS conversation with your guests appears here. See who's asking what in real-time."
+              step={1}
+              totalSteps={3}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={true}
+            />
+          </div>
         )}
 
         {/* Tooltip 3: Status Tags */}
         {currentTooltip === 3 && (
-          <DraggableTourTooltip>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">Auto vs Escalated</h3>
-                <p className="text-muted-foreground">Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response.</p>
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">Step 3 of 3</div>
-                  <div className="flex gap-2">
-                    <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                    <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Continue</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </DraggableTourTooltip>
+          <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:top-1/2 lg:left-8 lg:-translate-x-0 z-50">
+            <TourTooltip
+              target="right"
+              title="Auto vs Escalated"
+              description="Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response."
+              step={3}
+              totalSteps={3}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={true}
+            />
+          </div>
         )}
       </div>
     </TourPage>

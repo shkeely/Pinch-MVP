@@ -2,7 +2,6 @@ import { useState, useLayoutEffect, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TourPage } from '@/components/onboarding/TourPage';
 import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip';
-import { DraggableTourTooltip } from '@/components/onboarding/DraggableTourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
 import { cn } from '@/lib/utils';
 import Homepage from '@/pages/Homepage';
@@ -157,75 +156,90 @@ export default function Step9Homepage() {
 
         {/* Tooltip 1: AnimatedGreeting */}
         {currentTooltip === 1 && (
-          <DraggableTourTooltip isFirstStep={true}>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">Your Personal Homepage</h3>
-                <p className="text-muted-foreground">Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention.</p>
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">Step 1 of 4</div>
-                  <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                </div>
-              </div>
-            </div>
-          </DraggableTourTooltip>
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
+            <TourTooltip
+              target="bottom"
+              title="Your Personal Homepage"
+              description="Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
+              step={1}
+              totalSteps={4}
+              onNext={handleNext}
+              highlight={true}
+            />
+          </div>
         )}
 
         {/* Tooltip 2: Auto-Answered Questions */}
         {currentTooltip === 2 && (
-          <DraggableTourTooltip>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">Auto-Answered Questions</h3>
-                <p className="text-muted-foreground">See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests.</p>
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">Step 2 of 4</div>
-                  <div className="flex gap-2">
-                    <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                    <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </DraggableTourTooltip>
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
+            <TourTooltip
+              target="bottom"
+              title="Auto-Answered Questions"
+              description="See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
+              step={2}
+              totalSteps={4}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={true}
+            />
+          </div>
         )}
 
         {/* Tooltip 3: Needs Attention Items */}
         {currentTooltip === 3 && (
-          <DraggableTourTooltip>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">Needs Your Attention Items</h3>
-                <p className="text-muted-foreground">When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond.</p>
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">Step 3 of 4</div>
-                  <div className="flex gap-2">
-                    <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                    <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </DraggableTourTooltip>
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
+            <TourTooltip
+              target="bottom"
+              title="Needs Your Attention Items"
+              description="When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
+              step={3}
+              totalSteps={4}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={true}
+            />
+          </div>
         )}
 
-        {/* Tooltip 4: Wrap-up */}
+        {/* Tooltip 4: Wrap-up - Centered */}
         {currentTooltip === 4 && (
-          <DraggableTourTooltip>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">That's the Homepage!</h3>
-                <p className="text-muted-foreground">You've learned about your homepage. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention.</p>
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">Step 4 of 4</div>
-                  <div className="flex gap-2">
-                    <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                    <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Continue Tour →</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </DraggableTourTooltip>
+          <div 
+            className={cn(
+              "fixed left-1/2 -translate-x-1/2 z-50",
+              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+            )}
+            style={{ top: tooltipTop ?? 0 }}
+          >
+            <TourTooltip
+              target="bottom"
+              title="That's the Homepage!"
+              description="You've learned about your homepage. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention."
+              step={4}
+              totalSteps={4}
+              onNext={handleNext}
+              onPrev={handlePrevious}
+              highlight={false}
+              buttonText="Continue Tour →"
+            />
+          </div>
         )}
       </div>
     </TourPage>

@@ -2,7 +2,6 @@ import { useState, useLayoutEffect, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TourPage } from '@/components/onboarding/TourPage';
 import { TourTooltip } from '@/components/onboarding/TourTooltip';
-import { DraggableTourTooltip } from '@/components/onboarding/DraggableTourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
@@ -162,18 +161,17 @@ export default function Step7GuestPageTour() {
 
             {/* Tooltip 1: Overview */}
             {currentTooltip === 1 && (
-              <DraggableTourTooltip isFirstStep={true}>
-                <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-foreground">Overview of Guest Page</h3>
-                    <p className="text-muted-foreground">This is where you manage your guest list. Add guests so they can interact with Pinch via SMS. You can organize them into segments to send targeted messages.</p>
-                    <div className="flex items-center justify-between pt-4">
-                      <div className="text-sm text-muted-foreground">Step {currentTooltip} of 6</div>
-                      <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                    </div>
-                  </div>
-                </div>
-              </DraggableTourTooltip>
+              <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-4 z-50">
+                <TourTooltip
+                  target="bottom"
+                  title="Overview of Guest Page"
+                  description="This is where you manage your guest list. Add guests so they can interact with Pinch via SMS. You can organize them into segments to send targeted messages."
+                  step={currentTooltip}
+                  totalSteps={6}
+                  onNext={handleNext}
+                  onPrev={currentTooltip > 1 ? handlePrevious : undefined}
+                />
+              </div>
             )}
           </div>
 
@@ -202,60 +200,52 @@ export default function Step7GuestPageTour() {
 
                 {/* Tooltip 2: Import CSV */}
                 {currentTooltip === 2 && (
-                  <DraggableTourTooltip>
-                    <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-                      <div className="space-y-4">
-                        <h3 className="text-xl font-semibold text-foreground">Import Your Guest List</h3>
-                        <p className="text-muted-foreground">Choose to upload your real guest list now, or use sample data to explore features first. You can always import your real list later.</p>
-                        <div className="flex flex-col gap-2 pt-4">
-                          <button onClick={() => setImportDialogOpen(true)} className="w-full px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Upload Your Guest List</button>
-                          <button onClick={handleNext} className="w-full px-4 py-2 text-sm font-medium border border-input rounded-md hover:bg-accent transition-colors">Use Fake Data (Tutorial Only)</button>
-                        </div>
-                        <div className="flex items-center justify-between pt-2">
-                          <div className="text-sm text-muted-foreground">Step {currentTooltip} of 6</div>
-                          <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                        </div>
-                      </div>
-                    </div>
-                  </DraggableTourTooltip>
+                  <div className="fixed top-[calc(theme(spacing.4)+60px)] left-4 right-4 max-w-[calc(100vw-32px)] md:left-1/2 md:-translate-x-1/2 md:top-32 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-full lg:-mt-4 z-50">
+                    <TourTooltip
+                      target="bottom"
+                      title="Import Your Guest List"
+                      description="Choose to upload your real guest list now, or use sample data to explore features first. You can always import your real list later."
+                      step={currentTooltip}
+                      totalSteps={6}
+                      onNext={() => setImportDialogOpen(true)}
+                      onPrev={handlePrevious}
+                      buttonText="Upload Your Guest List"
+                      secondaryButton={{
+                        text: "Use Fake Data (Tutorial Only)",
+                        onClick: handleNext
+                      }}
+                    />
+                  </div>
                 )}
 
                 {/* Tooltip 3: Segments */}
                 {currentTooltip === 3 && (
-                  <DraggableTourTooltip>
-                    <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-                      <div className="space-y-4">
-                        <h3 className="text-xl font-semibold text-foreground">Review Segments</h3>
-                        <p className="text-muted-foreground">Segments help you organize guests by category (Wedding Party, Out-of-Towners, Parents, Vendors, etc.). You can create custom segments too.</p>
-                        <div className="flex items-center justify-between pt-4">
-                          <div className="text-sm text-muted-foreground">Step {currentTooltip} of 6</div>
-                          <div className="flex gap-2">
-                            <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                            <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </DraggableTourTooltip>
+                  <div className="fixed top-[calc(theme(spacing.4)+300px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-4 z-50">
+                    <TourTooltip
+                      target="bottom"
+                      title="Review Segments"
+                      description="Segments help you organize guests by category (Wedding Party, Out-of-Towners, Parents, Vendors, etc.). You can create custom segments too."
+                      step={currentTooltip}
+                      totalSteps={6}
+                      onNext={handleNext}
+                      onPrev={handlePrevious}
+                    />
+                  </div>
                 )}
 
                 {/* Tooltip 4: Edit Segments */}
                 {currentTooltip === 4 && (
-                  <DraggableTourTooltip>
-                    <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-                      <div className="space-y-4">
-                        <h3 className="text-xl font-semibold text-foreground">Add or Edit Segments</h3>
-                        <p className="text-muted-foreground">Click here to create new segments or modify existing ones. Segments make it easy to send specific messages to the right groups.</p>
-                        <div className="flex items-center justify-between pt-4">
-                          <div className="text-sm text-muted-foreground">Step {currentTooltip} of 6</div>
-                          <div className="flex gap-2">
-                            <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                            <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </DraggableTourTooltip>
+                  <div className="fixed top-1/2 -translate-y-1/2 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:right-[calc(100%+16px)] lg:left-auto lg:-translate-y-full lg:-mt-4 lg:translate-x-0 z-50">
+                    <TourTooltip
+                      target="right"
+                      title="Add or Edit Segments"
+                      description="Click here to create new segments or modify existing ones. Segments make it easy to send specific messages to the right groups."
+                      step={currentTooltip}
+                      totalSteps={6}
+                      onNext={handleNext}
+                      onPrev={handlePrevious}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -285,21 +275,17 @@ export default function Step7GuestPageTour() {
 
               {/* Tooltip 6: Multiple Segment Toggle */}
               {currentTooltip === 6 && (
-                <DraggableTourTooltip>
-                  <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-foreground">Multiple Segment Messaging</h3>
-                      <p className="text-muted-foreground">Toggle this ON to send the same message to multiple segments at once. Great for announcements that go to several groups!</p>
-                      <div className="flex items-center justify-between pt-4">
-                        <div className="text-sm text-muted-foreground">Step {currentTooltip} of 6</div>
-                        <div className="flex gap-2">
-                          <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                          <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Continue</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </DraggableTourTooltip>
+                <div className="fixed bottom-[calc(100vh-400px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-0 lg:mt-4 lg:translate-x-0 lg:translate-y-0 z-50">
+                  <TourTooltip
+                    target="top"
+                    title="Multiple Segment Messaging"
+                    description="Toggle this ON to send the same message to multiple segments at once. Great for announcements that go to several groups!"
+                    step={currentTooltip}
+                    totalSteps={6}
+                    onNext={handleNext}
+                    onPrev={handlePrevious}
+                  />
+                </div>
               )}
             </div>
           </div>
@@ -355,21 +341,17 @@ export default function Step7GuestPageTour() {
 
                 {/* Tooltip 5: Edit Guest */}
                 {currentTooltip === 5 && (
-                  <DraggableTourTooltip>
-                    <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-                      <div className="space-y-4">
-                        <h3 className="text-xl font-semibold text-foreground">Try Changing a Guest's Segment</h3>
-                        <p className="text-muted-foreground">Click the edit icon next to any guest to change their segment, contact info, or other details.</p>
-                        <div className="flex items-center justify-between pt-4">
-                          <div className="text-sm text-muted-foreground">Step {currentTooltip} of 6</div>
-                          <div className="flex gap-2">
-                            <button onClick={handlePrevious} className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Previous</button>
-                            <button onClick={handleNext} className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Next</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </DraggableTourTooltip>
+                  <div className="fixed bottom-[calc(100vh-500px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-8 lg:right-[calc(100%+16px)] lg:left-auto lg:translate-x-0 lg:translate-y-0 z-50">
+                    <TourTooltip
+                      target="right"
+                      title="Try Changing a Guest's Segment"
+                      description="Click the edit icon next to any guest to change their segment, contact info, or other details."
+                      step={currentTooltip}
+                      totalSteps={6}
+                      onNext={handleNext}
+                      onPrev={handlePrevious}
+                    />
+                  </div>
                 )}
               </div>
             </div>

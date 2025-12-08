@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TourPage } from '@/components/onboarding/TourPage';
 import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip';
-import { DraggableTourTooltip } from '@/components/onboarding/DraggableTourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
 
@@ -179,9 +178,21 @@ export default function Step5NavigationBar() {
         
         {/* Blank page below nav */}
         <main className="relative min-h-[calc(100vh-64px)]">
-          {/* Draggable centered tooltip */}
-          <DraggableTourTooltip isFirstStep={currentTooltip === 1}>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
+          {/* Centered tooltip that stays in place */}
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+            <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
+              {/* Arrow pointing up */}
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 -top-3"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderBottom: '10px solid #9333EA',
+                }}
+              />
+              
               {/* Tooltip content */}
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-foreground">{current.title}</h3>
@@ -211,7 +222,7 @@ export default function Step5NavigationBar() {
                 </div>
               </div>
             </div>
-          </DraggableTourTooltip>
+          </div>
         </main>
       </div>
     </TourPage>

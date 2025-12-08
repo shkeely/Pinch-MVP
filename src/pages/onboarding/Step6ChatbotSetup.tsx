@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
-import { DraggableTourTooltip } from '@/components/onboarding/DraggableTourTooltip';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -660,61 +659,99 @@ export default function Step6ChatbotSetup() {
         );
       })()}
 
-      {/* Draggable centered tooltip */}
+      {/* Centered tooltip */}
       {(() => {
         const isInDialog = ['7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
         const tooltipZIndex = isInDialog ? 'z-[100]' : 'z-50';
         
         return (
-          <DraggableTourTooltip zIndex={tooltipZIndex} isFirstStep={currentTooltip === 1}>
-            <div className="relative max-w-md p-6 bg-white dark:bg-card rounded-xl shadow-2xl" style={{ border: '3px solid #9333EA' }}>
-              {/* Tooltip content */}
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">{current.title}</h3>
-                <p className="text-muted-foreground">{current.description}</p>
+          <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${tooltipZIndex} pointer-events-none`}>
+        <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '3px solid #9333EA' }}>
+          {/* Arrow pointing to highlighted element */}
+          {current.position === 'below' && (
+            <div
+              className="absolute left-1/2 -translate-x-1/2 -top-3"
+              style={{
+                width: 0,
+                height: 0,
+                borderLeft: '12px solid transparent',
+                borderRight: '12px solid transparent',
+                borderBottom: '12px solid #9333EA',
+              }}
+            />
+          )}
+          {current.position === 'right' && (
+            <div
+              className="absolute top-1/2 -translate-y-1/2 -left-3"
+              style={{
+                width: 0,
+                height: 0,
+                borderTop: '12px solid transparent',
+                borderBottom: '12px solid transparent',
+                borderRight: '12px solid #9333EA',
+              }}
+            />
+          )}
+          {current.position === 'left' && (
+            <div
+              className="absolute top-1/2 -translate-y-1/2 -right-3"
+              style={{
+                width: 0,
+                height: 0,
+                borderTop: '12px solid transparent',
+                borderBottom: '12px solid transparent',
+                borderLeft: '12px solid #9333EA',
+              }}
+            />
+          )}
 
-                {/* Navigation buttons */}
-                <div className="flex items-center justify-between pt-4 border-t">
-                  <div className="text-sm text-muted-foreground">
-                    Step {getDisplayStep(currentTooltip)} of {totalSteps}
-                  </div>
-                  <div className="flex gap-2">
-                    {(() => {
-                      const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
-                      const currentIndex = stepSequence.indexOf(currentTooltip);
-                      return currentIndex > 0 && (
-                        <button
-                          onClick={handlePrevious}
-                          className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          Previous
-                        </button>
-                      );
-                    })()}
-                    <button
-                      onClick={handleNext}
-                      className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-                    >
-                      {(() => {
-                        const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
-                        const currentIndex = stepSequence.indexOf(currentTooltip);
-                        return currentIndex < stepSequence.length - 1 ? 'Next' : 'Continue';
-                      })()}
-                    </button>
-                  </div>
-                </div>
+          {/* Tooltip content */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-foreground">{current.title}</h3>
+            <p className="text-muted-foreground">{current.description}</p>
+
+            {/* Navigation buttons */}
+            <div className="flex items-center justify-between pt-4 border-t">
+              <div className="text-sm text-muted-foreground">
+                Step {getDisplayStep(currentTooltip)} of {totalSteps}
               </div>
-
-              {/* Skip tour button */}
-              <button
-                onClick={handleSkipTour}
-                className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                title="Skip tour"
-              >
-                ✕
-              </button>
+              <div className="flex gap-2">
+                {(() => {
+                  const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
+                  const currentIndex = stepSequence.indexOf(currentTooltip);
+                  return currentIndex > 0 && (
+                    <button
+                      onClick={handlePrevious}
+                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      Previous
+                    </button>
+                  );
+                })()}
+                <button
+                  onClick={handleNext}
+                  className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                >
+                  {(() => {
+                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
+                    const currentIndex = stepSequence.indexOf(currentTooltip);
+                    return currentIndex < stepSequence.length - 1 ? 'Next' : 'Continue';
+                  })()}
+                </button>
+              </div>
             </div>
-          </DraggableTourTooltip>
+          </div>
+
+          {/* Skip tour button */}
+          <button
+            onClick={handleSkipTour}
+            className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            title="Skip tour"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
         );
       })()}
 
