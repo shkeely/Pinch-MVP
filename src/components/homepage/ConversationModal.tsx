@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Car, Shirt, Gift, MapPin, Clock, X } from 'lucide-react';
+import { Car, Shirt, Gift, MapPin, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { formatRelativeTime } from '@/lib/dateUtils';
 
@@ -43,18 +43,10 @@ export function ConversationModal({ conversation, isOpen, onClose }: Conversatio
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] w-[100vw] sm:w-auto p-6 animate-in fade-in-0 zoom-in-95 rounded-none sm:rounded-lg">
-        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-semibold text-foreground">
             {conversation.guestName}
           </DialogTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="h-8 w-8 rounded-full"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </DialogHeader>
 
         <div className="space-y-6">

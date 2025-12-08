@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { X, Phone, AlertCircle, Lightbulb } from 'lucide-react';
+import { Phone, AlertCircle, Lightbulb } from 'lucide-react';
 import { ReplyComposerModal } from './ReplyComposerModal';
 
 interface EscalatedQuestionModalProps {
@@ -44,21 +44,13 @@ export function EscalatedQuestionModal({
     <>
       <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] w-[100vw] sm:w-auto p-6 animate-in fade-in-0 zoom-in-95 rounded-none sm:rounded-lg">
-        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <DialogHeader className="pb-4">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-5 w-5 text-orange-500" />
             <DialogTitle className="text-2xl font-semibold text-foreground">
               Escalated Question
             </DialogTitle>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="h-8 w-8 rounded-full"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </DialogHeader>
 
         <div className="space-y-6">
