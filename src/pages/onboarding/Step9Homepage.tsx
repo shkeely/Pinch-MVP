@@ -52,9 +52,9 @@ export default function Step9Homepage() {
             const buttons = Array.from(document.querySelectorAll('button'));
             anchorEl = buttons.find(btn => btn.textContent?.includes('Skip intro')) as HTMLElement;
           } else if (currentTooltip === 2) {
-            anchorEl = document.getElementById('tour-btn-1');
+            anchorEl = document.getElementById('tour-btn-1'); // Needs Attention (now first)
           } else if (currentTooltip === 3) {
-            anchorEl = document.getElementById('tour-btn-2');
+            anchorEl = document.getElementById('tour-btn-2'); // Handled Today (now second)
           }
 
           if (anchorEl) {
@@ -211,12 +211,12 @@ export default function Step9Homepage() {
       description: "Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
     },
     2: {
-      title: "Auto-Answered Questions",
-      description: "See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
-    },
-    3: {
       title: "Needs Your Attention Items",
       description: "When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
+    },
+    3: {
+      title: "Auto-Answered Questions",
+      description: "See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
     },
     4: {
       title: "That's the Homepage!",

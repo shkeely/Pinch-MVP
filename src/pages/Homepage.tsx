@@ -94,68 +94,16 @@ export default function Homepage() {
         {/* Updates Section - All Collapsible */}
         {showButtons && (
           <div className="space-y-4">
-          {/* Handled by Pinch - Collapsible */}
-          <Collapsible 
-            open={handledExpanded} 
-            onOpenChange={setHandledExpanded} 
-            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
-          >
-            <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
-              <CollapsibleTrigger asChild>
-                <button id="tour-btn-1" className="w-full p-6 text-center transition-all hover:border-primary/50">
-                  <div className="flex items-center justify-between">
-                    <span className="flex-1 text-xl font-semibold text-foreground">
-                      Pinch answered {homepage.handledToday.length} guest questions
-                    </span>
-                    {handledExpanded ? <ChevronUp className="w-5 h-5 text-muted-foreground ml-2" /> : <ChevronDown className="w-5 h-5 text-muted-foreground ml-2" />}
-                  </div>
-                </button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="border-t border-border overflow-hidden transition-all data-[state=open]:animate-accordion-down data-[state=open]:[animation-timing-function:cubic-bezier(0.16,1,0.3,1)] data-[state=closed]:animate-accordion-up data-[state=closed]:[animation-timing-function:cubic-bezier(0.7,0,0.84,0)]">
-                <div className="px-6 py-4 flex items-center justify-center gap-2">
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 hover:bg-green-50">
-                    <Check className="w-3 h-3 mr-1" />
-                    Handled by Pinch
-                  </Badge>
-                  
-                </div>
-                <div className="divide-y divide-border pb-4">
-                  {homepage.handledToday.slice(0, 3).map((item, index) => {
-                    const fullConversation = fakeConversations.find(
-                      (conv) => conv.guestName === item.guestName
-                    );
-                    return (
-                      <div
-                        key={index}
-                        className="px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-accent/50 transition-all duration-200 hover:translate-x-1"
-                        style={{ animationDelay: `${index * 50}ms` }}
-                        onClick={() => fullConversation && setSelectedConversation(fullConversation)}
-                      >
-                        <div className="text-foreground">
-                          <span className="font-semibold">{item.guestName}</span>
-                          <span className="text-muted-foreground"> asked about {item.question}</span>
-                        </div>
-                        <span className="text-sm text-muted-foreground whitespace-nowrap ml-4">
-                          {item.timestamp}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CollapsibleContent>
-            </div>
-          </Collapsible>
-
           {/* Needs Attention - Collapsible with urgent indicator */}
           {homepage.needsAttention.length > 0 && (
           <Collapsible 
             open={attentionExpanded} 
             onOpenChange={setAttentionExpanded} 
-            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
           >
               <div className={`w-full border-2 border-destructive/50 hover:shadow-lg hover:border-destructive/70 ${attentionExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
                 <CollapsibleTrigger asChild>
-                  <button id="tour-btn-2" className="w-full p-6 text-center transition-all hover:border-destructive">
+                  <button id="tour-btn-1" className="w-full p-6 text-center transition-all hover:border-destructive">
                     <div className="flex items-center justify-between">
                       <span className="flex-1 text-xl font-semibold text-foreground">
                         {homepage.needsAttention.length} things need your attention.
@@ -208,6 +156,58 @@ export default function Homepage() {
               </div>
           </Collapsible>
           )}
+
+          {/* Handled by Pinch - Collapsible */}
+          <Collapsible 
+            open={handledExpanded} 
+            onOpenChange={setHandledExpanded} 
+            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+          >
+            <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${handledExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
+              <CollapsibleTrigger asChild>
+                <button id="tour-btn-2" className="w-full p-6 text-center transition-all hover:border-primary/50">
+                  <div className="flex items-center justify-between">
+                    <span className="flex-1 text-xl font-semibold text-foreground">
+                      Pinch answered {homepage.handledToday.length} guest questions
+                    </span>
+                    {handledExpanded ? <ChevronUp className="w-5 h-5 text-muted-foreground ml-2" /> : <ChevronDown className="w-5 h-5 text-muted-foreground ml-2" />}
+                  </div>
+                </button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="border-t border-border overflow-hidden transition-all data-[state=open]:animate-accordion-down data-[state=open]:[animation-timing-function:cubic-bezier(0.16,1,0.3,1)] data-[state=closed]:animate-accordion-up data-[state=closed]:[animation-timing-function:cubic-bezier(0.7,0,0.84,0)]">
+                <div className="px-6 py-4 flex items-center justify-center gap-2">
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 hover:bg-green-50">
+                    <Check className="w-3 h-3 mr-1" />
+                    Handled by Pinch
+                  </Badge>
+                  
+                </div>
+                <div className="divide-y divide-border pb-4">
+                  {homepage.handledToday.slice(0, 3).map((item, index) => {
+                    const fullConversation = fakeConversations.find(
+                      (conv) => conv.guestName === item.guestName
+                    );
+                    return (
+                      <div
+                        key={index}
+                        className="px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-accent/50 transition-all duration-200 hover:translate-x-1"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                        onClick={() => fullConversation && setSelectedConversation(fullConversation)}
+                      >
+                        <div className="text-foreground">
+                          <span className="font-semibold">{item.guestName}</span>
+                          <span className="text-muted-foreground"> asked about {item.question}</span>
+                        </div>
+                        <span className="text-sm text-muted-foreground whitespace-nowrap ml-4">
+                          {item.timestamp}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
 
           {/* Upcoming Announcements - Collapsible */}
           {homepage.upcomingAnnouncements.length > 0 && (
