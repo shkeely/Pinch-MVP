@@ -4,12 +4,18 @@ import { TourPage } from '@/components/onboarding/TourPage';
 import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
+import { GripVertical } from 'lucide-react';
 
 export default function Step5NavigationBar() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
   const totalSteps = 8;
+
+  // Draggable tooltip state
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const targetHash = '#onboarding-step-5';
@@ -52,6 +58,49 @@ export default function Step5NavigationBar() {
     });
     navigate('/homepage');
   };
+
+  // Drag handlers for tooltip
+  const handleDragStart = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
+  const handleDragMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    const newX = e.clientX - dragOffset.x;
+    const newY = e.clientY - dragOffset.y;
+    
+    const tooltipWidth = 400;
+    const tooltipHeight = 300;
+    const constrainedX = Math.max(0, Math.min(newX, window.innerWidth - tooltipWidth));
+    const constrainedY = Math.max(0, Math.min(newY, window.innerHeight - tooltipHeight));
+    
+    setTooltipPosition({ x: constrainedX, y: constrainedY });
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [isDragging, dragOffset]);
+
+  useEffect(() => {
+    setTooltipPosition(null);
+  }, [currentTooltip]);
 
   // Step target mapping and dynamic highlight rect
   const stepTargets: Record<number, string> = {
@@ -109,6 +158,7 @@ export default function Step5NavigationBar() {
       window.removeEventListener('scroll', updateRect, true);
     };
   }, [currentTooltip]);
+
   // Tooltip content based on current step
   const tooltipContent = {
     1: {
@@ -147,6 +197,21 @@ export default function Step5NavigationBar() {
 
   const current = tooltipContent[currentTooltip as keyof typeof tooltipContent];
 
+  const getTooltipPosition = () => {
+    if (tooltipPosition) {
+      return {
+        left: `${tooltipPosition.x}px`,
+        top: `${tooltipPosition.y}px`,
+        transform: 'none'
+      };
+    }
+    return {
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)'
+    };
+  };
+
   return (
     <TourPage
       stepNumber={5}
@@ -178,24 +243,38 @@ export default function Step5NavigationBar() {
         
         {/* Blank page below nav */}
         <main className="relative min-h-[calc(100vh-64px)]">
-          {/* Centered tooltip that stays in place */}
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
-            <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl" style={{ border: '4px solid #9333EA' }}>
-              {/* Arrow pointing up */}
-              <div 
-                className="absolute left-1/2 -translate-x-1/2 -top-3"
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderLeft: '10px solid transparent',
-                  borderRight: '10px solid transparent',
-                  borderBottom: '10px solid #9333EA',
-                }}
-              />
+          {/* Centered draggable tooltip */}
+          <div 
+            className="fixed z-50 pointer-events-none"
+            style={{
+              ...getTooltipPosition(),
+              transition: isDragging ? 'none' : 'all 0.3s ease-out'
+            }}
+          >
+            <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '4px solid #9333EA' }}>
+              {/* Arrow pointing up - only show when not dragged */}
+              {!tooltipPosition && (
+                <div 
+                  className="absolute left-1/2 -translate-x-1/2 -top-3"
+                  style={{
+                    width: 0,
+                    height: 0,
+                    borderLeft: '10px solid transparent',
+                    borderRight: '10px solid transparent',
+                    borderBottom: '10px solid #9333EA',
+                  }}
+                />
+              )}
               
               {/* Tooltip content */}
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-foreground">{current.title}</h3>
+                <div 
+                  className="flex items-center gap-3 cursor-grab active:cursor-grabbing -mx-2 -mt-2 px-2 pt-2"
+                  onMouseDown={handleDragStart}
+                >
+                  <GripVertical className="w-4 h-6 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0" />
+                  <h3 className="text-xl font-semibold text-foreground flex-1">{current.title}</h3>
+                </div>
                 <p className="text-muted-foreground">{current.description}</p>
                 
                 {/* Navigation buttons */}

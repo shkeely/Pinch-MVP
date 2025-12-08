@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { UserPlus, Upload, Pencil, Settings } from 'lucide-react';
+import { UserPlus, Upload, Pencil, Settings, GripVertical } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -36,6 +36,11 @@ export default function Step7GuestPageTour() {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
+
+  // Draggable tooltip state
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   const segments: Segment[] = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
   const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
@@ -115,6 +120,93 @@ export default function Step7GuestPageTour() {
     setImportDialogOpen(false);
   };
 
+  // Drag handlers for tooltip
+  const handleDragStart = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
+  const handleDragMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    const newX = e.clientX - dragOffset.x;
+    const newY = e.clientY - dragOffset.y;
+    
+    const tooltipWidth = 400;
+    const tooltipHeight = 300;
+    const constrainedX = Math.max(0, Math.min(newX, window.innerWidth - tooltipWidth));
+    const constrainedY = Math.max(0, Math.min(newY, window.innerHeight - tooltipHeight));
+    
+    setTooltipPosition({ x: constrainedX, y: constrainedY });
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [isDragging, dragOffset]);
+
+  useEffect(() => {
+    setTooltipPosition(null);
+  }, [currentTooltip]);
+
+  const getTooltipPosition = () => {
+    if (tooltipPosition) {
+      return {
+        left: `${tooltipPosition.x}px`,
+        top: `${tooltipPosition.y}px`,
+        transform: 'none'
+      };
+    }
+    return {
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)'
+    };
+  };
+
+  const tooltipContent = {
+    1: {
+      title: "Overview of Guest Page",
+      description: "This is where you manage your guest list. Add guests so they can interact with Pinch via SMS. You can organize them into segments to send targeted messages."
+    },
+    2: {
+      title: "Import Your Guest List",
+      description: "Choose to upload your real guest list now, or use sample data to explore features first. You can always import your real list later."
+    },
+    3: {
+      title: "Review Segments",
+      description: "Segments help you organize guests by category (Wedding Party, Out-of-Towners, Parents, Vendors, etc.). You can create custom segments too."
+    },
+    4: {
+      title: "Add or Edit Segments",
+      description: "Click here to create new segments or modify existing ones. Segments make it easy to send specific messages to the right groups."
+    },
+    5: {
+      title: "Try Changing a Guest's Segment",
+      description: "Click the edit icon next to any guest to change their segment, contact info, or other details."
+    },
+    6: {
+      title: "Multiple Segment Messaging",
+      description: "Toggle this ON to send the same message to multiple segments at once. Great for announcements that go to several groups!"
+    }
+  };
+
+  const current = tooltipContent[currentTooltip as keyof typeof tooltipContent];
+
   return (
     <TourPage
       stepNumber={7}
@@ -158,21 +250,6 @@ export default function Step7GuestPageTour() {
                 </Button>
               </div>
             </div>
-
-            {/* Tooltip 1: Overview */}
-            {currentTooltip === 1 && (
-              <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-4 z-50">
-                <TourTooltip
-                  target="bottom"
-                  title="Overview of Guest Page"
-                  description="This is where you manage your guest list. Add guests so they can interact with Pinch via SMS. You can organize them into segments to send targeted messages."
-                  step={currentTooltip}
-                  totalSteps={6}
-                  onNext={handleNext}
-                  onPrev={currentTooltip > 1 ? handlePrevious : undefined}
-                />
-              </div>
-            )}
           </div>
 
           {/* Segments Section */}
@@ -197,56 +274,6 @@ export default function Step7GuestPageTour() {
                     {segment}
                   </Button>
                 ))}
-
-                {/* Tooltip 2: Import CSV */}
-                {currentTooltip === 2 && (
-                  <div className="fixed top-[calc(theme(spacing.4)+60px)] left-4 right-4 max-w-[calc(100vw-32px)] md:left-1/2 md:-translate-x-1/2 md:top-32 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-full lg:-mt-4 z-50">
-                    <TourTooltip
-                      target="bottom"
-                      title="Import Your Guest List"
-                      description="Choose to upload your real guest list now, or use sample data to explore features first. You can always import your real list later."
-                      step={currentTooltip}
-                      totalSteps={6}
-                      onNext={() => setImportDialogOpen(true)}
-                      onPrev={handlePrevious}
-                      buttonText="Upload Your Guest List"
-                      secondaryButton={{
-                        text: "Use Fake Data (Tutorial Only)",
-                        onClick: handleNext
-                      }}
-                    />
-                  </div>
-                )}
-
-                {/* Tooltip 3: Segments */}
-                {currentTooltip === 3 && (
-                  <div className="fixed top-[calc(theme(spacing.4)+300px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-4 z-50">
-                    <TourTooltip
-                      target="bottom"
-                      title="Review Segments"
-                      description="Segments help you organize guests by category (Wedding Party, Out-of-Towners, Parents, Vendors, etc.). You can create custom segments too."
-                      step={currentTooltip}
-                      totalSteps={6}
-                      onNext={handleNext}
-                      onPrev={handlePrevious}
-                    />
-                  </div>
-                )}
-
-                {/* Tooltip 4: Edit Segments */}
-                {currentTooltip === 4 && (
-                  <div className="fixed top-1/2 -translate-y-1/2 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-0 lg:right-[calc(100%+16px)] lg:left-auto lg:-translate-y-full lg:-mt-4 lg:translate-x-0 z-50">
-                    <TourTooltip
-                      target="right"
-                      title="Add or Edit Segments"
-                      description="Click here to create new segments or modify existing ones. Segments make it easy to send specific messages to the right groups."
-                      step={currentTooltip}
-                      totalSteps={6}
-                      onNext={handleNext}
-                      onPrev={handlePrevious}
-                    />
-                  </div>
-                )}
               </div>
             </div>
           </Card>
@@ -272,21 +299,6 @@ export default function Step7GuestPageTour() {
               <Label htmlFor="multi-segment" className="text-sm cursor-pointer">
                 Send to Multiple Segments
               </Label>
-
-              {/* Tooltip 6: Multiple Segment Toggle */}
-              {currentTooltip === 6 && (
-                <div className="fixed bottom-[calc(100vh-400px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-full lg:left-0 lg:mt-4 lg:translate-x-0 lg:translate-y-0 z-50">
-                  <TourTooltip
-                    target="top"
-                    title="Multiple Segment Messaging"
-                    description="Toggle this ON to send the same message to multiple segments at once. Great for announcements that go to several groups!"
-                    step={currentTooltip}
-                    totalSteps={6}
-                    onNext={handleNext}
-                    onPrev={handlePrevious}
-                  />
-                </div>
-              )}
             </div>
           </div>
 
@@ -338,25 +350,80 @@ export default function Step7GuestPageTour() {
                     ))}
                   </TableBody>
                 </Table>
-
-                {/* Tooltip 5: Edit Guest */}
-                {currentTooltip === 5 && (
-                  <div className="fixed bottom-[calc(100vh-500px)] left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:absolute lg:top-8 lg:right-[calc(100%+16px)] lg:left-auto lg:translate-x-0 lg:translate-y-0 z-50">
-                    <TourTooltip
-                      target="right"
-                      title="Try Changing a Guest's Segment"
-                      description="Click the edit icon next to any guest to change their segment, contact info, or other details."
-                      step={currentTooltip}
-                      totalSteps={6}
-                      onNext={handleNext}
-                      onPrev={handlePrevious}
-                    />
-                  </div>
-                )}
               </div>
             </div>
           </Card>
         </main>
+
+        {/* Centered Draggable Tooltip */}
+        <div 
+          className="fixed z-50 pointer-events-none"
+          style={{
+            ...getTooltipPosition(),
+            transition: isDragging ? 'none' : 'all 0.3s ease-out'
+          }}
+        >
+          <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '4px solid #9333EA' }}>
+            {/* Arrow - only show when not dragged */}
+            {!tooltipPosition && (
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 -top-3"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderBottom: '10px solid #9333EA',
+                }}
+              />
+            )}
+            
+            {/* Tooltip content */}
+            <div className="space-y-4">
+              <div 
+                className="flex items-center gap-3 cursor-grab active:cursor-grabbing -mx-2 -mt-2 px-2 pt-2"
+                onMouseDown={handleDragStart}
+              >
+                <GripVertical className="w-4 h-6 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0" />
+                <h3 className="text-xl font-semibold text-foreground flex-1">{current.title}</h3>
+              </div>
+              <p className="text-muted-foreground">{current.description}</p>
+              
+              {/* Navigation buttons */}
+              <div className="flex items-center justify-between pt-4">
+                <div className="text-sm text-muted-foreground">
+                  Step {currentTooltip} of 6
+                </div>
+                <div className="flex gap-2">
+                  {currentTooltip > 1 && (
+                    <button
+                      onClick={handlePrevious}
+                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      Previous
+                    </button>
+                  )}
+                  <button
+                    onClick={currentTooltip === 2 ? () => setImportDialogOpen(true) : handleNext}
+                    className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                  >
+                    {currentTooltip === 2 ? 'Upload Your Guest List' : currentTooltip < 6 ? 'Next' : 'Continue'}
+                  </button>
+                </div>
+              </div>
+              
+              {/* Secondary button for step 2 */}
+              {currentTooltip === 2 && (
+                <button
+                  onClick={handleNext}
+                  className="w-full px-4 py-2 text-sm font-medium border border-border rounded-md hover:bg-accent transition-colors"
+                >
+                  Use Fake Data (Tutorial Only)
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Import Guests Dialog */}

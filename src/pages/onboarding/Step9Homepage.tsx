@@ -5,12 +5,18 @@ import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip'
 import { useWedding } from '@/contexts/WeddingContext';
 import { cn } from '@/lib/utils';
 import Homepage from '@/pages/Homepage';
+import { GripVertical } from 'lucide-react';
 
 export default function Step9Homepage() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const [tooltipTop, setTooltipTop] = useState<number | null>(null);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
+
+  // Draggable tooltip state
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   // Set preferred preview route for "Open in new tab"
   useEffect(() => {
@@ -69,6 +75,65 @@ export default function Step9Homepage() {
     window.addEventListener('resize', computePosition);
     return () => window.removeEventListener('resize', computePosition);
   }, [currentTooltip]);
+
+  // Drag handlers for tooltip
+  const handleDragStart = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
+  const handleDragMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    const newX = e.clientX - dragOffset.x;
+    const newY = e.clientY - dragOffset.y;
+    
+    const tooltipWidth = 400;
+    const tooltipHeight = 300;
+    const constrainedX = Math.max(0, Math.min(newX, window.innerWidth - tooltipWidth));
+    const constrainedY = Math.max(0, Math.min(newY, window.innerHeight - tooltipHeight));
+    
+    setTooltipPosition({ x: constrainedX, y: constrainedY });
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [isDragging, dragOffset]);
+
+  useEffect(() => {
+    setTooltipPosition(null);
+  }, [currentTooltip]);
+
+  const getTooltipPosition = () => {
+    if (tooltipPosition) {
+      return {
+        left: `${tooltipPosition.x}px`,
+        top: `${tooltipPosition.y}px`,
+        transform: 'none'
+      };
+    }
+    // Use computed position from layout effect
+    return {
+      left: '50%',
+      top: `${tooltipTop ?? window.innerHeight / 2}px`,
+      transform: 'translateX(-50%)'
+    };
+  };
 
   const handleNext = () => {
     if (currentTooltip === 1) {
@@ -140,6 +205,27 @@ export default function Step9Homepage() {
     navigate('/onboarding/step-8');
   };
 
+  const tooltipContent = {
+    1: {
+      title: "Your Personal Homepage",
+      description: "Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
+    },
+    2: {
+      title: "Auto-Answered Questions",
+      description: "See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
+    },
+    3: {
+      title: "Needs Your Attention Items",
+      description: "When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
+    },
+    4: {
+      title: "That's the Homepage!",
+      description: "You've learned about your homepage. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention."
+    }
+  };
+
+  const current = tooltipContent[currentTooltip as keyof typeof tooltipContent];
+
   return (
     <TourPage
       stepNumber={9}
@@ -154,93 +240,68 @@ export default function Step9Homepage() {
       <div className="relative">
         <Homepage />
 
-        {/* Tooltip 1: AnimatedGreeting */}
-        {currentTooltip === 1 && (
-          <div 
-            className={cn(
-              "fixed left-1/2 -translate-x-1/2 z-50",
-              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
+        {/* Centered Draggable Tooltip */}
+        <div 
+          className={cn(
+            "fixed z-50 pointer-events-none",
+            tooltipTop === null && !tooltipPosition ? "opacity-0" : "opacity-100"
+          )}
+          style={{
+            ...getTooltipPosition(),
+            transition: isDragging ? 'none' : 'all 0.3s ease-out'
+          }}
+        >
+          <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '4px solid #9333EA' }}>
+            {/* Arrow - only show when not dragged */}
+            {!tooltipPosition && (
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 -top-3"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderBottom: '10px solid #9333EA',
+                }}
+              />
             )}
-            style={{ top: tooltipTop ?? 0 }}
-          >
-            <TourTooltip
-              target="bottom"
-              title="Your Personal Homepage"
-              description="Pinch greets you and shows your wedding's status at a glance. You'll see how many questions were auto-answered and what needs your attention."
-              step={1}
-              totalSteps={4}
-              onNext={handleNext}
-              highlight={true}
-            />
+            
+            {/* Tooltip content */}
+            <div className="space-y-4">
+              <div 
+                className="flex items-center gap-3 cursor-grab active:cursor-grabbing -mx-2 -mt-2 px-2 pt-2"
+                onMouseDown={handleDragStart}
+              >
+                <GripVertical className="w-4 h-6 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0" />
+                <h3 className="text-xl font-semibold text-foreground flex-1">{current.title}</h3>
+              </div>
+              <p className="text-muted-foreground">{current.description}</p>
+              
+              {/* Navigation buttons */}
+              <div className="flex items-center justify-between pt-4">
+                <div className="text-sm text-muted-foreground">
+                  Step {currentTooltip} of 4
+                </div>
+                <div className="flex gap-2">
+                  {currentTooltip > 1 && (
+                    <button
+                      onClick={handlePrevious}
+                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      Previous
+                    </button>
+                  )}
+                  <button
+                    onClick={handleNext}
+                    className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                  >
+                    {currentTooltip < 4 ? 'Next' : 'Continue Tour →'}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-
-        {/* Tooltip 2: Auto-Answered Questions */}
-        {currentTooltip === 2 && (
-          <div 
-            className={cn(
-              "fixed left-1/2 -translate-x-1/2 z-50",
-              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
-            )}
-            style={{ top: tooltipTop ?? 0 }}
-          >
-            <TourTooltip
-              target="bottom"
-              title="Auto-Answered Questions"
-              description="See all the questions Pinch handled automatically today. No action needed! Review these to see how Pinch is helping your guests."
-              step={2}
-              totalSteps={4}
-              onNext={handleNext}
-              onPrev={handlePrevious}
-              highlight={true}
-            />
-          </div>
-        )}
-
-        {/* Tooltip 3: Needs Attention Items */}
-        {currentTooltip === 3 && (
-          <div 
-            className={cn(
-              "fixed left-1/2 -translate-x-1/2 z-50",
-              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
-            )}
-            style={{ top: tooltipTop ?? 0 }}
-          >
-            <TourTooltip
-              target="bottom"
-              title="Needs Your Attention Items"
-              description="When guests ask questions Pinch can't answer, or when there are important updates, they'll appear here. Click to review and respond."
-              step={3}
-              totalSteps={4}
-              onNext={handleNext}
-              onPrev={handlePrevious}
-              highlight={true}
-            />
-          </div>
-        )}
-
-        {/* Tooltip 4: Wrap-up - Centered */}
-        {currentTooltip === 4 && (
-          <div 
-            className={cn(
-              "fixed left-1/2 -translate-x-1/2 z-50",
-              tooltipTop === null ? "opacity-0 pointer-events-none" : "opacity-100"
-            )}
-            style={{ top: tooltipTop ?? 0 }}
-          >
-            <TourTooltip
-              target="bottom"
-              title="That's the Homepage!"
-              description="You've learned about your homepage. Pinch greets you, shows what's handled automatically, and alerts you to items needing attention."
-              step={4}
-              totalSteps={4}
-              onNext={handleNext}
-              onPrev={handlePrevious}
-              highlight={false}
-              buttonText="Continue Tour →"
-            />
-          </div>
-        )}
+        </div>
       </div>
     </TourPage>
   );
