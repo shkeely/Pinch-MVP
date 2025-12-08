@@ -353,7 +353,7 @@ export default function Step8MessagesPage() {
               {/* Navigation buttons */}
               <div className="flex items-center justify-between pt-4">
                 <div className="text-sm text-muted-foreground">
-                  Tour: Step 4 of 6 • Step {currentTooltip} of 3
+                  Step {currentTooltip} of 3
                 </div>
                 <div className="flex gap-2">
                   {currentTooltip > 1 && (
