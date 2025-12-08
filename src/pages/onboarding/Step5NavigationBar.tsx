@@ -287,14 +287,16 @@ export default function Step5NavigationBar() {
               
               {/* Instructions - only on first tooltip */}
               {currentTooltip === 1 && (
-                <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200 space-y-2">
-                  <div className="flex items-start gap-2 text-xs text-purple-700">
-                    <GripVertical className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                    <span><strong>Drag to move:</strong> Click the six purple dots to reposition this window if it blocks content.</span>
-                  </div>
-                  <div className="flex items-start gap-2 text-xs text-purple-700">
-                    <ArrowRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                    <span><strong>Skip ahead:</strong> Use the footer buttons below to jump to the next major step in the tour.</span>
+                <div className="mt-6 pt-4 border-t border-border">
+                  <div className="p-3 bg-purple-50 rounded-lg border border-purple-200 space-y-2">
+                    <div className="flex items-start gap-2 text-xs text-purple-700">
+                      <GripVertical className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                      <span><strong>Drag to move:</strong> Click the six purple dots to reposition this window if it blocks content.</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-xs text-purple-700">
+                      <ArrowRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                      <span><strong>Skip ahead:</strong> Use the footer buttons below to jump to the next major step in the tour.</span>
+                    </div>
                   </div>
                 </div>
               )}
