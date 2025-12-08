@@ -283,43 +283,45 @@ export default function Step5NavigationBar() {
                     <GripVertical className="w-4 h-6 text-purple-600 flex-shrink-0" />
                   </div>
                 </div>
-              <p className="text-muted-foreground">{current.description}</p>
+                <p className="text-muted-foreground">{current.description}</p>
+              </div>
               
-              {/* Instructions - only on first tooltip */}
+              {/* Instructions - only on first tooltip, separated from main content */}
               {currentTooltip === 1 && (
-                <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200 space-y-2">
-                  <div className="flex items-start gap-2 text-xs text-purple-700">
-                    <GripVertical className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                    <span><strong>Drag to move:</strong> Click the six purple dots to reposition this window if it blocks content.</span>
-                  </div>
-                  <div className="flex items-start gap-2 text-xs text-purple-700">
-                    <ArrowRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                    <span><strong>Skip ahead:</strong> Use the footer buttons below to jump to the next major step in the tour.</span>
+                <div className="mt-4 pt-4 border-t border-purple-200">
+                  <div className="p-3 bg-purple-50 rounded-lg border border-purple-200 space-y-2">
+                    <div className="flex items-start gap-2 text-xs text-purple-700">
+                      <GripVertical className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                      <span><strong>Drag to move:</strong> Click the six purple dots to reposition this window if it blocks content.</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-xs text-purple-700">
+                      <ArrowRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                      <span><strong>Skip ahead:</strong> Use the footer buttons below to jump to the next major step in the tour.</span>
+                    </div>
                   </div>
                 </div>
               )}
                 
               {/* Navigation buttons */}
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">
-                    Step {currentTooltip} of {totalSteps}
-                  </div>
-                  <div className="flex gap-2">
-                    {currentTooltip > 1 && (
-                      <button
-                        onClick={handlePrevious}
-                        className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        Previous
-                      </button>
-                    )}
+              <div className="flex items-center justify-between pt-4 border-t border-border mt-4">
+                <div className="text-sm text-muted-foreground">
+                  Step {currentTooltip} of {totalSteps}
+                </div>
+                <div className="flex gap-2">
+                  {currentTooltip > 1 && (
                     <button
-                      onClick={handleNext}
-                      className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                      onClick={handlePrevious}
+                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      {currentTooltip < totalSteps ? 'Next' : 'Continue'}
+                      Previous
                     </button>
-                  </div>
+                  )}
+                  <button
+                    onClick={handleNext}
+                    className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                  >
+                    {currentTooltip < totalSteps ? 'Next' : 'Continue'}
+                  </button>
                 </div>
               </div>
             </div>
