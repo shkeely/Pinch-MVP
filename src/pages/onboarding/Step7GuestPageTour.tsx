@@ -171,6 +171,20 @@ export default function Step7GuestPageTour() {
         transform: 'none'
       };
     }
+    
+    // Position tooltip above the edit icon for step 5
+    if (currentTooltip === 5) {
+      const editBtn = document.getElementById('tour-edit-guest-btn');
+      if (editBtn) {
+        const rect = editBtn.getBoundingClientRect();
+        return {
+          left: `${rect.left + rect.width / 2}px`,
+          top: `${rect.top - 20}px`,
+          transform: 'translate(-50%, -100%)'
+        };
+      }
+    }
+    
     return {
       left: '50%',
       top: '50%',
@@ -365,7 +379,7 @@ export default function Step7GuestPageTour() {
         >
           <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '4px solid #9333EA' }}>
             {/* Arrow - only show when not dragged */}
-            {!tooltipPosition && (
+            {!tooltipPosition && currentTooltip !== 5 && (
               <div 
                 className="absolute left-1/2 -translate-x-1/2 -top-3"
                 style={{
@@ -374,6 +388,19 @@ export default function Step7GuestPageTour() {
                   borderLeft: '10px solid transparent',
                   borderRight: '10px solid transparent',
                   borderBottom: '10px solid #9333EA',
+                }}
+              />
+            )}
+            {/* Downward arrow for step 5 */}
+            {!tooltipPosition && currentTooltip === 5 && (
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 -bottom-3"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderTop: '10px solid #9333EA',
                 }}
               />
             )}
