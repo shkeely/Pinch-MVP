@@ -34,7 +34,7 @@ export function TourPage({
       </div>
 
       {/* Footer Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 border-t bg-background shadow-lg z-30">
+      <div className="fixed bottom-0 left-0 right-0 border-t bg-background shadow-lg z-[70]">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4">
           {/* Desktop Layout */}
           <div className="hidden md:flex items-center justify-between gap-6">
