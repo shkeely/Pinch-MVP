@@ -197,7 +197,7 @@ export default function Step8MessagesPage() {
             {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left Panel - Conversation List */}
-              <Card className={`p-6 relative ${currentTooltip === 2 ? 'opacity-30' : ''}`} id="conversation-list">
+              <Card className="p-6 relative" id="conversation-list">
                 <div className="space-y-4">
                   {/* Search */}
                   <div className="relative">
@@ -353,7 +353,7 @@ export default function Step8MessagesPage() {
               {/* Navigation buttons */}
               <div className="flex items-center justify-between pt-4">
                 <div className="text-sm text-muted-foreground">
-                  Step {currentTooltip} of 3
+                  Tour: Step 4 of 6 • Step {currentTooltip} of 3
                 </div>
                 <div className="flex gap-2">
                   {currentTooltip > 1 && (
