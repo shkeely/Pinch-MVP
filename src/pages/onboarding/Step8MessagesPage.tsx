@@ -59,7 +59,7 @@ export default function Step8MessagesPage() {
 
   const handleSkipTour = () => {
     updateWedding({ 
-      onboardingStep: 11,
+      onboardingStep: 10,
       onboardingComplete: true,
       tourMode: false 
     });

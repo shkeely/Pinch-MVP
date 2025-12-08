@@ -9,7 +9,7 @@ export default function Step5NavigationBar() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
-  const totalSteps = 9;
+  const totalSteps = 8;
 
   useEffect(() => {
     const targetHash = '#onboarding-step-5';
@@ -40,14 +40,13 @@ export default function Step5NavigationBar() {
 
   const handleSkipTour = () => {
     updateWedding({ 
-      onboardingStep: 11,
+      onboardingStep: 10,
       tourProgress: { 
         homepage: true,
         conversations: true,
         guestPage: true,
         weddingInfo: true,
         chatbotSettings: true,
-        reminders: true,
         analytics: true,
       }
     });
@@ -59,12 +58,11 @@ export default function Step5NavigationBar() {
     1: 'navbar',
     2: 'homepage',
     3: 'messages',
-    4: 'announcements',
-    5: 'concierge',
-    6: 'guests',
-    7: 'settings',
-    8: 'notifications',
-    9: 'profile',
+    4: 'concierge',
+    5: 'guests',
+    6: 'settings',
+    7: 'notifications',
+    8: 'profile',
   };
 
   const [highlightRect, setHighlightRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
@@ -126,26 +124,22 @@ export default function Step5NavigationBar() {
       description: "View all guest conversations. See every question asked and how Pinch responded."
     },
     4: {
-      title: "Announcements",
-      description: "Set up scheduled messages for your guests. RSVP reminders, day-of updates, thank you notes - all automated."
-    },
-    5: {
       title: "Concierge",
       description: "Manage what your chatbot knows about your wedding, notification settings, etc."
     },
-    6: {
+    5: {
       title: "Guests",
       description: "Manage your guest list. Import contacts, organize segments, and control who receives chatbot messages."
     },
-    7: {
+    6: {
       title: "Settings",
       description: "Access planner settings, partner accounts, and notification preferences."
     },
-    8: {
+    7: {
       title: "Notifications",
       description: "View recent alerts and updates about guest questions and system events."
     },
-    9: {
+    8: {
       title: "Your Profile",
       description: "Manage your account, add partner details, and view information from onboarding."
     }
