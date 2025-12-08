@@ -978,7 +978,7 @@ export default function Step6ChatbotSetup() {
             </div>
             <Button
               variant="ghost"
-              onClick={() => navigate('/onboarding/step-10-homepage')}
+              onClick={() => navigate('/homepage')}
               className="text-muted-foreground hover:text-foreground"
             >
               Skip Tour
