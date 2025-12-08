@@ -954,7 +954,7 @@ export default function Step6ChatbotSetup() {
           <Button
             variant="outline"
             size="lg"
-            onClick={handleFooterPrevious}
+            onClick={() => navigate('/onboarding/step-5')}
             className="min-w-[140px]"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -978,7 +978,7 @@ export default function Step6ChatbotSetup() {
             </div>
             <Button
               variant="ghost"
-              onClick={() => navigate('/onboarding/step-10-homepage')}
+              onClick={() => navigate('/homepage')}
               className="text-muted-foreground hover:text-foreground"
             >
               Skip Tour
@@ -988,7 +988,7 @@ export default function Step6ChatbotSetup() {
           {/* Next Button */}
           <Button
             size="lg"
-            onClick={handleFooterNext}
+            onClick={() => navigate('/onboarding/step-7')}
             className="min-w-[140px]"
           >
             Next
