@@ -251,7 +251,7 @@ export default function Step8MessagesPage() {
               </Card>
 
               {/* Right Panel - Conversation Detail */}
-              <Card className={`p-6 relative ${currentTooltip === 2 ? 'z-50' : ''}`} id="conversation-thread">
+              <Card className={`p-6 relative ${currentTooltip === 2 ? 'z-30' : ''}`} id="conversation-thread">
                 <div className="space-y-4">
                   {/* Guest Info Header */}
                   <div className="flex items-start justify-between pb-4 border-b">
