@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, GripVertical } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,6 +20,11 @@ export default function Step8MessagesPage() {
 
   const conversations = FAKE_DATA.recentConversations;
   const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
+
+  // Draggable tooltip state
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     window.location.hash = '#step-8';
@@ -66,6 +71,64 @@ export default function Step8MessagesPage() {
     navigate('/homepage');
   };
 
+  // Drag handlers for tooltip
+  const handleDragStart = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
+  const handleDragMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    const newX = e.clientX - dragOffset.x;
+    const newY = e.clientY - dragOffset.y;
+    
+    const tooltipWidth = 400;
+    const tooltipHeight = 300;
+    const constrainedX = Math.max(0, Math.min(newX, window.innerWidth - tooltipWidth));
+    const constrainedY = Math.max(0, Math.min(newY, window.innerHeight - tooltipHeight));
+    
+    setTooltipPosition({ x: constrainedX, y: constrainedY });
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [isDragging, dragOffset]);
+
+  useEffect(() => {
+    setTooltipPosition(null);
+  }, [currentTooltip]);
+
+  const getTooltipPosition = () => {
+    if (tooltipPosition) {
+      return {
+        left: `${tooltipPosition.x}px`,
+        top: `${tooltipPosition.y}px`,
+        transform: 'none'
+      };
+    }
+    return {
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)'
+    };
+  };
+
   const getConfidenceBadgeColor = (confidence: string) => {
     switch (confidence) {
       case 'high':
@@ -78,6 +141,23 @@ export default function Step8MessagesPage() {
         return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
+
+  const tooltipContent = {
+    1: {
+      title: "All Guest Conversations",
+      description: "Every SMS conversation with your guests appears here. See who's asking what in real-time."
+    },
+    2: {
+      title: "Conversation Thread",
+      description: "See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
+    },
+    3: {
+      title: "Auto vs Escalated",
+      description: "Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response."
+    }
+  };
+
+  const current = tooltipContent[currentTooltip as keyof typeof tooltipContent];
 
   return (
     <TourPage
@@ -231,57 +311,70 @@ export default function Step8MessagesPage() {
                     )}
                   </div>
                 </div>
-
-                {/* Tooltip 2: Conversation Thread */}
-                {currentTooltip === 2 && (
-                  <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:static lg:max-w-none z-[60]">
-                    <TourTooltip
-                      target="left"
-                      title="Conversation Thread"
-                      description="See the full back-and-forth with each guest. Pinch's responses are marked with confidence levels."
-                      step={2}
-                      totalSteps={3}
-                      onNext={handleNext}
-                      onPrev={handlePrevious}
-                    />
-                  </div>
-                )}
               </Card>
             </div>
           </div>
         </div>
 
-        {/* Tooltip 1: Conversation List - Next to Messages header */}
-        {currentTooltip === 1 && (
-          <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-32 md:left-1/2 md:-translate-x-1/2 md:max-w-md md:right-auto lg:top-32 lg:left-[500px] lg:translate-x-0 z-50">
-            <TourTooltip
-              target="right"
-              title="All Guest Conversations"
-              description="Every SMS conversation with your guests appears here. See who's asking what in real-time."
-              step={1}
-              totalSteps={3}
-              onNext={handleNext}
-              onPrev={handlePrevious}
-              highlight={true}
-            />
+        {/* Centered Draggable Tooltip */}
+        <div 
+          className="fixed z-[60] pointer-events-none"
+          style={{
+            ...getTooltipPosition(),
+            transition: isDragging ? 'none' : 'all 0.3s ease-out'
+          }}
+        >
+          <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '4px solid #9333EA' }}>
+            {/* Arrow - only show when not dragged */}
+            {!tooltipPosition && (
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 -top-3"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderBottom: '10px solid #9333EA',
+                }}
+              />
+            )}
+            
+            {/* Tooltip content */}
+            <div className="space-y-4">
+              <div 
+                className="flex items-center gap-3 cursor-grab active:cursor-grabbing -mx-2 -mt-2 px-2 pt-2"
+                onMouseDown={handleDragStart}
+              >
+                <GripVertical className="w-4 h-6 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0" />
+                <h3 className="text-xl font-semibold text-foreground flex-1">{current.title}</h3>
+              </div>
+              <p className="text-muted-foreground">{current.description}</p>
+              
+              {/* Navigation buttons */}
+              <div className="flex items-center justify-between pt-4">
+                <div className="text-sm text-muted-foreground">
+                  Step {currentTooltip} of 3
+                </div>
+                <div className="flex gap-2">
+                  {currentTooltip > 1 && (
+                    <button
+                      onClick={handlePrevious}
+                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      Previous
+                    </button>
+                  )}
+                  <button
+                    onClick={handleNext}
+                    className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                  >
+                    {currentTooltip < 3 ? 'Next' : 'Continue'}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-
-        {/* Tooltip 3: Status Tags */}
-        {currentTooltip === 3 && (
-          <div className="fixed top-4 left-4 right-4 max-w-[calc(100vw-32px)] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-md md:right-auto lg:top-1/2 lg:left-8 lg:-translate-x-0 z-50">
-            <TourTooltip
-              target="right"
-              title="Auto vs Escalated"
-              description="Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response."
-              step={3}
-              totalSteps={3}
-              onNext={handleNext}
-              onPrev={handlePrevious}
-              highlight={true}
-            />
-          </div>
-        )}
+        </div>
       </div>
     </TourPage>
   );

@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown } from 'lucide-react';
+import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown, GripVertical } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
 
@@ -64,6 +64,11 @@ export default function Step6ChatbotSetup() {
   const [restrictedQuestionsOpen, setRestrictedQuestionsOpen] = useState(false);
   const [escalationCategoriesOpen, setEscalationCategoriesOpen] = useState(false);
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
+  
+  // Draggable tooltip state
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [chatMessages, setChatMessages] = useState([
     {
       role: 'user',
@@ -288,6 +293,108 @@ export default function Step6ChatbotSetup() {
       };
       setChatMessages(prev => [...prev, aiMsg]);
     }, 800);
+  };
+
+  // Drag handlers for tooltip
+  const handleDragStart = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
+  const handleDragMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    const newX = e.clientX - dragOffset.x;
+    const newY = e.clientY - dragOffset.y;
+    
+    // Keep within viewport
+    const tooltipWidth = 400;
+    const tooltipHeight = 300;
+    const constrainedX = Math.max(0, Math.min(newX, window.innerWidth - tooltipWidth));
+    const constrainedY = Math.max(0, Math.min(newY, window.innerHeight - tooltipHeight));
+    
+    setTooltipPosition({ x: constrainedX, y: constrainedY });
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  // Drag event listeners
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [isDragging, dragOffset]);
+
+  // Reset position on step change
+  useEffect(() => {
+    setTooltipPosition(null);
+  }, [currentTooltip]);
+
+  // Get tooltip position (dragged or calculated)
+  const getTooltipPosition = () => {
+    if (tooltipPosition) {
+      return {
+        left: `${tooltipPosition.x}px`,
+        top: `${tooltipPosition.y}px`,
+        transform: 'none'
+      };
+    }
+    
+    if (!highlightRect) {
+      return {
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)'
+      };
+    }
+    
+    const offset = 20;
+    const tooltipWidth = 400;
+    const tooltipHeight = 300;
+    
+    switch (current.position) {
+      case 'below':
+        return {
+          left: `${highlightRect.left + highlightRect.width / 2}px`,
+          top: `${highlightRect.top + highlightRect.height + offset}px`,
+          transform: 'translateX(-50%)'
+        };
+      case 'right':
+        return {
+          left: `${highlightRect.left + highlightRect.width + offset}px`,
+          top: `${highlightRect.top + highlightRect.height / 2}px`,
+          transform: 'translateY(-50%)'
+        };
+      case 'left':
+        return {
+          left: `${highlightRect.left - tooltipWidth - offset}px`,
+          top: `${highlightRect.top + highlightRect.height / 2}px`,
+          transform: 'translateY(-50%)'
+        };
+      case 'top':
+        return {
+          left: `${highlightRect.left + highlightRect.width / 2}px`,
+          top: `${highlightRect.top - tooltipHeight - offset}px`,
+          transform: 'translateX(-50%)'
+        };
+      default:
+        return {
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)'
+        };
+    }
   };
 
   const tooltipContent: Record<number | string, { title: string; description: string; position: 'below' | 'right' | 'left' | 'top' | 'bottom' }> = {
@@ -665,10 +772,16 @@ export default function Step6ChatbotSetup() {
         const tooltipZIndex = isInDialog ? 'z-[100]' : 'z-50';
         
         return (
-          <div className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${tooltipZIndex} pointer-events-none`}>
+          <div 
+            className={`fixed ${tooltipZIndex} pointer-events-none`}
+            style={{
+              ...getTooltipPosition(),
+              transition: isDragging ? 'none' : 'all 0.3s ease-out'
+            }}
+          >
         <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '3px solid #9333EA' }}>
-          {/* Arrow pointing to highlighted element */}
-          {current.position === 'below' && (
+          {/* Arrow pointing to highlighted element - only show when not dragged */}
+          {!tooltipPosition && current.position === 'below' && (
             <div
               className="absolute left-1/2 -translate-x-1/2 -top-3"
               style={{
@@ -680,7 +793,7 @@ export default function Step6ChatbotSetup() {
               }}
             />
           )}
-          {current.position === 'right' && (
+          {!tooltipPosition && current.position === 'right' && (
             <div
               className="absolute top-1/2 -translate-y-1/2 -left-3"
               style={{
@@ -692,7 +805,7 @@ export default function Step6ChatbotSetup() {
               }}
             />
           )}
-          {current.position === 'left' && (
+          {!tooltipPosition && current.position === 'left' && (
             <div
               className="absolute top-1/2 -translate-y-1/2 -right-3"
               style={{
@@ -707,7 +820,13 @@ export default function Step6ChatbotSetup() {
 
           {/* Tooltip content */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-foreground">{current.title}</h3>
+            <div 
+              className="flex items-center gap-3 cursor-grab active:cursor-grabbing -mx-2 -mt-2 px-2 pt-2"
+              onMouseDown={handleDragStart}
+            >
+              <GripVertical className="w-4 h-6 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0" />
+              <h3 className="text-xl font-semibold text-foreground flex-1">{current.title}</h3>
+            </div>
             <p className="text-muted-foreground">{current.description}</p>
 
             {/* Navigation buttons */}
