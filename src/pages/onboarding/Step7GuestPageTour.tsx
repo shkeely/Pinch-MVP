@@ -377,7 +377,7 @@ export default function Step7GuestPageTour() {
             transition: isDragging ? 'none' : 'all 0.3s ease-out'
           }}
         >
-          <div className={`relative p-6 bg-white rounded-xl shadow-2xl pointer-events-auto ${currentTooltip === 5 ? 'max-w-lg' : 'max-w-md'}`} style={{ border: '4px solid #9333EA' }}>
+          <div className={`relative p-6 bg-white rounded-xl shadow-2xl pointer-events-auto ${currentTooltip === 5 ? 'max-w-xl' : 'max-w-md'}`} style={{ border: '4px solid #9333EA' }}>
             {/* Arrow - only show when not dragged */}
             {!tooltipPosition && currentTooltip !== 5 && (
               <div 
