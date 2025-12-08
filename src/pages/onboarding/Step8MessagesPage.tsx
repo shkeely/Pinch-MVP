@@ -176,7 +176,7 @@ export default function Step8MessagesPage() {
       <div className="relative w-full h-full">
 
         {/* Messages Page Content */}
-        <div className="min-h-screen bg-background pt-16">
+        <div className="min-h-screen bg-background">
           <TopNav />
           
           <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
