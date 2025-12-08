@@ -47,16 +47,34 @@ const escalationCategories = [
 ];
 const quickTestQuestions = ["Where can I park?", "What time is the ceremony?", "Can I bring my kids?", "What's the dress code?", "Where should I stay?"];
 
+const toneExamples = {
+  warm: [
+    { q: "Where can I park?", a: "We're so glad you're coming! There's free parking available at the venue. Just look for the lot on the north side - we'll have signs to guide you. Can't wait to see you there! 💕" },
+    { q: "What time is the ceremony?", a: "We'd love to see you there! The ceremony starts at 4 PM. We recommend arriving 15-20 minutes early to get settled in." },
+    { q: "Can I bring my kids?", a: "We totally understand! This is an adults-only celebration, so we ask that you arrange childcare for the little ones. We know it can be tricky, but we really appreciate your understanding!" }
+  ],
+  formal: [
+    { q: "Where can I park?", a: "Complimentary parking is available on the premises. Please utilize the designated parking area located on the north side of the venue." },
+    { q: "What time is the ceremony?", a: "The ceremony will commence at 4:00 PM sharp. We kindly request that guests arrive by 3:45 PM to allow time for seating." },
+    { q: "Can I bring my kids?", a: "We respectfully request that this celebration be adults-only. We appreciate your understanding and hope you'll be able to arrange appropriate care for your children." }
+  ],
+  fun: [
+    { q: "Where can I park?", a: "Park your ride at the venue lot on the north side! It's free and easy. Just follow the signs and you'll be partying in no time! 🎉" },
+    { q: "What time is the ceremony?", a: "Party starts at 4! Grab your dancing shoes and show up around 3:45 so you don't miss the magic! ✨" },
+    { q: "Can I bring my kids?", a: "This one's for the grown-ups! Time to get a babysitter and let loose on the dance floor! We promise it'll be worth it! 🕺💃" }
+  ]
+};
+
 export default function Step6ChatbotSetup() {
   const [currentTooltip, setCurrentTooltip] = useState<number | string>(1);
   const [highlightRect, setHighlightRect] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const navigate = useNavigate();
-  const { updateWedding } = useWedding();
+  const { wedding, updateWedding } = useWedding();
   const totalSteps = 9;
   const [categoryExpanded, setCategoryExpanded] = useState(false);
 
-  // State for chatbot page
-  const [selectedTone, setSelectedTone] = useState('warm');
+  // State for chatbot page - use tone from Step 2 if available
+  const [selectedTone, setSelectedTone] = useState<'warm' | 'formal' | 'fun'>(wedding?.chatbotSettings?.tone || 'warm');
   const [chatbotName, setChatbotName] = useState('Concierge');
   const [replyMode, setReplyMode] = useState<'auto' | 'approval'>('auto');
   const [chatbotActive, setChatbotActive] = useState(true);
@@ -274,6 +292,27 @@ export default function Step6ChatbotSetup() {
       };
       setChatMessages(prev => [...prev, aiMsg]);
     }, 800);
+  };
+
+  const handleShowExamples = (toneId: string) => {
+    const examples = toneExamples[toneId as keyof typeof toneExamples];
+    const newMessages: { role: string; content: string; timestamp: string }[] = [];
+    
+    examples.forEach((ex, idx) => {
+      const time = new Date();
+      time.setMinutes(time.getMinutes() - (examples.length - idx) * 2);
+      const timestamp = time.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      newMessages.push(
+        { role: 'user', content: ex.q, timestamp },
+        { role: 'assistant', content: ex.a, timestamp }
+      );
+    });
+    
+    setChatMessages(newMessages);
   };
 
   const handleQuickQuestion = (question: string) => {
@@ -499,7 +538,7 @@ export default function Step6ChatbotSetup() {
           </Button>
         </div>
 
-        <div className="grid lg:grid-cols-[1fr,450px] gap-8">
+        <div className="grid lg:grid-cols-2 gap-6">
           {/* Left Column - Settings */}
           <div className="space-y-6">
             {/* Tone Selection */}
@@ -515,7 +554,7 @@ export default function Step6ChatbotSetup() {
                       className={`p-4 cursor-pointer transition-all ${
                         isSelected ? 'border-accent border-2 bg-accent/5' : 'hover:border-accent/50'
                       }`}
-                      onClick={() => setSelectedTone(tone.id)}
+                      onClick={() => setSelectedTone(tone.id as 'warm' | 'formal' | 'fun')}
                     >
                       <div className="flex items-start gap-3 mb-3">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -530,9 +569,20 @@ export default function Step6ChatbotSetup() {
                           <p className="text-sm text-muted-foreground">{tone.description}</p>
                         </div>
                       </div>
-                      <p className="text-sm italic text-muted-foreground pl-13">
+                      <p className="text-sm italic text-muted-foreground pl-13 mb-3">
                         "{tone.example}"
                       </p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full border-accent text-foreground hover:bg-accent/10" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleShowExamples(tone.id);
+                        }}
+                      >
+                        See Examples
+                      </Button>
                     </Card>
                   );
                 })}
