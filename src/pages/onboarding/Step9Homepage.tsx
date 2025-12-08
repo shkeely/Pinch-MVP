@@ -195,15 +195,9 @@ export default function Step9Homepage() {
     navigate('/');
   };
 
-  const handlePageNext = () => {
-    // Handled by tooltip navigation
-  };
-
-  const handlePagePrevious = () => {
-    // Go back to Step 8
-    updateWedding({ onboardingStep: 8 });
-    navigate('/onboarding/step-8');
-  };
+  // Footer navigation - goes to next/previous step page directly
+  const handleFooterNext = () => navigate('/onboarding/step-10');
+  const handleFooterPrevious = () => navigate('/onboarding/step-8');
 
   const tooltipContent = {
     1: {
@@ -231,8 +225,8 @@ export default function Step9Homepage() {
       stepNumber={9}
       title="Welcome to Your Homepage"
       description="Let's explore your homepage and see how Pinch keeps you organized"
-      onNext={handlePageNext}
-      onPrevious={handlePagePrevious}
+      onNext={handleFooterNext}
+      onPrevious={handleFooterPrevious}
       onSkipTour={handleSkipTour}
       showSkipButton={true}
     >

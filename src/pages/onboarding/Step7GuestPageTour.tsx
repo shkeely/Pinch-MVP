@@ -115,6 +115,10 @@ export default function Step7GuestPageTour() {
     navigate('/dashboard');
   };
 
+  // Footer navigation - goes to next/previous step page directly
+  const handleFooterNext = () => navigate('/onboarding/step-8');
+  const handleFooterPrevious = () => navigate('/onboarding/step-6');
+
   const handleImportGuests = (guests: Omit<Guest, 'id'>[]) => {
     console.log('Importing guests:', guests);
     setImportDialogOpen(false);
@@ -226,8 +230,8 @@ export default function Step7GuestPageTour() {
       stepNumber={7}
       title="Guest Management Tour"
       description="Learn how to manage your guest list"
-      onNext={handleNext}
-      onPrevious={handlePrevious}
+      onNext={handleFooterNext}
+      onPrevious={handleFooterPrevious}
       onSkipTour={handleSkipTour}
       showSkipButton={true}
     >

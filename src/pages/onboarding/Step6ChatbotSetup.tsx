@@ -252,6 +252,10 @@ export default function Step6ChatbotSetup() {
     }
   };
 
+  // Footer navigation - goes to next/previous step page directly
+  const handleFooterNext = () => navigate('/onboarding/step-7');
+  const handleFooterPrevious = () => navigate('/onboarding/step-5');
+
   const handleSkipTour = () => {
     updateWedding({ 
       onboardingStep: 10,
@@ -950,8 +954,7 @@ export default function Step6ChatbotSetup() {
           <Button
             variant="outline"
             size="lg"
-            onClick={handlePrevious}
-            disabled={currentTooltip === 1}
+            onClick={handleFooterPrevious}
             className="min-w-[140px]"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -985,7 +988,7 @@ export default function Step6ChatbotSetup() {
           {/* Next Button */}
           <Button
             size="lg"
-            onClick={handleNext}
+            onClick={handleFooterNext}
             className="min-w-[140px]"
           >
             Next
