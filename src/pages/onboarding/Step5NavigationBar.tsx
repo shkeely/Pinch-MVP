@@ -4,7 +4,7 @@ import { TourPage } from '@/components/onboarding/TourPage';
 import { TourTooltip, TourHighlight } from '@/components/onboarding/TourTooltip';
 import { useWedding } from '@/contexts/WeddingContext';
 import TopNav from '@/components/navigation/TopNav';
-import { GripVertical } from 'lucide-react';
+import { GripVertical, ArrowRight } from 'lucide-react';
 
 export default function Step5NavigationBar() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
@@ -212,13 +212,17 @@ export default function Step5NavigationBar() {
     };
   };
 
+  // Footer navigation - goes to next/previous step page directly
+  const handleFooterNext = () => navigate('/onboarding/step-6');
+  const handleFooterPrevious = () => navigate('/onboarding/step-4');
+
   return (
     <TourPage
       stepNumber={5}
       title="Navigation Bar Tour"
       description="Learn how to navigate around Pinch"
-      onNext={handleNext}
-      onPrevious={handlePrevious}
+      onNext={handleFooterNext}
+      onPrevious={handleFooterPrevious}
       onSkipTour={handleSkipTour}
       showSkipButton={true}
     >
@@ -279,9 +283,23 @@ export default function Step5NavigationBar() {
                     <GripVertical className="w-4 h-6 text-purple-600 flex-shrink-0" />
                   </div>
                 </div>
-                <p className="text-muted-foreground">{current.description}</p>
+              <p className="text-muted-foreground">{current.description}</p>
+              
+              {/* Instructions - only on first tooltip */}
+              {currentTooltip === 1 && (
+                <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200 space-y-2">
+                  <div className="flex items-start gap-2 text-xs text-purple-700">
+                    <GripVertical className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                    <span><strong>Drag to move:</strong> Click the six purple dots to reposition this window if it blocks content.</span>
+                  </div>
+                  <div className="flex items-start gap-2 text-xs text-purple-700">
+                    <ArrowRight className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                    <span><strong>Skip ahead:</strong> Use the footer buttons below to jump to the next major step in the tour.</span>
+                  </div>
+                </div>
+              )}
                 
-                {/* Navigation buttons */}
+              {/* Navigation buttons */}
                 <div className="flex items-center justify-between pt-4">
                   <div className="text-sm text-muted-foreground">
                     Step {currentTooltip} of {totalSteps}

@@ -71,6 +71,10 @@ export default function Step8MessagesPage() {
     navigate('/homepage');
   };
 
+  // Footer navigation - goes to next/previous step page directly
+  const handleFooterNext = () => navigate('/onboarding/step-9');
+  const handleFooterPrevious = () => navigate('/onboarding/step-7');
+
   // Drag handlers for tooltip
   const handleDragStart = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -164,8 +168,8 @@ export default function Step8MessagesPage() {
       stepNumber={8}
       title="Guest Conversations"
       description="See how Pinch handles your guest messages"
-      onNext={currentTooltip === 3 ? handleNext : undefined}
-      onPrevious={handlePrevious}
+      onNext={handleFooterNext}
+      onPrevious={handleFooterPrevious}
       onSkipTour={handleSkipTour}
       showSkipButton={true}
     >
