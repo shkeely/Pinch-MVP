@@ -24,9 +24,7 @@ export default function Index() {
             <span className="text-accent">Guest Question</span>
           </h1>
 
-          <p className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto text-balance text-gray-300">
-            Set it up once, and let your AI concierge handle guest Q&A 24/7 via SMS
-          </p>
+          <p className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto text-balance text-gray-300">Set it up once, and let your wedding concierge handle guest Q&A 24/7 via SMS</p>
 
           <Button size="lg" onClick={() => navigate("/onboarding/step-1a")} className="bg-accent hover:bg-accent/90 text-lg px-12 py-6 h-auto text-secondary-foreground">
             Get Started Free
