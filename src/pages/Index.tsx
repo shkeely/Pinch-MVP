@@ -36,7 +36,7 @@ export default function Index() {
       <div className="max-w-6xl mx-auto px-4 py-20 mt-[80px]">
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center p-6">
-            <div className="w-16 h-16 bg-primary/25 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <MessageSquare className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-serif font-semibold mb-3">Smart Q&A</h3>
@@ -46,7 +46,7 @@ export default function Index() {
           </div>
 
           <div className="text-center p-6">
-            <div className="w-16 h-16 bg-primary/25 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Sparkles className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-serif font-semibold mb-3">Your Voice, Your Tone</h3>
@@ -54,7 +54,7 @@ export default function Index() {
           </div>
 
           <div className="text-center p-6">
-            <div className="w-16 h-16 bg-primary/25 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Clock className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-serif font-semibold mb-3">5-Minute Setup</h3>
