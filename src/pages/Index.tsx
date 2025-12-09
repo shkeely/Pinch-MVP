@@ -8,8 +8,8 @@ export default function Index() {
 
   return (
     <div 
-      className="min-h-screen bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${landingBg})` }}
+      className="min-h-screen bg-cover bg-no-repeat"
+      style={{ backgroundImage: `url(${landingBg})`, backgroundPosition: 'center 30%' }}
     >
       {/* Hero Section */}
       <div className="relative overflow-hidden">
