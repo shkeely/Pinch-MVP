@@ -46,16 +46,16 @@ export default function Index() {
           </div>
 
           <div className="text-center p-6">
-            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-8 h-8 text-accent" />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-serif font-semibold mb-3">Your Voice, Your Tone</h3>
             <p className="text-muted-foreground">Choose warm, formal, or fun — responses match your wedding style</p>
           </div>
 
           <div className="text-center p-6">
-            <div className="w-16 h-16 bg-mint/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Clock className="w-8 h-8 text-mint-foreground" />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Clock className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-serif font-semibold mb-3">5-Minute Setup</h3>
             <p className="text-muted-foreground">
