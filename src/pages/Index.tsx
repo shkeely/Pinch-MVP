@@ -33,7 +33,7 @@ export default function Index() {
       </div>
 
       {/* Features */}
-      <div className="max-w-6xl mx-auto px-4 py-20 mt-[60px]">
+      <div className="max-w-6xl mx-auto px-4 py-20 mt-[80px]">
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center p-6">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
