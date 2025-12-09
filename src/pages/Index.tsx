@@ -24,7 +24,7 @@ export default function Index() {
             <span className="text-accent">Guest Question</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto text-balance">
+          <p className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto text-balance text-gray-300">
             Set it up once, and let your AI concierge handle guest Q&A 24/7 via SMS
           </p>
 
