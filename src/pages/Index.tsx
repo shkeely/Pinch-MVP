@@ -4,21 +4,17 @@ import { MessageSquare, Sparkles, Clock } from "lucide-react";
 import landingBg from "@/assets/landing-bg.png";
 export default function Index() {
   const navigate = useNavigate();
-  return (
-    <div
-      className="min-h-screen bg-cover bg-no-repeat"
-      style={{
-        backgroundImage: `url(${landingBg})`,
-        backgroundPosition: "center 30%",
-      }}
-    >
+  return <div className="min-h-screen bg-cover bg-no-repeat" style={{
+    backgroundImage: `url(${landingBg})`,
+    backgroundPosition: "center 30%"
+  }}>
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="relative max-w-5xl mx-auto px-4 py-20 text-center">
           <div className="inline-block mb-6">
             <div className="flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full">
               <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium text-accent-foreground">AI Wedding Concierge</span>
+              <span className="text-sm font-medium text-primary-foreground">AI Wedding Concierge</span>
             </div>
           </div>
 
@@ -32,11 +28,7 @@ export default function Index() {
             Set it up once, and let your AI concierge handle guest Q&A 24/7 via SMS
           </p>
 
-          <Button
-            size="lg"
-            onClick={() => navigate("/onboarding/step-1a")}
-            className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-12 py-6 h-auto"
-          >
+          <Button size="lg" onClick={() => navigate("/onboarding/step-1a")} className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-12 py-6 h-auto">
             Get Started Free
           </Button>
         </div>
@@ -74,6 +66,5 @@ export default function Index() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
