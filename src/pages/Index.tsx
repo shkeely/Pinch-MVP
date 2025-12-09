@@ -14,7 +14,7 @@ export default function Index() {
           <div className="inline-block mb-6">
             <div className="flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full">
               <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium text-primary-foreground">AI Wedding Concierge</span>
+              <span className="text-sm font-medium text-primary-foreground"> Wedding Concierge</span>
             </div>
           </div>
 
