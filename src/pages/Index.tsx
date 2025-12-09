@@ -8,9 +8,16 @@ export default function Index() {
     backgroundImage: `url(${landingBg})`,
     backgroundPosition: "center calc(30% - 20px)"
   }}>
+      {/* Logo */}
+      <div className="absolute top-6 left-6 md:top-8 md:left-8">
+        <h1 className="text-2xl md:text-3xl font-serif font-bold tracking-[0.3em] text-white">
+          PINCH.
+        </h1>
+      </div>
+
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="relative max-w-5xl mx-auto px-4 py-20 text-center">
+        <div className="relative max-w-5xl mx-auto px-4 pt-24 pb-20 text-center">
           <div className="inline-block mb-6">
             <div className="flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full">
               <Sparkles className="w-4 h-4 text-accent" />
