@@ -1,15 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MessageSquare, Sparkles, Clock } from 'lucide-react';
+import landingBg from '@/assets/landing-bg.png';
 
 export default function Index() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${landingBg})` }}
+    >
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-mint/5" />
+        <div className="absolute inset-0 bg-black/30" />
         
         <div className="relative max-w-5xl mx-auto px-4 py-20 text-center">
           <div className="inline-block mb-6">
