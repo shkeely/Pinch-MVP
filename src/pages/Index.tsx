@@ -28,7 +28,7 @@ export default function Index() {
             Set it up once, and let your AI concierge handle guest Q&A 24/7 via SMS
           </p>
 
-          <Button size="lg" onClick={() => navigate("/onboarding/step-1a")} className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-12 py-6 h-auto">
+          <Button size="lg" onClick={() => navigate("/onboarding/step-1a")} className="bg-accent hover:bg-accent/90 text-lg px-12 py-6 h-auto text-muted-foreground">
             Get Started Free
           </Button>
         </div>
