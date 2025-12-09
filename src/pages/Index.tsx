@@ -6,7 +6,7 @@ export default function Index() {
   const navigate = useNavigate();
   return <div className="min-h-screen bg-cover bg-no-repeat" style={{
     backgroundImage: `url(${landingBg})`,
-    backgroundPosition: "center 30%"
+    backgroundPosition: "center calc(30% - 20px)"
   }}>
       {/* Hero Section */}
       <div className="relative overflow-hidden">
