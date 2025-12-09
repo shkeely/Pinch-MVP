@@ -13,7 +13,6 @@ export default function Index() {
     >
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/30" />
         
         <div className="relative max-w-5xl mx-auto px-4 py-20 text-center">
           <div className="inline-block mb-6">
