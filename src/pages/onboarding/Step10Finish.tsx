@@ -69,7 +69,7 @@ export default function Step10Finish() {
     localStorage.removeItem('tourProgress');
 
     // Navigate to homepage
-    navigate('/');
+    navigate('/homepage');
   };
 
   const handlePrevious = () => {
