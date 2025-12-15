@@ -55,7 +55,7 @@ export default function Step8MessagesPage() {
   }, [currentTooltip]);
 
   const handleNext = () => {
-    if (currentTooltip < 3) {
+    if (currentTooltip < 6) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
       updateWedding({ onboardingStep: 9 });
@@ -155,6 +155,18 @@ export default function Step8MessagesPage() {
     3: {
       title: "Auto vs Escalated",
       description: "Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response."
+    },
+    4: {
+      title: "Drafting Responses with AI",
+      description: "Stuck on how to respond? Click here to let Pinch draft a response for you based on the guest's question. You can always edit it before sending."
+    },
+    5: {
+      title: "Send Message to All Guests",
+      description: "At any time, you can send a message to your entire guest list or specific segments. Use this to send reminders, updates, or announcements."
+    },
+    6: {
+      title: "Help Pinch Learn",
+      description: "If you think Pinch's response could have been better, tell us! Your feedback helps train the system to improve over time."
     }
   };
 
