@@ -25,6 +25,11 @@ export default function Step8MessagesPage() {
 
   const conversations = FAKE_DATA.recentConversations;
   const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
+  const [activeFilter, setActiveFilter] = useState<'all' | 'auto' | 'escalated' | 'risky'>('all');
+  const [draftResponse, setDraftResponse] = useState('');
+  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false);
+  const [isSendMessageDialogOpen, setIsSendMessageDialogOpen] = useState(false);
+  const segments = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
 
   // Draggable tooltip state
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
