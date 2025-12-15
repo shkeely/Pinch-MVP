@@ -532,7 +532,7 @@ export default function Step8MessagesPage() {
               {/* Navigation buttons */}
               <div className="flex items-center justify-between pt-4">
                 <div className="text-sm text-muted-foreground">
-                  Step {currentTooltip} of 3
+                  Step {currentTooltip} of 6
                 </div>
                 <div className="flex gap-2">
                   {currentTooltip > 1 && (
@@ -547,7 +547,7 @@ export default function Step8MessagesPage() {
                     onClick={handleNext}
                     className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                   >
-                    {currentTooltip < 3 ? 'Next' : 'Continue'}
+                    {currentTooltip < 6 ? 'Next' : 'Continue'}
                   </button>
                 </div>
               </div>
