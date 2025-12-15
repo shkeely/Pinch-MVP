@@ -165,26 +165,21 @@ export default function Step3() {
                   </div>
                 </div>
 
-                <div className="flex gap-2">
-                  <Button variant="outline" className="flex-1">
-                    Edit Response
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => {
-                      setShowModal(false);
-                      const nextIndex = sampleQuestions.findIndex(q => q.text === selectedQuestion);
-                      if (nextIndex < sampleQuestions.length - 1) {
-                        setTimeout(() => {
-                          handleQuestionClick(sampleQuestions[nextIndex + 1].text);
-                        }, 100);
-                      }
-                    }}
-                  >
-                    Try Another
-                  </Button>
-                </div>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setShowModal(false);
+                    const nextIndex = sampleQuestions.findIndex(q => q.text === selectedQuestion);
+                    if (nextIndex < sampleQuestions.length - 1) {
+                      setTimeout(() => {
+                        handleQuestionClick(sampleQuestions[nextIndex + 1].text);
+                      }, 100);
+                    }
+                  }}
+                >
+                  Try Another
+                </Button>
               </div>
             )}
           </DialogContent>
