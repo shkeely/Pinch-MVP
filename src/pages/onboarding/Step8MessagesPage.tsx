@@ -178,13 +178,31 @@ export default function Step8MessagesPage() {
           
           <div className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
             {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-2">
-                Messages
-              </h1>
-              <p className="text-muted-foreground text-base">
-                Guest conversations & AI responses
-              </p>
+            <div className="mb-6 flex items-start justify-between gap-4">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-2">
+                  Messages
+                </h1>
+                <p className="text-muted-foreground text-base">
+                  Guest conversations & AI responses
+                </p>
+              </div>
+              <Button 
+                className="rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300"
+                onClick={() => {
+                  if (currentTooltip > 0) {
+                    toast("Available After Onboarding", {
+                      description: "You'll be able to send messages to guests once you complete the tour!",
+                      duration: 3000,
+                    });
+                  } else {
+                    setIsSendMessageDialogOpen(true);
+                  }
+                }}
+              >
+                <Send className="w-4 h-4 mr-2" />
+                Send Message to Guests
+              </Button>
             </div>
 
             {/* Filter Tabs */}
