@@ -400,6 +400,32 @@ export default function Step8MessagesPage() {
                     </div>
                   </div>
                 </div>}
+
+                {/* Bottom Section */}
+                <div className="mt-auto">
+                  <Separator className="mb-6" />
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-3">
+                    <Button 
+                      variant="outline" 
+                      className="rounded-full px-6 gap-2 hover:bg-muted/50"
+                      onClick={() => {
+                        if (currentTooltip > 0) {
+                          toast("Available After Onboarding", {
+                            description: "You can give feedback on responses once you complete the tour!",
+                            duration: 3000,
+                          });
+                        } else {
+                          setIsFeedbackDialogOpen(true);
+                        }
+                      }}
+                    >
+                      <Send className="w-4 h-4" />
+                      Give Feedback
+                    </Button>
+                  </div>
+                </div>
               </Card>
             </div>
           </div>
