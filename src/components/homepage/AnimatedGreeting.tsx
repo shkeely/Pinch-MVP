@@ -4,7 +4,6 @@ interface AnimatedGreetingProps {
   userName: string;
   handledCount: number;
   attentionCount: number;
-  announcementsCount: number;
   onComplete?: () => void;
   onSkip?: () => void;
 }
@@ -13,7 +12,6 @@ export default function AnimatedGreeting({
   userName, 
   handledCount, 
   attentionCount, 
-  announcementsCount,
   onComplete,
   onSkip
 }: AnimatedGreetingProps) {
@@ -25,8 +23,7 @@ export default function AnimatedGreeting({
   const dynamicUpdates = useMemo(() => ([
     handledCount > 0 ? `${handledCount} ${handledCount === 1 ? 'person' : 'people'} asked Pinch questions.` : null,
     attentionCount > 0 ? `${attentionCount} ${attentionCount === 1 ? 'thing' : 'things'} need your attention.` : null,
-    announcementsCount > 0 ? `You have ${announcementsCount} upcoming guest ${announcementsCount === 1 ? 'announcement' : 'announcements'}` : null,
-  ].filter(Boolean) as string[]), [handledCount, attentionCount, announcementsCount]);
+  ].filter(Boolean) as string[]), [handledCount, attentionCount]);
 
   const messages = useMemo<(string | null)[]>(() => ([
     null, // Step 0: Just greeting

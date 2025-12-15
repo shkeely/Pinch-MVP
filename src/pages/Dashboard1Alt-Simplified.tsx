@@ -52,7 +52,6 @@ export default function Dashboard1Alt() {
                 userName={wedding?.couple1 || "there"} 
                 handledCount={homepage.metrics?.questionsAnswered || 0}
                 attentionCount={homepage.needsAttention?.length || 0}
-                announcementsCount={0}
               />
               
               {/* Daily Summary */}
