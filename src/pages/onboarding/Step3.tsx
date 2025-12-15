@@ -28,6 +28,7 @@ export default function Step3() {
   const { wedding } = useWedding();
   const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showIntroPopup, setShowIntroPopup] = useState(true);
 
   const handleQuestionClick = (question: string) => {
     setSelectedQuestion(question);
@@ -51,6 +52,25 @@ export default function Step3() {
 
   return (
     <div className="min-h-screen bg-background py-12 px-4">
+      {/* Intro Pop-up */}
+      <Dialog open={showIntroPopup} onOpenChange={setShowIntroPopup}>
+        <DialogContent className="max-w-md text-center">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-serif mb-2">Just so you know...</DialogTitle>
+          </DialogHeader>
+          <p className="text-muted-foreground leading-relaxed">
+            These are your current AI responses based on the tone you selected. Don't worry — you can easily adjust your tone and responses anytime after setup!
+          </p>
+          <Button 
+            onClick={() => setShowIntroPopup(false)}
+            className="mt-4 rounded-xl"
+            style={{ backgroundColor: '#5b6850', color: 'white' }}
+          >
+            Got it!
+          </Button>
+        </DialogContent>
+      </Dialog>
+
       <div className="max-w-4xl mx-auto">
         <OnboardingStepper currentStep={3} />
 
