@@ -1,15 +1,21 @@
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, GripVertical } from 'lucide-react';
+import { Search, GripVertical, Send } from 'lucide-react';
+import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import TopNav from '@/components/navigation/TopNav';
 import { TourTooltip } from '@/components/onboarding/TourTooltip';
 import { TourPage } from '@/components/onboarding/TourPage';
 import { useWedding } from '@/contexts/WeddingContext';
 import { FAKE_DATA } from '@/data/fakeData';
+import { AIAssistButton } from '@/components/ai/AIAssistButton';
+import GiveFeedbackDialog from '@/components/feedback/GiveFeedbackDialog';
+import SendMessageDialog from '@/components/messages/SendMessageDialog';
 
 export default function Step8MessagesPage() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
