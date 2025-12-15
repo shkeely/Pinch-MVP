@@ -55,6 +55,12 @@ export default function Step8MessagesPage() {
   }, [currentTooltip]);
 
   const handleNext = () => {
+    // Special logic for Step 4: if viewing auto-answered message, skip to step 5
+    if (currentTooltip === 4 && selectedConversation.status === 'auto') {
+      setCurrentTooltip(5);
+      return;
+    }
+
     if (currentTooltip < 6) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
