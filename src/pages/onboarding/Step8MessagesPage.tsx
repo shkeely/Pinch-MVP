@@ -332,6 +332,74 @@ export default function Step8MessagesPage() {
                     </div>
                   )}
                 </div>
+
+                {/* Draft Response for Escalated Messages */}
+                {!selectedConversation.answer && selectedConversation.status === 'escalated' && <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-semibold text-foreground">Draft Response</h3>
+                    <AIAssistButton 
+                      currentText={draftResponse}
+                      onAIGenerate={setDraftResponse}
+                      context={`in response to: "${selectedConversation.question}"`}
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Textarea 
+                      placeholder="Type your response..." 
+                      value={draftResponse}
+                      onChange={(e) => setDraftResponse(e.target.value)}
+                      className="min-h-[120px] border-border"
+                      disabled={currentTooltip > 0}
+                    />
+                    <div className="flex justify-end">
+                      <Button 
+                        className="rounded-full px-6 gap-2" 
+                        style={{
+                          backgroundColor: '#5b6850',
+                          color: 'white'
+                        }}
+                        disabled={currentTooltip > 0}
+                      >
+                        <Send className="w-4 h-4" />
+                        Send Response
+                      </Button>
+                    </div>
+                  </div>
+                </div>}
+
+                {/* Follow-up Message for Auto-Answered Messages */}
+                {selectedConversation.answer && selectedConversation.status === 'auto' && <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-semibold text-foreground">Send Follow-up Message</h3>
+                    <AIAssistButton 
+                      currentText={draftResponse}
+                      onAIGenerate={setDraftResponse}
+                      context={`follow-up message to ${selectedConversation.guestName} regarding: "${selectedConversation.question}"`}
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Textarea 
+                      placeholder="Type a follow-up message..." 
+                      value={draftResponse}
+                      onChange={(e) => setDraftResponse(e.target.value)}
+                      className="min-h-[120px] border-border"
+                      disabled={currentTooltip > 0}
+                    />
+                    <div className="flex justify-end">
+                      <Button 
+                        className="rounded-full px-6 gap-2" 
+                        style={{
+                          backgroundColor: '#5b6850',
+                          color: 'white'
+                        }}
+                        disabled={currentTooltip > 0}
+                      >
+                        <Send className="w-4 h-4" />
+                        Send Message
+                      </Button>
+                    </div>
+                  </div>
+                </div>}
               </Card>
             </div>
           </div>
