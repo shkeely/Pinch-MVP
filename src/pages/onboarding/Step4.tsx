@@ -121,14 +121,6 @@ export default function Step4() {
                         <p className="text-sm">
                           {conv.isGuest ? conv.guestMessage : conv.botResponse}
                         </p>
-                        {!conv.isGuest && <div className="flex items-center gap-2 mt-2">
-                            <Badge variant="outline" className="text-xs">
-                              {conv.confidence}
-                            </Badge>
-                            <span className="text-xs text-muted-foreground">
-                              {conv.botResponse.length} chars
-                            </span>
-                          </div>}
                         <p className="text-xs text-muted-foreground mt-1">
                           {formatTime(conv.timestamp)}
                         </p>
