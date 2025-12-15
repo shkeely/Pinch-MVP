@@ -147,38 +147,34 @@ export default function Step8MessagesPage() {
     let position = { left: '50%', top: '50%', transform: 'translate(-50%, -50%)' };
     
     if (currentTooltip === 4) {
-      // Step 4: Position to right of AI Assist button
+      // Step 4: Position to left of AI Assist button
       const aiButton = document.getElementById('ai-assist-button');
       if (aiButton) {
         const rect = aiButton.getBoundingClientRect();
-        position = {
-          left: `${rect.right + 20}px`,
-          top: `${rect.top + window.scrollY}px`,
-          transform: 'translateY(-50%)'
-        };
-      }
-    } else if (currentTooltip === 5) {
-      // Step 5: Position to left of Send Message button
-      const sendButton = document.getElementById('send-message-header-button');
-      if (sendButton) {
-        const rect = sendButton.getBoundingClientRect();
         position = {
           left: `${rect.left - 420}px`,
           top: `${rect.top + window.scrollY + rect.height / 2}px`,
           transform: 'translateY(-50%)'
         };
       }
-    } else if (currentTooltip === 6) {
-      // Step 6: Position above Give Feedback button
-      const feedbackButton = document.getElementById('give-feedback-button');
-      if (feedbackButton) {
-        const rect = feedbackButton.getBoundingClientRect();
+    } else if (currentTooltip === 5) {
+      // Step 5: Position below Send Message button
+      const sendButton = document.getElementById('send-message-header-button');
+      if (sendButton) {
+        const rect = sendButton.getBoundingClientRect();
         position = {
-          left: `${rect.left + rect.width / 2 + window.scrollX}px`,
-          top: `${rect.top + window.scrollY - 20}px`,
-          transform: 'translate(-50%, -100%)'
+          left: `${rect.left + rect.width / 2}px`,
+          top: `${rect.bottom + window.scrollY + 20}px`,
+          transform: 'translateX(-50%)'
         };
       }
+    } else if (currentTooltip === 6) {
+      // Step 6: Position centered above Give Feedback button
+      position = {
+        left: '50%',
+        top: '40%',
+        transform: 'translate(-50%, -50%)'
+      };
     }
 
     return position;
@@ -396,6 +392,7 @@ export default function Step8MessagesPage() {
                     <h3 className="font-semibold text-foreground">Draft Response</h3>
                     <AIAssistButton 
                       id="ai-assist-button"
+                      className={currentTooltip === 4 ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}
                       currentText={draftResponse}
                       onAIGenerate={setDraftResponse}
                       context={`in response to: "${selectedConversation.question}"`}

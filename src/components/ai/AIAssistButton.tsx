@@ -9,12 +9,13 @@ import {
 
 interface AIAssistButtonProps {
   id?: string;
+  className?: string;
   currentText: string;
   onAIGenerate: (text: string) => void;
   context?: string;
 }
 
-export function AIAssistButton({ id, currentText, onAIGenerate, context }: AIAssistButtonProps) {
+export function AIAssistButton({ id, className, currentText, onAIGenerate, context }: AIAssistButtonProps) {
   const hasText = currentText.trim().length > 0;
 
   const handleGenerateDraft = () => {
@@ -52,7 +53,7 @@ export function AIAssistButton({ id, currentText, onAIGenerate, context }: AIAss
           id={id}
           variant="outline"
           size="sm"
-          className="gap-2 rounded-full border-purple-200 hover:border-purple-300 hover:bg-purple-50 text-purple-700"
+          className={`gap-2 rounded-full border-purple-200 hover:border-purple-300 hover:bg-purple-50 text-purple-700 ${className || ''}`}
         >
           <Sparkles className="w-4 h-4" />
           AI Assist
