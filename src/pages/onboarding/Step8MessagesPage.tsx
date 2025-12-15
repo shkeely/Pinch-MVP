@@ -232,7 +232,7 @@ export default function Step8MessagesPage() {
                           </div>
                           <Badge
                             variant={conv.status === 'escalated' ? 'destructive' : 'secondary'}
-                            className="text-xs"
+                            className={`text-xs ${currentTooltip === 3 ? 'ring-[3px] ring-purple-600 ring-offset-2 animate-pulse' : ''}`}
                           >
                             {conv.status === 'auto' ? 'Auto' : 'Escalated'}
                           </Badge>
