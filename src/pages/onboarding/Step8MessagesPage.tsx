@@ -55,7 +55,7 @@ export default function Step8MessagesPage() {
   }, [currentTooltip]);
 
   const handleNext = () => {
-    if (currentTooltip < 4) {
+    if (currentTooltip < 3) {
       setCurrentTooltip(currentTooltip + 1);
     } else {
       updateWedding({ onboardingStep: 9 });
@@ -126,13 +126,6 @@ export default function Step8MessagesPage() {
 
   useEffect(() => {
     setTooltipPosition(null);
-    // Auto-select an escalated conversation when reaching step 4
-    if (currentTooltip === 4) {
-      const escalatedConv = conversations.find(c => c.status === 'escalated');
-      if (escalatedConv && selectedConversation.status !== 'escalated') {
-        setSelectedConversation(escalatedConv);
-      }
-    }
   }, [currentTooltip]);
 
   const getTooltipPosition = () => {
@@ -162,10 +155,6 @@ export default function Step8MessagesPage() {
     3: {
       title: "Auto vs Escalated",
       description: "Tags show if Pinch auto-answered confidently ('Auto') or escalated to you for review ('Escalated'). Escalated messages need your input to draft or send a response."
-    },
-    4: {
-      title: "Drafting Responses with AI",
-      description: "Stuck on how to respond? Click here to let Pinch draft a response for you based on the guest's question. You can always edit it before sending."
     }
   };
 
@@ -348,24 +337,11 @@ export default function Step8MessagesPage() {
                 {!selectedConversation.answer && selectedConversation.status === 'escalated' && <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-foreground">Draft Response</h3>
-                    <div 
-                      data-tour-id="ai-assist-button"
-                      className={currentTooltip === 4 ? 'ring-[3px] ring-purple-600 ring-offset-2 rounded-md animate-pulse' : ''}
-                    >
-                      <AIAssistButton 
-                        currentText={draftResponse}
-                        onAIGenerate={(text) => {
-                          setDraftResponse(text);
-                          if (currentTooltip === 4) {
-                            toast("Response drafted!", {
-                              description: "You can now edit it below.",
-                              duration: 3000,
-                            });
-                          }
-                        }}
-                        context={`in response to: "${selectedConversation.question}"`}
-                      />
-                    </div>
+                    <AIAssistButton 
+                      currentText={draftResponse}
+                      onAIGenerate={setDraftResponse}
+                      context={`in response to: "${selectedConversation.question}"`}
+                    />
                   </div>
                   <div className="space-y-3">
                     <Textarea 
@@ -496,7 +472,7 @@ export default function Step8MessagesPage() {
               {/* Navigation buttons */}
               <div className="flex items-center justify-between pt-4">
                 <div className="text-sm text-muted-foreground">
-                  Step {currentTooltip} of 4
+                  Step {currentTooltip} of 3
                 </div>
                 <div className="flex gap-2">
                   {currentTooltip > 1 && (
@@ -511,7 +487,7 @@ export default function Step8MessagesPage() {
                     onClick={handleNext}
                     className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                   >
-                    {currentTooltip < 4 ? 'Next' : 'Continue'}
+                    {currentTooltip < 3 ? 'Next' : 'Continue'}
                   </button>
                 </div>
               </div>
