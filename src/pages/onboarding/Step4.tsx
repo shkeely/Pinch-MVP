@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Send, Check, Info } from 'lucide-react';
+import { Send, Check, Info, X } from 'lucide-react';
 import { OnboardingStepper } from '@/components/onboarding/OnboardingStepper';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useWedding } from '@/contexts/WeddingContext';
 import { mockAIResponse } from '@/lib/mockAI';
 import { SimulatedMessage } from '@/types/wedding';
@@ -21,6 +21,7 @@ export default function Step4() {
     updateWedding
   } = useWedding();
   const [message, setMessage] = useState('');
+  const [showIntroModal, setShowIntroModal] = useState(true);
 
   const suggestions = [
     "What time does it start?",
@@ -74,7 +75,33 @@ export default function Step4() {
       minute: '2-digit'
     });
   };
-  return <div className="min-h-screen bg-background py-12 px-4">
+  return <>
+    <Dialog open={showIntroModal} onOpenChange={() => {}}>
+      <DialogContent 
+        className="sm:max-w-md border-purple-300 bg-purple-50"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-purple-900">
+            <Info className="h-5 w-5 text-purple-600" />
+            Before You Begin
+          </DialogTitle>
+        </DialogHeader>
+        <p className="text-purple-900 text-sm leading-relaxed">
+          Right now, Pinch can answer basic questions about timing, location, and dress code. After setup, you'll add more to your Concierge Brain to expand what Pinch can handle automatically.
+        </p>
+        <Button 
+          onClick={() => setShowIntroModal(false)}
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+        >
+          <X className="w-4 h-4 mr-2" />
+          Got it, let me try!
+        </Button>
+      </DialogContent>
+    </Dialog>
+
+    <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <OnboardingStepper currentStep={4} />
 
@@ -97,12 +124,6 @@ export default function Step4() {
               </Badge>
             </div>
 
-            <Alert className="mb-4 bg-purple-50 border-purple-200">
-              <Info className="h-4 w-4 text-purple-600" />
-              <AlertDescription className="text-purple-900">
-                Right now, Pinch can answer basic questions about timing, location, and dress code. After setup, you'll add more to your Chatbot Brain to expand what Pinch can handle automatically.
-              </AlertDescription>
-            </Alert>
 
             <ScrollArea className="h-96 mb-4 border border-border-subtle rounded-lg p-4">
               {conversations.length === 0 ? <div className="flex items-center justify-center h-full text-center text-muted-foreground">
@@ -201,5 +222,6 @@ export default function Step4() {
           </Button>
         </div>
       </div>
-    </div>;
+    </div>
+  </>;
 }
