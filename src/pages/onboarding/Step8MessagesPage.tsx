@@ -494,6 +494,19 @@ export default function Step8MessagesPage() {
             </div>
           </div>
         </div>
+
+        {/* Dialog Components */}
+        <GiveFeedbackDialog 
+          open={isFeedbackDialogOpen}
+          onOpenChange={setIsFeedbackDialogOpen}
+          messageContext={selectedConversation.question}
+        />
+
+        <SendMessageDialog
+          open={isSendMessageDialogOpen}
+          onOpenChange={setIsSendMessageDialogOpen}
+          segments={segments}
+        />
       </div>
     </TourPage>
   );
