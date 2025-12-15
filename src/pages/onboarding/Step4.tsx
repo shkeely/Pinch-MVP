@@ -22,13 +22,7 @@ export default function Step4() {
   } = useWedding();
   const [message, setMessage] = useState('');
   const [showIntroModal, setShowIntroModal] = useState(true);
-
-  const suggestions = [
-    "What time does it start?",
-    "Where is the venue?",
-    "What should I wear?"
-  ];
-
+  const suggestions = ["What time does it start?", "Where is the venue?", "What should I wear?"];
   const handleSuggestionClick = (suggestion: string) => {
     setMessage(suggestion);
   };
@@ -77,11 +71,7 @@ export default function Step4() {
   };
   return <>
     <Dialog open={showIntroModal} onOpenChange={() => {}}>
-      <DialogContent 
-        className="sm:max-w-md border-purple-300 bg-purple-50"
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
-      >
+      <DialogContent className="sm:max-w-md border-purple-300 bg-purple-50" onPointerDownOutside={e => e.preventDefault()} onEscapeKeyDown={e => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-purple-900">
             <Info className="h-5 w-5 text-purple-600" />
@@ -89,12 +79,9 @@ export default function Step4() {
           </DialogTitle>
         </DialogHeader>
         <p className="text-purple-900 text-sm leading-relaxed">
-          Right now, Pinch can answer basic questions about timing, location, and dress code. After setup, you'll add more to your Concierge Brain to expand what Pinch can handle automatically.
+          Right now, Pinch can answer basic questions about timing, location, and dress code. After initial tour, you can add, remove, change, and expand what Pinch can handle automatically.
         </p>
-        <Button 
-          onClick={() => setShowIntroModal(false)}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-        >
+        <Button onClick={() => setShowIntroModal(false)} className="w-full bg-purple-600 hover:bg-purple-700 text-white">
           <X className="w-4 h-4 mr-2" />
           Got it, let me try!
         </Button>
@@ -153,17 +140,9 @@ export default function Step4() {
             <div className="mb-3">
               <p className="text-sm font-medium mb-2">Try asking these:</p>
               <div className="flex flex-wrap gap-2">
-                {suggestions.map((suggestion) => (
-                  <Button
-                    key={suggestion}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="border-purple-300 text-purple-700 hover:bg-purple-50"
-                  >
+                {suggestions.map(suggestion => <Button key={suggestion} variant="outline" size="sm" onClick={() => handleSuggestionClick(suggestion)} className="border-purple-300 text-purple-700 hover:bg-purple-50">
                     {suggestion}
-                  </Button>
-                ))}
+                  </Button>)}
               </div>
             </div>
 
