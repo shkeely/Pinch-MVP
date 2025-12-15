@@ -2,7 +2,6 @@ import { useState, useEffect, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, GripVertical } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -133,19 +132,6 @@ export default function Step8MessagesPage() {
     };
   };
 
-  const getConfidenceBadgeColor = (confidence: string) => {
-    switch (confidence) {
-      case 'high':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'medium':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'low':
-        return 'bg-red-100 text-red-800 border-red-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
   const tooltipContent = {
     1: {
       title: "All Guest Conversations",
@@ -192,124 +178,130 @@ export default function Step8MessagesPage() {
 
             {/* Filter Tabs */}
             <div className="flex flex-wrap gap-2 mb-6">
-              <Button variant="default" size="sm">All</Button>
-              <Button variant="outline" size="sm">Auto-Answered</Button>
-              <Button variant="outline" size="sm">Escalated</Button>
-              <Button variant="outline" size="sm">Risky</Button>
+              <button className="px-4 py-2 rounded-full text-sm font-medium transition-colors bg-[#ccc1dd] text-foreground">
+                All
+              </button>
+              <button className="px-4 py-2 rounded-full text-sm font-medium transition-colors bg-white border border-border text-foreground hover:bg-muted/50">
+                Auto
+              </button>
+              <button className="px-4 py-2 rounded-full text-sm font-medium transition-colors bg-white border border-border text-foreground hover:bg-muted/50">
+                Escalated
+              </button>
             </div>
 
             {/* Two Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6">
               {/* Left Panel - Conversation List */}
-              <Card className="p-6 relative" id="conversation-list">
-                <div className="space-y-4">
-                  {/* Search */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                    <Input
-                      placeholder="Search conversations..."
-                      className="pl-10"
-                      disabled
-                    />
-                  </div>
-
-                  {/* Conversation Items */}
-                  <div className="space-y-2">
-                    {conversations.map((conv) => (
-                      <div
-                        key={conv.id}
-                        onClick={() => setSelectedConversation(conv)}
-                        className={`p-4 rounded-lg border cursor-pointer transition-colors ${
-                          selectedConversation.id === conv.id
-                            ? 'bg-accent border-primary'
-                            : 'hover:bg-accent/50'
-                        }`}
-                      >
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <p className="font-medium text-foreground">{conv.guestName}</p>
-                            <p className="text-xs text-muted-foreground">{conv.phoneNumber}</p>
-                          </div>
-                          <Badge
-                            variant={conv.status === 'escalated' ? 'destructive' : 'secondary'}
-                            className={`text-xs ${currentTooltip === 3 ? 'ring-[3px] ring-purple-600 ring-offset-2 animate-pulse' : ''}`}
-                          >
-                            {conv.status === 'auto' ? 'Auto' : 'Escalated'}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground line-clamp-2">
-                          {conv.question}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-2">
-                          {conv.timestamp} • {conv.date}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+              <Card className="p-5 bg-card border-border shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] h-fit lg:max-h-[calc(100vh-280px)] lg:overflow-y-auto" id="conversation-list">
+                {/* Search Bar */}
+                <div className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search conversations..."
+                    className="pl-10 bg-background border-border rounded-full"
+                    disabled
+                  />
                 </div>
 
+                {/* Conversation List */}
+                <div className="space-y-3">
+                  {conversations.map((conv) => (
+                    <button
+                      key={conv.id}
+                      onClick={() => setSelectedConversation(conv)}
+                      className={`w-full text-left p-4 rounded-2xl transition-colors border ${
+                        selectedConversation.id === conv.id
+                          ? 'bg-muted/50 border-border'
+                          : 'bg-white border-border hover:bg-muted/30'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <p className="font-semibold text-foreground">{conv.guestName}</p>
+                        <Badge
+                          variant={conv.status === 'escalated' ? 'destructive' : 'secondary'}
+                          className={`text-xs rounded-full px-2.5 py-0.5 ${
+                            conv.status === 'auto' ? 'bg-[#c8deb9] text-foreground' : 'text-destructive-foreground bg-red-500'
+                          } ${currentTooltip === 3 ? 'ring-[3px] ring-purple-600 ring-offset-2 animate-pulse' : ''}`}
+                        >
+                          {conv.status === 'auto' ? 'Auto' : 'Escalated'}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-1 line-clamp-2">
+                        {conv.question}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{conv.date}</p>
+                    </button>
+                  ))}
+                </div>
               </Card>
 
               {/* Right Panel - Conversation Detail */}
-              <Card className={`p-6 relative ${currentTooltip === 2 ? 'z-30 ring-[3px] ring-purple-600 ring-offset-2' : ''}`} id="conversation-thread">
-                <div className="space-y-4">
-                  {/* Guest Info Header */}
-                  <div className="flex items-start justify-between pb-4 border-b">
-                    <div>
-                      <h3 className="text-xl font-semibold text-foreground">
-                        {selectedConversation.guestName}
-                      </h3>
+              <Card className={`p-6 bg-card border-border shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-[24px] flex flex-col ${currentTooltip === 2 ? 'z-30 ring-[3px] ring-purple-600 ring-offset-2' : ''}`} id="conversation-thread">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <h2 className="text-2xl font-serif font-bold text-foreground mb-1">
+                      {selectedConversation.guestName}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {selectedConversation.date}, {selectedConversation.timestamp}
+                    </p>
+                  </div>
+                  <Badge
+                    variant={selectedConversation.status === 'escalated' ? 'destructive' : 'secondary'}
+                    className={`text-xs rounded-full px-3 py-1 ${
+                      selectedConversation.status === 'auto' ? 'bg-[#c8deb9] text-foreground' : 'text-destructive-foreground bg-red-500'
+                    }`}
+                  >
+                    {selectedConversation.status === 'auto' ? 'Auto' : 'Escalated'}
+                  </Badge>
+                </div>
+
+                <Separator className="mb-6" />
+
+                {/* Messages */}
+                <div className="space-y-4 mb-6 flex-1">
+                  {/* Guest Question - Left aligned */}
+                  <div className="flex justify-start">
+                    <div className="max-w-[80%] rounded-2xl p-5 bg-muted/50">
+                      <p className="font-semibold text-foreground mb-2">
+                        {selectedConversation.question}
+                      </p>
                       <p className="text-sm text-muted-foreground">
-                        {selectedConversation.phoneNumber}
+                        {selectedConversation.timestamp}
                       </p>
                     </div>
                   </div>
 
-                  {/* Conversation Thread */}
-                  <div className="space-y-4 min-h-[400px]">
-                    {/* Guest Message */}
-                    <div className="flex justify-start">
-                      <div className="bg-muted rounded-lg p-3 max-w-[80%]">
-                        <p className="text-sm text-foreground">
-                          {selectedConversation.question}
+                  {/* AI Response - Right aligned */}
+                  {selectedConversation.status === 'auto' && selectedConversation.answer && (
+                    <div className="flex justify-end">
+                      <div className="max-w-[80%] rounded-2xl p-5 bg-[#e8f5e9]">
+                        <p className="text-foreground mb-3 leading-relaxed">
+                          {selectedConversation.answer}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {selectedConversation.timestamp}
-                        </p>
+                        {selectedConversation.confidencePercent && (
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className="bg-white/60 text-xs">
+                              AI Response
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              • {selectedConversation.confidencePercent}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
+                  )}
 
-                    {/* AI Response (if auto-answered) */}
-                    {selectedConversation.status === 'auto' && (
-                      <div className="flex justify-end">
-                        <div className="bg-primary/10 rounded-lg p-3 max-w-[80%]">
-                          <div className="flex items-center gap-2 mb-2" id="confidence-indicator">
-                            <Badge 
-                              className={`text-xs ${getConfidenceBadgeColor(selectedConversation.confidence)}`}
-                            >
-                              {selectedConversation.confidencePercent}
-                            </Badge>
-                            <span className="text-xs text-muted-foreground">Pinch</span>
-                          </div>
-                          <p className="text-sm text-foreground">
-                            {selectedConversation.answer}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            {selectedConversation.timestamp}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Escalated Notice */}
-                    {selectedConversation.status === 'escalated' && (
-                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                        <p className="text-sm text-orange-800">
-                          ⚠️ This conversation needs your attention
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  {/* No Response Yet - Escalated */}
+                  {selectedConversation.status === 'escalated' && (
+                    <div className="bg-muted/30 rounded-2xl p-5 border border-dashed border-border">
+                      <p className="text-muted-foreground text-center">
+                        This message needs your attention. Draft a response below.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </Card>
             </div>
