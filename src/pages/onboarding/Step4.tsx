@@ -79,7 +79,7 @@ export default function Step4() {
           </DialogTitle>
         </DialogHeader>
         <p className="text-purple-900 text-sm leading-relaxed">
-          Right now, Pinch can answer basic questions about timing, location, and dress code. After initial tour, you can add, remove, change, and expand what Pinch can handle automatically.
+          Right now, Pinch can answer basic questions about timing, location, and dress code. After you are onboarded, you can add, remove, change, and expand what Pinch can handle automatically.
         </p>
         <Button onClick={() => setShowIntroModal(false)} className="w-full bg-purple-600 hover:bg-purple-700 text-white">
           <X className="w-4 h-4 mr-2" />
