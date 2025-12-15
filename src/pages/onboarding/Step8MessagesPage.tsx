@@ -242,7 +242,7 @@ export default function Step8MessagesPage() {
               </div>
               <Button 
                 id="send-message-header-button"
-                className="rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300"
+                className={`rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300 ${currentTooltip === 5 ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}`}
                 onClick={() => {
                   if (currentTooltip > 0) {
                     toast("Available After Onboarding", {
@@ -388,7 +388,10 @@ export default function Step8MessagesPage() {
                 </div>
 
                 {/* Draft Response for Escalated Messages */}
-                {!selectedConversation.answer && selectedConversation.status === 'escalated' && <div className="mb-6">
+                {!selectedConversation.answer && selectedConversation.status === 'escalated' && <div 
+                  id="draft-response-section"
+                  className={`mb-6 ${currentTooltip === 4 ? 'ring-[3px] ring-purple-600 ring-offset-2 rounded-lg' : ''}`}
+                >
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-foreground">Draft Response</h3>
                     <AIAssistButton 
@@ -466,7 +469,7 @@ export default function Step8MessagesPage() {
                     <Button 
                       id="give-feedback-button"
                       variant="outline" 
-                      className="rounded-full px-6 gap-2 hover:bg-muted/50"
+                      className={`rounded-full px-6 gap-2 hover:bg-muted/50 ${currentTooltip === 6 ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}`}
                       onClick={() => {
                         if (currentTooltip > 0) {
                           toast("Available After Onboarding", {
