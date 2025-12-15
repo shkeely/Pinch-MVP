@@ -152,7 +152,7 @@ export default function Step8MessagesPage() {
       if (aiButton) {
         const rect = aiButton.getBoundingClientRect();
         position = {
-          left: `${rect.left - 420}px`,
+          left: `${rect.left - 450}px`,
           top: `${rect.top + window.scrollY + rect.height / 2}px`,
           transform: 'translateY(-50%)'
         };
@@ -169,12 +169,16 @@ export default function Step8MessagesPage() {
         };
       }
     } else if (currentTooltip === 6) {
-      // Step 6: Position centered above Give Feedback button
-      position = {
-        left: '50%',
-        top: '40%',
-        transform: 'translate(-50%, -50%)'
-      };
+      // Step 6: Position directly above Give Feedback button
+      const feedbackButton = document.getElementById('give-feedback-button');
+      if (feedbackButton) {
+        const rect = feedbackButton.getBoundingClientRect();
+        position = {
+          left: `${rect.left + rect.width / 2}px`,
+          top: `${rect.top + window.scrollY - 220}px`,
+          transform: 'translateX(-50%)'
+        };
+      }
     }
 
     return position;
@@ -496,9 +500,33 @@ export default function Step8MessagesPage() {
             transition: isDragging ? 'none' : 'all 0.3s ease-out'
           }}
         >
-          <div className="relative max-w-md p-6 bg-white rounded-xl shadow-2xl pointer-events-auto" style={{ border: '4px solid #9333EA' }}>
-            {/* Arrow - only show when not dragged */}
-            {!tooltipPosition && (
+          <div className={`relative p-6 bg-white rounded-xl shadow-2xl pointer-events-auto ${currentTooltip === 5 ? 'max-w-lg' : 'max-w-md'}`} style={{ border: '4px solid #9333EA' }}>
+            {/* Arrow - dynamic position based on step */}
+            {!tooltipPosition && currentTooltip === 4 && (
+              <div 
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: '10px solid transparent',
+                  borderBottom: '10px solid transparent',
+                  borderLeft: '10px solid #9333EA',
+                }}
+              />
+            )}
+            {!tooltipPosition && currentTooltip === 6 && (
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderTop: '10px solid #9333EA',
+                }}
+              />
+            )}
+            {!tooltipPosition && currentTooltip !== 4 && currentTooltip !== 6 && (
               <div 
                 className="absolute left-1/2 -translate-x-1/2 -top-3"
                 style={{
