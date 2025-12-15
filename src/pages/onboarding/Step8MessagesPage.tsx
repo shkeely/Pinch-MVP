@@ -206,6 +206,7 @@ export default function Step8MessagesPage() {
                 </p>
               </div>
               <Button 
+                id="send-message-header-button"
                 className="rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300"
                 onClick={() => {
                   if (currentTooltip > 0) {
@@ -356,6 +357,7 @@ export default function Step8MessagesPage() {
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-foreground">Draft Response</h3>
                     <AIAssistButton 
+                      id="ai-assist-button"
                       currentText={draftResponse}
                       onAIGenerate={setDraftResponse}
                       context={`in response to: "${selectedConversation.question}"`}
@@ -390,6 +392,7 @@ export default function Step8MessagesPage() {
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-foreground">Send Follow-up Message</h3>
                     <AIAssistButton 
+                      id="ai-assist-button"
                       currentText={draftResponse}
                       onAIGenerate={setDraftResponse}
                       context={`follow-up message to ${selectedConversation.guestName} regarding: "${selectedConversation.question}"`}
@@ -426,6 +429,7 @@ export default function Step8MessagesPage() {
                   {/* Action Buttons */}
                   <div className="flex flex-wrap gap-3">
                     <Button 
+                      id="give-feedback-button"
                       variant="outline" 
                       className="rounded-full px-6 gap-2 hover:bg-muted/50"
                       onClick={() => {

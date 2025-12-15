@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface AIAssistButtonProps {
+  id?: string;
   currentText: string;
   onAIGenerate: (text: string) => void;
   context?: string;
 }
 
-export function AIAssistButton({ currentText, onAIGenerate, context }: AIAssistButtonProps) {
+export function AIAssistButton({ id, currentText, onAIGenerate, context }: AIAssistButtonProps) {
   const hasText = currentText.trim().length > 0;
 
   const handleGenerateDraft = () => {
@@ -48,6 +49,7 @@ export function AIAssistButton({ currentText, onAIGenerate, context }: AIAssistB
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
+          id={id}
           variant="outline"
           size="sm"
           className="gap-2 rounded-full border-purple-200 hover:border-purple-300 hover:bg-purple-50 text-purple-700"
