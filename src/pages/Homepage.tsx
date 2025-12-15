@@ -9,21 +9,19 @@ import { Badge } from '@/components/ui/badge';
 import { ConversationModal } from '@/components/homepage/ConversationModal';
 import { EscalatedQuestionModal } from '@/components/modals/EscalatedQuestionModal';
 import { AISuggestionModal } from '@/components/modals/AISuggestionModal';
-import { AnnouncementsReviewModal } from '@/components/modals/AnnouncementsReviewModal';
+
 import { useFakeData } from '@/contexts/FakeDataContext';
 
 
 export default function Homepage() {
   const navigate = useNavigate();
-  const { homepage, conversations: fakeConversations, upcomingAnnouncements } = useFakeData();
+  const { homepage, conversations: fakeConversations } = useFakeData();
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [escalatedModalOpen, setEscalatedModalOpen] = useState(false);
   const [suggestionModalOpen, setSuggestionModalOpen] = useState(false);
-  const [announcementsModalOpen, setAnnouncementsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [handledExpanded, setHandledExpanded] = useState(false);
   const [attentionExpanded, setAttentionExpanded] = useState(false);
-  const [announcementsExpanded, setAnnouncementsExpanded] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
   const [visibleButtons, setVisibleButtons] = useState(0);
   const [showEndSection, setShowEndSection] = useState(false);
@@ -86,7 +84,6 @@ export default function Homepage() {
           userName={homepage.userName}
           handledCount={homepage.handledToday.length}
           attentionCount={homepage.needsAttention.length}
-          announcementsCount={homepage.upcomingAnnouncements.length}
           onComplete={handleGreetingComplete}
           onSkip={handleSkip}
         />
@@ -209,65 +206,6 @@ export default function Homepage() {
             </div>
           </Collapsible>
 
-          {/* Upcoming Announcements - Collapsible */}
-          {homepage.upcomingAnnouncements.length > 0 && (
-          <Collapsible 
-            open={announcementsExpanded} 
-            onOpenChange={setAnnouncementsExpanded} 
-            className={`transition-opacity transition-transform duration-500 ease-out transform-gpu will-change-[transform,opacity] ${visibleButtons >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
-          >
-              <div className={`w-full border-2 border-border hover:shadow-lg hover:border-primary/30 ${announcementsExpanded ? 'rounded-3xl bg-card transition-[background-color,box-shadow] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]' : 'rounded-full bg-background transition-[background-color,box-shadow,border-radius] duration-300 [transition-timing-function:cubic-bezier(0.7,0,0.84,0)] delay-200'}`}>
-                <CollapsibleTrigger asChild>
-                  <button className="w-full p-6 text-center transition-all hover:border-primary/50">
-                    <div className="flex items-center justify-between">
-                      <span className="flex-1 text-xl font-semibold text-foreground">
-                        {homepage.upcomingAnnouncements.length} upcoming guest announcements
-                      </span>
-                      {announcementsExpanded ? <ChevronUp className="w-5 h-5 text-muted-foreground ml-2" /> : <ChevronDown className="w-5 h-5 text-muted-foreground ml-2" />}
-                    </div>
-                  </button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="border-t border-border space-y-4 px-6 py-6 overflow-hidden transition-all data-[state=open]:animate-accordion-down data-[state=open]:[animation-timing-function:cubic-bezier(0.16,1,0.3,1)] data-[state=closed]:animate-accordion-up data-[state=closed]:[animation-timing-function:cubic-bezier(0.7,0,0.84,0)]">
-                  {homepage.upcomingAnnouncements.map((announcement, index) => <div key={announcement.id} className="flex items-start gap-4 pb-4 border-b border-border last:border-0" style={{
-                animationDelay: `${index * 50}ms`
-              }}>
-                      <div className={`w-[5.6px] self-stretch min-h-20 rounded-full ${index === 0 ? 'bg-lavender' : 'bg-primary'}`} />
-                      <div className="flex-1">
-                        <Badge variant="outline" className="bg-background text-xs px-3 py-1 mb-2">
-                          Scheduled
-                        </Badge>
-                        <h4 className="font-sans font-semibold text-foreground leading-[1.1] mb-0">{announcement.title}</h4>
-                        <div className="flex flex-col md:flex-row md:items-center items-start gap-3 md:gap-4">
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-4 h-4" />
-                              {announcement.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-4 h-4" />
-                              {announcement.time}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Users className="w-4 h-4" />
-                              {announcement.guests} guests
-                            </span>
-                          </div>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className={`rounded-full shrink-0 w-full md:w-auto !justify-start ${index === 0 ? 'border-lavender text-lavender hover:bg-lavender/10' : 'border-primary text-primary hover:bg-primary/10'}`}
-                            onClick={() => setAnnouncementsModalOpen(true)}
-                          >
-                            Review
-                            <ArrowRight className="w-4 h-4 ml-1" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>)}
-                </CollapsibleContent>
-              </div>
-          </Collapsible>
-          )}
         </div>
         )}
 
@@ -319,12 +257,6 @@ export default function Homepage() {
             timestamp={selectedItem.timestamp}
           />
         )}
-
-        <AnnouncementsReviewModal
-          open={announcementsModalOpen}
-          onClose={() => setAnnouncementsModalOpen(false)}
-          announcements={upcomingAnnouncements.filter(a => a.status === 'scheduled')}
-        />
       </div>
     </div>;
 }
