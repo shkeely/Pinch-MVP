@@ -30,6 +30,10 @@ export default function Step8MessagesPage() {
   const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false);
   const [isSendMessageDialogOpen, setIsSendMessageDialogOpen] = useState(false);
   const segments = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
+  
+  // AI Assist demo state (for Step 4 interactive demo)
+  const [aiAssistDemoGenerated, setAiAssistDemoGenerated] = useState(false);
+  const [aiAssistDemoOption, setAiAssistDemoOption] = useState<'rewrite' | 'expand' | 'friendlier' | null>(null);
 
   // Draggable tooltip state
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
@@ -55,6 +59,12 @@ export default function Step8MessagesPage() {
   }, [currentTooltip]);
 
   const handleNext = () => {
+    // Reset AI assist demo when leaving step 4
+    if (currentTooltip === 4) {
+      setAiAssistDemoGenerated(false);
+      setAiAssistDemoOption(null);
+    }
+
     // Special logic for Step 4: if viewing auto-answered message, skip to step 5
     if (currentTooltip === 4 && selectedConversation.status === 'auto') {
       setCurrentTooltip(5);
@@ -67,6 +77,31 @@ export default function Step8MessagesPage() {
       updateWedding({ onboardingStep: 9 });
       navigate('/onboarding/step-9');
     }
+  };
+
+  // Function to handle AI Assist demo for Step 4
+  const handleAiAssistDemo = () => {
+    if (!aiAssistDemoGenerated) {
+      setAiAssistDemoGenerated(true);
+      setAiAssistDemoOption(null);
+      toast("Response Generated!", {
+        description: "Now choose how to refine it: Rewrite, Improve & Expand, or Make Friendlier.",
+        duration: 4000,
+      });
+    }
+  };
+
+  const handleAiAssistDemoOption = (option: 'rewrite' | 'expand' | 'friendlier') => {
+    setAiAssistDemoOption(option);
+    const messages = {
+      rewrite: "New version generated! Feel free to try another style.",
+      expand: "Expanded version created! Adding more context and detail.",
+      friendlier: "Friendlier tone applied! Much warmer and more personal now."
+    };
+    toast(`${option === 'rewrite' ? 'Rewritten' : option === 'expand' ? 'Improved & Expanded' : 'Made Friendlier'}`, {
+      description: messages[option],
+      duration: 3000,
+    });
   };
 
   const handlePrevious = () => {
@@ -199,7 +234,7 @@ export default function Step8MessagesPage() {
     },
     4: {
       title: "Drafting Responses with AI",
-      description: "Stuck on how to respond? Click here to let Pinch draft a response for you based on the guest's question. You can always edit it before sending."
+      description: "Try it! Click the AI Assist button to generate a response. Then pick how you'd like to refine it - rewrite for a different approach, expand for more detail, or make it friendlier in tone."
     },
     5: {
       title: "Send Message to All Guests",
@@ -394,13 +429,61 @@ export default function Step8MessagesPage() {
                 >
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-foreground">Draft Response</h3>
-                    <AIAssistButton 
-                      id="ai-assist-button"
-                      className={currentTooltip === 4 ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}
-                      currentText={draftResponse}
-                      onAIGenerate={setDraftResponse}
-                      context={`in response to: "${selectedConversation.question}"`}
-                    />
+                    {currentTooltip === 4 ? (
+                      // Demo mode for Step 4
+                      <div className="flex gap-2">
+                        {!aiAssistDemoGenerated ? (
+                          <button
+                            id="ai-assist-button"
+                            onClick={handleAiAssistDemo}
+                            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors ring-[3px] ring-purple-600 ring-offset-2"
+                          >
+                            Generate with AI
+                          </button>
+                        ) : (
+                          <div id="ai-assist-button" className="flex gap-2 flex-wrap">
+                            <button
+                              onClick={() => handleAiAssistDemoOption('rewrite')}
+                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                aiAssistDemoOption === 'rewrite'
+                                  ? 'bg-purple-600 text-white'
+                                  : 'border border-purple-600 text-purple-600 hover:bg-purple-50'
+                              }`}
+                            >
+                              Rewrite
+                            </button>
+                            <button
+                              onClick={() => handleAiAssistDemoOption('expand')}
+                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                aiAssistDemoOption === 'expand'
+                                  ? 'bg-purple-600 text-white'
+                                  : 'border border-purple-600 text-purple-600 hover:bg-purple-50'
+                              }`}
+                            >
+                              Improve & Expand
+                            </button>
+                            <button
+                              onClick={() => handleAiAssistDemoOption('friendlier')}
+                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                aiAssistDemoOption === 'friendlier'
+                                  ? 'bg-purple-600 text-white'
+                                  : 'border border-purple-600 text-purple-600 hover:bg-purple-50'
+                              }`}
+                            >
+                              Make Friendlier
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      // Normal mode outside Step 4
+                      <AIAssistButton 
+                        id="ai-assist-button"
+                        currentText={draftResponse}
+                        onAIGenerate={setDraftResponse}
+                        context={`in response to: "${selectedConversation.question}"`}
+                      />
+                    )}
                   </div>
                   <div className="space-y-3">
                     <Textarea 
