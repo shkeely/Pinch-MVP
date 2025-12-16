@@ -108,7 +108,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext,
                 id="feedback"
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
-                placeholder={tourMode ? "E.g., 'This response was helpful but could be friendlier in tone...'" : "Describe what should be improved or corrected in the AI response..."}
+                placeholder="e.g., 'This response was helpful but could be friendlier in tone...'"
                 className={`min-h-[150px] ${tourMode ? 'ring-2 ring-purple-500 ring-offset-2 ring-offset-white' : ''}`}
               />
               <p className="text-xs text-muted-foreground">
