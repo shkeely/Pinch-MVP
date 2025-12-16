@@ -259,8 +259,14 @@ export default function Step8MessagesPage() {
       }
     }
 
-    // Auto-scroll for step 6 to show Give Feedback button
+    // Auto-scroll and auto-select for step 6 to show Give Feedback button
     if (currentTooltip === 6) {
+      // Auto-select Jessica Martinez's conversation for the feedback demo
+      const jessicaConversation = conversations.find(c => c.guestName === 'Jessica Martinez');
+      if (jessicaConversation) {
+        setSelectedConversation(jessicaConversation);
+      }
+      
       const feedbackButton = document.getElementById('give-feedback-button');
       if (feedbackButton) {
         feedbackButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
