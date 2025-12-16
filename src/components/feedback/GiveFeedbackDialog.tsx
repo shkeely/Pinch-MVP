@@ -11,10 +11,11 @@ interface GiveFeedbackDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   messageContext?: string;
+  tourMode?: boolean;
 }
 
-export default function GiveFeedbackDialog({ open, onOpenChange, messageContext }: GiveFeedbackDialogProps) {
-  const [feedback, setFeedback] = useState('');
+export default function GiveFeedbackDialog({ open, onOpenChange, messageContext, tourMode = false }: GiveFeedbackDialogProps) {
+  const [feedback, setFeedback] = useState(tourMode ? "This response was helpful but could be friendlier in tone. The guest might appreciate a warmer greeting." : '');
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -81,7 +82,10 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
             Give Feedback
           </DialogTitle>
           <DialogDescription>
-            Help improve AI responses by providing feedback. This will update the concierge's brain.
+            {tourMode 
+              ? "Try it out! Give feedback on this response, and watch how Pinch's brain learns from your input." 
+              : "Help improve AI responses by providing feedback. This will update the concierge's brain."
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -100,7 +104,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
                 id="feedback"
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
-                placeholder="Describe what should be improved or corrected in the AI response..."
+                placeholder={tourMode ? "E.g., 'This response was helpful but could be friendlier in tone...'" : "Describe what should be improved or corrected in the AI response..."}
                 className="min-h-[150px]"
               />
               <p className="text-xs text-muted-foreground">
@@ -111,7 +115,10 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles className="w-5 h-5 text-purple-600" />
-                <h3 className="font-semibold">Recommended Concierge Brain Changes</h3>
+                <div>
+                  <h3 className="font-semibold">Recommended Concierge Brain Changes</h3>
+                  {tourMode && <p className="text-xs text-muted-foreground">You can edit, approve, or remove any of these suggestions</p>}
+                </div>
               </div>
               
               {recommendations.map((rec, idx) => (
@@ -175,7 +182,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
           {!showRecommendations ? (
             <Button onClick={generateRecommendations} className="bg-purple-600 hover:bg-purple-700 text-white">
               <Sparkles className="w-4 h-4 mr-2" />
-              Generate Recommendations
+              {tourMode ? "Generate AI Recommendations" : "Generate Recommendations"}
             </Button>
           ) : (
             <Button 
@@ -184,7 +191,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext 
               className="bg-accent hover:bg-accent/90 text-accent-foreground"
             >
               <Check className="w-4 h-4 mr-2" />
-              Approve & Update
+              {tourMode ? "See How It Works!" : "Approve & Update"}
             </Button>
           )}
         </div>
