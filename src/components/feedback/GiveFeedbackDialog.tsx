@@ -16,7 +16,7 @@ interface GiveFeedbackDialogProps {
 }
 
 export default function GiveFeedbackDialog({ open, onOpenChange, messageContext, tourMode = false, onRecommendationsGenerated }: GiveFeedbackDialogProps) {
-  const [feedback, setFeedback] = useState(tourMode ? "This response was helpful but could be friendlier in tone. The guest might appreciate a warmer greeting." : '');
+  const [feedback, setFeedback] = useState(tourMode ? "We are planning to accommodate children under 1" : '');
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -28,12 +28,14 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext,
       return;
     }
 
-    // Simulate AI-generated chatbot brain recommendations
-    const generatedRecs = [
-      `Add FAQ: "${messageContext}" with improved answer based on feedback`,
-      `Update tone guidelines to be more ${feedback.includes('friendly') ? 'friendly' : 'professional'}`,
-      `Add context about guest expectations and common concerns`
-    ];
+    // In tour mode, show only one specific recommendation
+    const generatedRecs = tourMode 
+      ? [`Add FAQ to Concierge Brain: "Can I bring my kids?" with improved answer based on your feedback`]
+      : [
+          `Add FAQ: "${messageContext}" with improved answer based on feedback`,
+          `Update tone guidelines to be more ${feedback.includes('friendly') ? 'friendly' : 'professional'}`,
+          `Add context about guest expectations and common concerns`
+        ];
     
     setRecommendations(generatedRecs);
     setShowRecommendations(true);
@@ -124,7 +126,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext,
               </div>
               
               {recommendations.map((rec, idx) => (
-                <Card key={idx} className="p-4">
+                <Card key={idx} className={`p-4 ${tourMode ? 'ring-2 ring-purple-500 ring-offset-2' : ''}`}>
                   {editingIndex === idx ? (
                     <div className="space-y-2">
                       <Textarea
