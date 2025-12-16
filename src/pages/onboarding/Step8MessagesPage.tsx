@@ -758,6 +758,7 @@ export default function Step8MessagesPage() {
           open={isFeedbackDialogOpen}
           onOpenChange={setIsFeedbackDialogOpen}
           messageContext={selectedConversation.question}
+          tourMode={currentTooltip === 6}
         />
 
         <SendMessageDialog
