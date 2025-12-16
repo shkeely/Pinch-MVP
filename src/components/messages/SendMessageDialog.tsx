@@ -14,9 +14,10 @@ interface SendMessageDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   segments: Segment[];
+  tourMode?: boolean;
 }
 
-export default function SendMessageDialog({ open, onOpenChange, segments }: SendMessageDialogProps) {
+export default function SendMessageDialog({ open, onOpenChange, segments, tourMode = false }: SendMessageDialogProps) {
   const [message, setMessage] = useState('');
   const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
   const [recipientCount, setRecipientCount] = useState(150);
@@ -55,7 +56,10 @@ export default function SendMessageDialog({ open, onOpenChange, segments }: Send
             Send Message to Guests
           </DialogTitle>
           <DialogDescription>
-            Compose and send a message to your selected guest segment
+            {tourMode 
+              ? "Segments let you target specific groups of guests. Try selecting different segments below to see how many recipients are in each group!"
+              : "Compose and send a message to your selected guest segment"
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -63,7 +67,7 @@ export default function SendMessageDialog({ open, onOpenChange, segments }: Send
           <div className="space-y-2">
             <Label htmlFor="segment">Select Segment</Label>
             <Select value={selectedSegment} onValueChange={handleSegmentChange}>
-              <SelectTrigger id="segment">
+              <SelectTrigger id="segment" className={tourMode ? 'ring-2 ring-purple-500 ring-offset-2 ring-offset-white' : ''}>
                 <SelectValue placeholder="Choose guest segment" />
               </SelectTrigger>
               <SelectContent>
@@ -78,6 +82,11 @@ export default function SendMessageDialog({ open, onOpenChange, segments }: Send
               <Users className="w-4 h-4" />
               <span>{recipientCount} recipients will receive this message</span>
             </div>
+            {tourMode && (
+              <p className="text-xs text-purple-600 font-medium">
+                👆 Try selecting different segments to see how targeting works!
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
