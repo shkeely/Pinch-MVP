@@ -641,16 +641,7 @@ export default function Step8MessagesPage() {
                       id="give-feedback-button"
                       variant="outline" 
                       className={`rounded-full px-6 gap-2 hover:bg-muted/50 ${currentTooltip === 6 ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}`}
-                      onClick={() => {
-                        if (currentTooltip > 0) {
-                          toast("Available After Onboarding", {
-                            description: "You can give feedback on responses once you complete the tour!",
-                            duration: 3000,
-                          });
-                        } else {
-                          setIsFeedbackDialogOpen(true);
-                        }
-                      }}
+                      onClick={handleGiveFeedbackButtonClick}
                     >
                       <Send className="w-4 h-4" />
                       Give Feedback
