@@ -41,6 +41,10 @@ export default function Step8MessagesPage() {
   // Give Feedback demo state (for Step 6 interactive demo)
   const [feedbackDemoStep, setFeedbackDemoStep] = useState<'initial' | 'recommendations' | 'complete'>('initial');
   const [hasGeneratedRecommendations, setHasGeneratedRecommendations] = useState(false);
+  const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
+  
+  // Send Message demo state (for Step 5)
+  const [hasSentMessage, setHasSentMessage] = useState(false);
 
   // Draggable tooltip state
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
@@ -86,6 +90,31 @@ export default function Step8MessagesPage() {
     // Special logic for Step 4: if viewing auto-answered message, skip to step 5
     if (currentTooltip === 4 && selectedConversation.status === 'auto') {
       setCurrentTooltip(5);
+      return;
+    }
+
+    // Force users to complete required actions before advancing
+    if (currentTooltip === 4 && !aiAssistDemoGenerated) {
+      toast("Try the AI Assist first!", {
+        description: "Click the 'Generate with AI' button to continue.",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (currentTooltip === 5 && !hasSentMessage) {
+      toast("Open the Send Message dialog!", {
+        description: "Click 'Send Message to Guests' to see how segments work.",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (currentTooltip === 6 && !hasCompletedFeedback) {
+      toast("Complete the feedback flow!", {
+        description: "Click 'Give Feedback' and submit to continue.",
+        duration: 3000,
+      });
       return;
     }
 
@@ -355,15 +384,17 @@ export default function Step8MessagesPage() {
     },
     5: {
       title: "Send Message to All Guests",
-      description: "At any time, you can send a message to your entire guest list or specific segments. Use this to send reminders, updates, or announcements."
+      description: isSendMessageDialogOpen 
+        ? "Segments let you target specific groups like 'Wedding Party' or 'Out-of-Towners'. Try selecting different segments to see how many guests are in each!"
+        : "Click 'Send Message to Guests' to see how you can broadcast to your entire guest list or specific segments."
     },
     6: {
       title: "Help Pinch Learn",
       description: isFeedbackDialogOpen 
         ? (hasGeneratedRecommendations 
-            ? "These are AI-generated suggestions to improve Pinch's responses. You can edit or delete any recommendation before submitting."
-            : "Write that the response could be more friendly, then click 'Generate AI Recommendations' to see how Pinch learns from your input.")
-        : "Give it a try! If you think a response could have been better, click here. Your feedback helps Pinch improve over time and learn your preferences."
+            ? "These are AI-generated suggestions to improve Pinch's responses. Click 'Submit Feedback' to update the Concierge Brain!"
+            : "We've prefilled an example. Click 'Generate AI Recommendations' to see how Pinch learns from your input.")
+        : "Give it a try! Click here to provide feedback on Pinch's response. Your feedback helps improve future responses."
     }
   };
 
@@ -400,7 +431,10 @@ export default function Step8MessagesPage() {
                 id="send-message-header-button"
                 className={`rounded-full px-6 text-white bg-indigo-400 hover:bg-indigo-300 ${currentTooltip === 5 ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}`}
                 onClick={() => {
-                  if (currentTooltip > 0) {
+                  if (currentTooltip === 5) {
+                    // During Step 5: allow dialog to open for learning about segments
+                    setIsSendMessageDialogOpen(true);
+                  } else if (currentTooltip > 0) {
                     toast("Available After Onboarding", {
                       description: "You'll be able to send messages to guests once you complete the tour!",
                       duration: 3000,
@@ -812,7 +846,13 @@ export default function Step8MessagesPage() {
           open={isFeedbackDialogOpen}
           onOpenChange={(open) => {
             setIsFeedbackDialogOpen(open);
-            if (!open) setHasGeneratedRecommendations(false);
+            if (!open) {
+              setHasGeneratedRecommendations(false);
+              // Mark feedback as completed when dialog closes after generating recommendations
+              if (hasGeneratedRecommendations) {
+                setHasCompletedFeedback(true);
+              }
+            }
           }}
           messageContext={selectedConversation.question}
           tourMode={currentTooltip === 6}
@@ -821,8 +861,14 @@ export default function Step8MessagesPage() {
 
         <SendMessageDialog
           open={isSendMessageDialogOpen}
-          onOpenChange={setIsSendMessageDialogOpen}
+          onOpenChange={(open) => {
+            setIsSendMessageDialogOpen(open);
+            if (!open && currentTooltip === 5) {
+              setHasSentMessage(true);
+            }
+          }}
           segments={segments}
+          tourMode={currentTooltip === 5}
         />
       </div>
     </TourPage>
