@@ -84,6 +84,8 @@ export default function Step8MessagesPage() {
     if (!aiAssistDemoGenerated) {
       setAiAssistDemoGenerated(true);
       setAiAssistDemoOption(null);
+      // Show sample AI-generated response in the textarea
+      setDraftResponse("Hi David! Thank you for letting us know. We completely understand that plans can change. Please let me know your final decision when you can, and we'll update our headcount accordingly. We hope everything is okay!");
       toast("Response Generated!", {
         description: "Now choose how to refine it: Rewrite, Improve & Expand, or Make Friendlier.",
         duration: 4000,
@@ -93,6 +95,12 @@ export default function Step8MessagesPage() {
 
   const handleAiAssistDemoOption = (option: 'rewrite' | 'expand' | 'friendlier') => {
     setAiAssistDemoOption(option);
+    const responses = {
+      rewrite: "David, thanks for reaching out! If you need to cancel, just send me a message and I'll take care of updating our list. No worries at all!",
+      expand: "Hi David! Thank you so much for letting us know ahead of time - we really appreciate your thoughtfulness. We completely understand that life happens and plans sometimes need to change. Please don't feel any pressure - just let us know your final decision whenever you're able, and we'll make sure to update our headcount accordingly. We truly hope everything is alright on your end!",
+      friendlier: "Hey David! 😊 Thanks so much for the heads up - we totally get it, life happens! Just shoot us a message when you know for sure, and we'll handle everything. Hoping all is well with you! 💕"
+    };
+    setDraftResponse(responses[option]);
     const messages = {
       rewrite: "New version generated! Feel free to try another style.",
       expand: "Expanded version created! Adding more context and detail.",
@@ -168,6 +176,15 @@ export default function Step8MessagesPage() {
   useEffect(() => {
     setTooltipPosition(null);
     
+    // Auto-select escalated conversation for Step 4 so Draft Response section is visible
+    if (currentTooltip === 4) {
+      const escalatedConv = conversations.find(c => c.status === 'escalated');
+      if (escalatedConv) {
+        setSelectedConversation(escalatedConv);
+        setDraftResponse('');
+      }
+    }
+    
     // Auto-scroll for step 5 to show Send Message button
     if (currentTooltip === 5) {
       const sendButton = document.getElementById('send-message-header-button');
@@ -196,7 +213,7 @@ export default function Step8MessagesPage() {
         const rect = aiButton.getBoundingClientRect();
         position = {
           left: `${rect.left - 480}px`,
-          top: `${rect.top + window.scrollY - 100}px`,
+          top: `${rect.top + window.scrollY - 250}px`,
           transform: 'none'
         };
       }
