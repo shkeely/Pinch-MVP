@@ -385,8 +385,8 @@ export default function Step8MessagesPage() {
     5: {
       title: "Send Message to All Guests",
       description: isSendMessageDialogOpen 
-        ? "Segments let you target specific groups like 'Wedding Party' or 'Out-of-Towners'. Try selecting different segments to see how many guests are in each!"
-        : "Click 'Send Message to Guests' to see how you can broadcast to your entire guest list or specific segments."
+        ? "Segments let you target specific groups like 'Wedding Party' or 'Out-of-Towners'. Try selecting different segments to see how many guests are in each! You can also use AI Assist to draft your message."
+        : "Click the purple-highlighted 'Send Message to Guests' button to see how you can broadcast to your entire guest list or specific segments."
     },
     6: {
       title: "Help Pinch Learn",
@@ -749,7 +749,7 @@ export default function Step8MessagesPage() {
             transition: isDragging ? 'none' : 'all 0.3s ease-out'
           }}
         >
-          <div className={`relative p-6 bg-white rounded-xl shadow-2xl pointer-events-auto ${currentTooltip === 5 ? 'max-w-lg' : 'max-w-md'}`} style={{ border: '4px solid #9333EA' }}>
+          <div className={`relative p-6 bg-white rounded-xl shadow-2xl pointer-events-auto ${currentTooltip === 5 ? 'max-w-lg' : 'max-w-md'} ${(currentTooltip === 5 && isSendMessageDialogOpen) || (currentTooltip === 6 && isFeedbackDialogOpen) ? 'animate-ring-pulse' : ''}`} style={{ border: '4px solid #9333EA' }}>
             {/* Arrow - dynamic position based on step */}
             {!tooltipPosition && currentTooltip === 4 && (
               <div 

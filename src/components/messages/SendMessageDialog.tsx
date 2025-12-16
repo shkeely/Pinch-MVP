@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Send, Users } from "lucide-react";
+import { Send, Users, Sparkles } from "lucide-react";
 import { AIAssistButton } from "@/components/ai/AIAssistButton";
 
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors' | string;
@@ -21,6 +21,7 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
   const [message, setMessage] = useState('');
   const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
   const [recipientCount, setRecipientCount] = useState(150);
+  const [showRefinementButtons, setShowRefinementButtons] = useState(false);
 
   const handleSend = () => {
     if (!message.trim()) {
@@ -47,6 +48,31 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
     setRecipientCount(counts[segment] || 20);
   };
 
+  const handleAIGenerate = (text: string) => {
+    setMessage(text);
+    setShowRefinementButtons(true);
+  };
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newMessage = e.target.value;
+    setMessage(newMessage);
+    if (newMessage.trim().length > 0) {
+      setShowRefinementButtons(true);
+    } else {
+      setShowRefinementButtons(false);
+    }
+  };
+
+  const handleRefinement = (type: 'rewrite' | 'expand' | 'friendlier') => {
+    const refinements = {
+      rewrite: "Hello everyone! We wanted to share some important updates about our celebration. Please review and let us know if you have any questions.",
+      expand: message + "\n\nWe truly appreciate your understanding and can't wait to see you there! Feel free to reach out if you need anything else.",
+      friendlier: message + " 😊 We're so excited to celebrate with you!"
+    };
+    setMessage(refinements[type]);
+    toast.success(`Message ${type === 'rewrite' ? 'rewritten' : type === 'expand' ? 'expanded' : 'made friendlier'}!`);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-card">
@@ -67,7 +93,7 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
           <div className="space-y-2">
             <Label htmlFor="segment">Select Segment</Label>
             <Select value={selectedSegment} onValueChange={handleSegmentChange}>
-              <SelectTrigger id="segment" className={tourMode ? 'ring-2 ring-purple-500 ring-offset-2 ring-offset-white' : ''}>
+              <SelectTrigger id="segment" className={tourMode ? 'ring-2 ring-purple-500 ring-offset-2 ring-offset-white animate-pulse' : ''}>
                 <SelectValue placeholder="Choose guest segment" />
               </SelectTrigger>
               <SelectContent>
@@ -90,18 +116,51 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <Label htmlFor="message">Message</Label>
-              <AIAssistButton 
-                currentText={message}
-                onAIGenerate={setMessage}
-                context={`for ${selectedSegment} guests`}
-              />
+              <div className="flex items-center gap-2 flex-wrap">
+                {showRefinementButtons && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleRefinement('rewrite')}
+                      className={`gap-1 text-xs ${tourMode ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : ''}`}
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      Rewrite
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleRefinement('expand')}
+                      className={`gap-1 text-xs ${tourMode ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : ''}`}
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      Improve & Expand
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleRefinement('friendlier')}
+                      className={`gap-1 text-xs ${tourMode ? 'border-purple-300 text-purple-700 hover:bg-purple-50' : ''}`}
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      Make Friendlier
+                    </Button>
+                  </>
+                )}
+                <AIAssistButton 
+                  currentText={message}
+                  onAIGenerate={handleAIGenerate}
+                  context={`for ${selectedSegment} guests`}
+                />
+              </div>
             </div>
             <Textarea
               id="message"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={handleMessageChange}
               placeholder="Type your message here..."
               className="min-h-[150px]"
             />

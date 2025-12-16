@@ -157,6 +157,14 @@ export default {
           "50%": { 
             transform: "translateX(-10px)" 
           }
+        },
+        "ring-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 0 3px rgba(147, 51, 234, 0.6)"
+          },
+          "50%": {
+            boxShadow: "0 0 0 6px rgba(147, 51, 234, 0.3)"
+          }
         }
       },
       animation: {
@@ -171,7 +179,8 @@ export default {
         "enter": "fade-in 0.3s ease-out, scale-in 0.2s ease-out",
         "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out",
         "bounce-vertical": "bounce-vertical 1s ease-in-out infinite",
-        "bounce-horizontal": "bounce-horizontal 1s ease-in-out infinite"
+        "bounce-horizontal": "bounce-horizontal 1s ease-in-out infinite",
+        "ring-pulse": "ring-pulse 1.5s ease-in-out infinite"
       },
     },
   },

@@ -19,6 +19,7 @@ interface TourTooltipProps {
     text: string;
     onClick: () => void;
   };
+  pulseDescription?: boolean; // Pulse the card border when description changes
 }
 
 export function TourTooltip({
@@ -33,6 +34,7 @@ export function TourTooltip({
   className,
   buttonText,
   secondaryButton,
+  pulseDescription = false,
 }: TourTooltipProps) {
   // Position classes based on target direction
   const positionClasses = {
@@ -60,7 +62,10 @@ export function TourTooltip({
           className
         )}
       >
-        <Card className="w-80 sm:w-96 shadow-2xl border-[3px] border-purple-500 ring-4 ring-purple-500/30">
+        <Card className={cn(
+          "w-80 sm:w-96 shadow-2xl border-[3px] border-purple-500 ring-4 ring-purple-500/30",
+          pulseDescription && "animate-ring-pulse"
+        )}>
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between mb-2">
               <Badge variant="secondary" className="text-xs">
