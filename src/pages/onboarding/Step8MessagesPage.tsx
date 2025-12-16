@@ -536,7 +536,7 @@ export default function Step8MessagesPage() {
                     <Textarea 
                       placeholder="Type your response..." 
                       value={draftResponse}
-                      onChange={(e) => setDraftResponse(e.target.value)}
+                      onChange={handleDraftResponseChange}
                       className="min-h-[120px] border-border"
                       disabled={currentTooltip > 0}
                     />
@@ -571,7 +571,7 @@ export default function Step8MessagesPage() {
                     <Textarea 
                       placeholder="Type a follow-up message..." 
                       value={draftResponse}
-                      onChange={(e) => setDraftResponse(e.target.value)}
+                      onChange={handleDraftResponseChange}
                       className="min-h-[120px] border-border"
                       disabled={currentTooltip > 0}
                     />
