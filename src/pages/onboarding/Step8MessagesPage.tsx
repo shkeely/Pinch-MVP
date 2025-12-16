@@ -40,6 +40,7 @@ export default function Step8MessagesPage() {
 
   // Give Feedback demo state (for Step 6 interactive demo)
   const [feedbackDemoStep, setFeedbackDemoStep] = useState<'initial' | 'recommendations' | 'complete'>('initial');
+  const [hasGeneratedRecommendations, setHasGeneratedRecommendations] = useState(false);
 
   // Draggable tooltip state
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
@@ -79,6 +80,7 @@ export default function Step8MessagesPage() {
     if (currentTooltip === 6) {
       setFeedbackDemoStep('initial');
       setIsFeedbackDialogOpen(false);
+      setHasGeneratedRecommendations(false);
     }
 
     // Special logic for Step 4: if viewing auto-answered message, skip to step 5
@@ -351,7 +353,11 @@ export default function Step8MessagesPage() {
     },
     6: {
       title: "Help Pinch Learn",
-      description: "If you think Pinch's response could have been better, tell us! Your feedback helps train the system to improve over time."
+      description: isFeedbackDialogOpen 
+        ? (hasGeneratedRecommendations 
+            ? "These are AI-generated suggestions to improve Pinch's responses. You can edit or delete any recommendation before submitting."
+            : "Write that the response could be more friendly, then click 'Generate AI Recommendations' to see how Pinch learns from your input.")
+        : "Give it a try! If you think a response could have been better, click here. Your feedback helps Pinch improve over time and learn your preferences."
     }
   };
 
@@ -798,9 +804,13 @@ export default function Step8MessagesPage() {
         {/* Dialog Components */}
         <GiveFeedbackDialog 
           open={isFeedbackDialogOpen}
-          onOpenChange={setIsFeedbackDialogOpen}
+          onOpenChange={(open) => {
+            setIsFeedbackDialogOpen(open);
+            if (!open) setHasGeneratedRecommendations(false);
+          }}
           messageContext={selectedConversation.question}
           tourMode={currentTooltip === 6}
+          onRecommendationsGenerated={() => setHasGeneratedRecommendations(true)}
         />
 
         <SendMessageDialog
