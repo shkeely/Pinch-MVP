@@ -46,6 +46,9 @@ export default function Step8MessagesPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
+  // Locked position for Step 4 to prevent movement on button clicks
+  const [step4LockedPosition, setStep4LockedPosition] = useState<{ left: string; top: string; transform: string } | null>(null);
+
   useEffect(() => {
     window.location.hash = '#step-8';
   }, []);
@@ -223,6 +226,7 @@ export default function Step8MessagesPage() {
 
   useEffect(() => {
     setTooltipPosition(null);
+    setStep4LockedPosition(null); // Reset locked position when step changes
     
     // Auto-select escalated conversation for Step 4 so Draft Response section is visible
     if (currentTooltip === 4) {
@@ -231,6 +235,18 @@ export default function Step8MessagesPage() {
         setSelectedConversation(escalatedConv);
         setDraftResponse('');
       }
+      // Lock the position after a brief delay to allow DOM to render
+      setTimeout(() => {
+        const aiButton = document.getElementById('ai-assist-button');
+        if (aiButton) {
+          const rect = aiButton.getBoundingClientRect();
+          setStep4LockedPosition({
+            left: `${rect.left - 480}px`,
+            top: `${rect.top + window.scrollY - 280}px`,
+            transform: 'none'
+          });
+        }
+      }, 100);
     }
     
     // Auto-scroll for step 5 to show Send Message button
@@ -238,6 +254,14 @@ export default function Step8MessagesPage() {
       const sendButton = document.getElementById('send-message-header-button');
       if (sendButton) {
         sendButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // Auto-scroll for step 6 to show Give Feedback button
+    if (currentTooltip === 6) {
+      const feedbackButton = document.getElementById('give-feedback-button');
+      if (feedbackButton) {
+        feedbackButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
   }, [currentTooltip]);
@@ -255,13 +279,17 @@ export default function Step8MessagesPage() {
     let position = { left: '50%', top: '50%', transform: 'translate(-50%, -50%)' };
     
     if (currentTooltip === 4) {
-      // Step 4: Position above draft section so user can see AI response
+      // Step 4: Use locked position if available to prevent movement
+      if (step4LockedPosition) {
+        return step4LockedPosition;
+      }
+      // Fallback: Position above draft section
       const aiButton = document.getElementById('ai-assist-button');
       if (aiButton) {
         const rect = aiButton.getBoundingClientRect();
         position = {
           left: `${rect.left - 480}px`,
-          top: `${rect.top + window.scrollY - 250}px`,
+          top: `${rect.top + window.scrollY - 280}px`,
           transform: 'none'
         };
       }
@@ -277,13 +305,21 @@ export default function Step8MessagesPage() {
         };
       }
     } else if (currentTooltip === 6) {
-      // Step 6: Position directly above Give Feedback button
+      // Step 6: If feedback dialog is open, move tooltip to the right side
+      if (isFeedbackDialogOpen) {
+        return {
+          left: 'calc(100% - 450px)',
+          top: '50%',
+          transform: 'translateY(-50%)'
+        };
+      }
+      // Position directly above Give Feedback button (20px higher)
       const feedbackButton = document.getElementById('give-feedback-button');
       if (feedbackButton) {
         const rect = feedbackButton.getBoundingClientRect();
         position = {
           left: `${rect.left + rect.width / 2}px`,
-          top: `${rect.top + window.scrollY - 280}px`,
+          top: `${rect.top + window.scrollY - 300}px`,
           transform: 'translateX(-50%)'
         };
       }
@@ -502,50 +538,55 @@ export default function Step8MessagesPage() {
                 >
                   <div className="flex items-center justify-between mb-3 gap-2">
                     <h3 className="font-semibold text-foreground shrink-0">Draft Response</h3>
-                    {showRefinementButtons ? (
-                      <div className="flex gap-2 flex-wrap justify-end">
-                        <button
-                          onClick={() => handleAiAssistDemoOption('rewrite')}
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            currentTooltip === 4
-                              ? 'border border-purple-600 text-purple-600 hover:bg-purple-50'
-                              : 'border border-border text-foreground hover:bg-muted/50'
-                          }`}
-                        >
-                          Rewrite
-                        </button>
-                        <button
-                          onClick={() => handleAiAssistDemoOption('expand')}
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            currentTooltip === 4
-                              ? 'border border-purple-600 text-purple-600 hover:bg-purple-50'
-                              : 'border border-border text-foreground hover:bg-muted/50'
-                          }`}
-                        >
-                          Improve & Expand
-                        </button>
-                        <button
-                          onClick={() => handleAiAssistDemoOption('friendlier')}
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            currentTooltip === 4
-                              ? 'border border-purple-600 text-purple-600 hover:bg-purple-50'
-                              : 'border border-border text-foreground hover:bg-muted/50'
-                          }`}
-                        >
-                          Make Friendlier
-                        </button>
-                      </div>
-                    ) : (
+                    <div className="flex gap-2 flex-wrap justify-end items-center">
+                      {showRefinementButtons && (
+                        <>
+                          <button
+                            onClick={() => handleAiAssistDemoOption('rewrite')}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              currentTooltip === 4
+                                ? 'border border-purple-600 text-purple-600 hover:bg-purple-50'
+                                : 'border border-border text-foreground hover:bg-muted/50'
+                            }`}
+                          >
+                            Rewrite
+                          </button>
+                          <button
+                            onClick={() => handleAiAssistDemoOption('expand')}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              currentTooltip === 4
+                                ? 'border border-purple-600 text-purple-600 hover:bg-purple-50'
+                                : 'border border-border text-foreground hover:bg-muted/50'
+                            }`}
+                          >
+                            Improve & Expand
+                          </button>
+                          <button
+                            onClick={() => handleAiAssistDemoOption('friendlier')}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              currentTooltip === 4
+                                ? 'border border-purple-600 text-purple-600 hover:bg-purple-50'
+                                : 'border border-border text-foreground hover:bg-muted/50'
+                            }`}
+                          >
+                            Make Friendlier
+                          </button>
+                        </>
+                      )}
                       <AIAssistButton 
                         id="ai-assist-button"
                         currentText={draftResponse}
                         onAIGenerate={(text) => {
-                          setDraftResponse(text);
-                          setShowRefinementButtons(true);
+                          if (currentTooltip === 4) {
+                            handleAiAssistDemo();
+                          } else {
+                            setDraftResponse(text);
+                            setShowRefinementButtons(true);
+                          }
                         }}
                         context={`in response to: "${selectedConversation.question}"`}
                       />
-                    )}
+                    </div>
                   </div>
                   <div className="space-y-3">
                     <Textarea 
@@ -575,28 +616,29 @@ export default function Step8MessagesPage() {
                 {selectedConversation.answer && selectedConversation.status === 'auto' && <div className="mb-6">
                   <div className="flex items-center justify-between mb-3 gap-2">
                     <h3 className="font-semibold text-foreground shrink-0">Send Follow-up Message</h3>
-                    {showRefinementButtons ? (
-                      <div className="flex gap-2 flex-wrap justify-end">
-                        <button
-                          onClick={() => handleAiAssistDemoOption('rewrite')}
-                          className="px-4 py-2 border border-border text-foreground hover:bg-muted/50 rounded-lg text-sm font-medium transition-colors"
-                        >
-                          Rewrite
-                        </button>
-                        <button
-                          onClick={() => handleAiAssistDemoOption('expand')}
-                          className="px-4 py-2 border border-border text-foreground hover:bg-muted/50 rounded-lg text-sm font-medium transition-colors"
-                        >
-                          Improve & Expand
-                        </button>
-                        <button
-                          onClick={() => handleAiAssistDemoOption('friendlier')}
-                          className="px-4 py-2 border border-border text-foreground hover:bg-muted/50 rounded-lg text-sm font-medium transition-colors"
-                        >
-                          Make Friendlier
-                        </button>
-                      </div>
-                    ) : (
+                    <div className="flex gap-2 flex-wrap justify-end items-center">
+                      {showRefinementButtons && (
+                        <>
+                          <button
+                            onClick={() => handleAiAssistDemoOption('rewrite')}
+                            className="px-4 py-2 border border-border text-foreground hover:bg-muted/50 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            Rewrite
+                          </button>
+                          <button
+                            onClick={() => handleAiAssistDemoOption('expand')}
+                            className="px-4 py-2 border border-border text-foreground hover:bg-muted/50 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            Improve & Expand
+                          </button>
+                          <button
+                            onClick={() => handleAiAssistDemoOption('friendlier')}
+                            className="px-4 py-2 border border-border text-foreground hover:bg-muted/50 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            Make Friendlier
+                          </button>
+                        </>
+                      )}
                       <AIAssistButton 
                         currentText={draftResponse}
                         onAIGenerate={(text) => {
@@ -605,7 +647,7 @@ export default function Step8MessagesPage() {
                         }}
                         context={`follow-up message to ${selectedConversation.guestName} regarding: "${selectedConversation.question}"`}
                       />
-                    )}
+                    </div>
                   </div>
                   <div className="space-y-3">
                     <Textarea 
@@ -675,7 +717,7 @@ export default function Step8MessagesPage() {
                 }}
               />
             )}
-            {!tooltipPosition && currentTooltip === 6 && (
+            {!tooltipPosition && currentTooltip === 6 && !isFeedbackDialogOpen && (
               <div 
                 className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full"
                 style={{
