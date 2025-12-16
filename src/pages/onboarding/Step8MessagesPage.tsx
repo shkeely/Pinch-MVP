@@ -35,6 +35,9 @@ export default function Step8MessagesPage() {
   const [aiAssistDemoGenerated, setAiAssistDemoGenerated] = useState(false);
   const [aiAssistDemoOption, setAiAssistDemoOption] = useState<'rewrite' | 'expand' | 'friendlier' | null>(null);
 
+  // Refinement buttons visibility state
+  const [showRefinementButtons, setShowRefinementButtons] = useState(false);
+
   // Draggable tooltip state
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -63,6 +66,7 @@ export default function Step8MessagesPage() {
     if (currentTooltip === 4) {
       setAiAssistDemoGenerated(false);
       setAiAssistDemoOption(null);
+      setShowRefinementButtons(false);
     }
 
     // Special logic for Step 4: if viewing auto-answered message, skip to step 5
@@ -84,6 +88,7 @@ export default function Step8MessagesPage() {
     if (!aiAssistDemoGenerated) {
       setAiAssistDemoGenerated(true);
       setAiAssistDemoOption(null);
+      setShowRefinementButtons(true); // Show refinement buttons after generation
       // Show sample AI-generated response in the textarea
       setDraftResponse("Hi David! Thank you for letting us know. We completely understand that plans can change. Please let me know your final decision when you can, and we'll update our headcount accordingly. We hope everything is okay!");
       toast("Response Generated!", {
@@ -95,12 +100,16 @@ export default function Step8MessagesPage() {
 
   const handleAiAssistDemoOption = (option: 'rewrite' | 'expand' | 'friendlier') => {
     setAiAssistDemoOption(option);
-    const responses = {
-      rewrite: "David, thanks for reaching out! If you need to cancel, just send me a message and I'll take care of updating our list. No worries at all!",
-      expand: "Hi David! Thank you so much for letting us know ahead of time - we really appreciate your thoughtfulness. We completely understand that life happens and plans sometimes need to change. Please don't feel any pressure - just let us know your final decision whenever you're able, and we'll make sure to update our headcount accordingly. We truly hope everything is alright on your end!",
-      friendlier: "Hey David! 😊 Thanks so much for the heads up - we totally get it, life happens! Just shoot us a message when you know for sure, and we'll handle everything. Hoping all is well with you! 💕"
+    
+    // Simulate inserting refined text into textarea
+    const refinedResponses = {
+      rewrite: "I understand this is a challenging situation. Let's discuss what options might work best for you.",
+      expand: "I completely understand your concern about this. We appreciate you reaching out. Let me walk you through a few different options that other guests have found helpful in similar situations, and we can find what works best for your needs.",
+      friendlier: "Hey! Thanks so much for reaching out about this! 💜 We totally get it, and we're here to help however we can. Let's figure this out together!"
     };
-    setDraftResponse(responses[option]);
+    
+    setDraftResponse(refinedResponses[option]);
+    
     const messages = {
       rewrite: "New version generated! Feel free to try another style.",
       expand: "Expanded version created! Adding more context and detail.",
@@ -110,6 +119,19 @@ export default function Step8MessagesPage() {
       description: messages[option],
       duration: 3000,
     });
+  };
+
+  // Handler for textarea change to show refinement buttons
+  const handleDraftResponseChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDraftResponse(e.target.value);
+    // Show refinement buttons when user starts typing (if not already visible)
+    if (e.target.value.length > 0 && !showRefinementButtons) {
+      setShowRefinementButtons(true);
+    }
+    // Hide refinement buttons if textarea is empty
+    if (e.target.value.length === 0) {
+      setShowRefinementButtons(false);
+    }
   };
 
   const handlePrevious = () => {
