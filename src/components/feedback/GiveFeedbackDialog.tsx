@@ -12,9 +12,10 @@ interface GiveFeedbackDialogProps {
   onOpenChange: (open: boolean) => void;
   messageContext?: string;
   tourMode?: boolean;
+  onRecommendationsGenerated?: () => void;
 }
 
-export default function GiveFeedbackDialog({ open, onOpenChange, messageContext, tourMode = false }: GiveFeedbackDialogProps) {
+export default function GiveFeedbackDialog({ open, onOpenChange, messageContext, tourMode = false, onRecommendationsGenerated }: GiveFeedbackDialogProps) {
   const [feedback, setFeedback] = useState(tourMode ? "This response was helpful but could be friendlier in tone. The guest might appreciate a warmer greeting." : '');
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [recommendations, setRecommendations] = useState<string[]>([]);
@@ -36,6 +37,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext,
     
     setRecommendations(generatedRecs);
     setShowRecommendations(true);
+    onRecommendationsGenerated?.();
   };
 
   const handleApproveAll = () => {
@@ -105,7 +107,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext,
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 placeholder={tourMode ? "E.g., 'This response was helpful but could be friendlier in tone...'" : "Describe what should be improved or corrected in the AI response..."}
-                className="min-h-[150px]"
+                className={`min-h-[150px] ${tourMode ? 'ring-2 ring-purple-500 ring-offset-2' : ''}`}
               />
               <p className="text-xs text-muted-foreground">
                 This feedback will be used to improve future responses
@@ -191,7 +193,7 @@ export default function GiveFeedbackDialog({ open, onOpenChange, messageContext,
               className="bg-accent hover:bg-accent/90 text-accent-foreground"
             >
               <Check className="w-4 h-4 mr-2" />
-              {tourMode ? "See How It Works!" : "Approve & Update"}
+              {tourMode ? "Submit Feedback" : "Approve & Update"}
             </Button>
           )}
         </div>
