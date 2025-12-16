@@ -38,6 +38,9 @@ export default function Step8MessagesPage() {
   // Refinement buttons visibility state
   const [showRefinementButtons, setShowRefinementButtons] = useState(false);
 
+  // Give Feedback demo state (for Step 6 interactive demo)
+  const [feedbackDemoStep, setFeedbackDemoStep] = useState<'initial' | 'recommendations' | 'complete'>('initial');
+
   // Draggable tooltip state
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -67,6 +70,12 @@ export default function Step8MessagesPage() {
       setAiAssistDemoGenerated(false);
       setAiAssistDemoOption(null);
       setShowRefinementButtons(false);
+    }
+
+    // Reset feedback demo when leaving step 6
+    if (currentTooltip === 6) {
+      setFeedbackDemoStep('initial');
+      setIsFeedbackDialogOpen(false);
     }
 
     // Special logic for Step 4: if viewing auto-answered message, skip to step 5
@@ -131,6 +140,23 @@ export default function Step8MessagesPage() {
     // Hide refinement buttons if textarea is empty
     if (e.target.value.length === 0) {
       setShowRefinementButtons(false);
+    }
+  };
+
+  // Handler for Give Feedback button during tour
+  const handleGiveFeedbackButtonClick = () => {
+    if (currentTooltip === 6) {
+      // During Step 6 tour: allow dialog to open
+      setIsFeedbackDialogOpen(true);
+    } else if (currentTooltip > 0) {
+      // During other tour steps: show toast
+      toast("Available After Onboarding", {
+        description: "You can give feedback on responses once you complete the tour!",
+        duration: 3000,
+      });
+    } else {
+      // After tour: open dialog normally
+      setIsFeedbackDialogOpen(true);
     }
   };
 
