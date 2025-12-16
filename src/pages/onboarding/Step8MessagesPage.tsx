@@ -235,7 +235,7 @@ export default function Step8MessagesPage() {
         const rect = feedbackButton.getBoundingClientRect();
         position = {
           left: `${rect.left + rect.width / 2}px`,
-          top: `${rect.top + window.scrollY - 260}px`,
+          top: `${rect.top + window.scrollY - 280}px`,
           transform: 'translateX(-50%)'
         };
       }
