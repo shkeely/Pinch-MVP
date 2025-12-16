@@ -167,6 +167,14 @@ export default function Step8MessagesPage() {
 
   useEffect(() => {
     setTooltipPosition(null);
+    
+    // Auto-scroll for step 5 to show Send Message button
+    if (currentTooltip === 5) {
+      const sendButton = document.getElementById('send-message-header-button');
+      if (sendButton) {
+        sendButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   }, [currentTooltip]);
 
   const getTooltipPosition = () => {
@@ -182,14 +190,14 @@ export default function Step8MessagesPage() {
     let position = { left: '50%', top: '50%', transform: 'translate(-50%, -50%)' };
     
     if (currentTooltip === 4) {
-      // Step 4: Position to left of AI Assist button
+      // Step 4: Position above draft section so user can see AI response
       const aiButton = document.getElementById('ai-assist-button');
       if (aiButton) {
         const rect = aiButton.getBoundingClientRect();
         position = {
-          left: `${rect.left - 450}px`,
-          top: `${rect.top + window.scrollY + rect.height / 2}px`,
-          transform: 'translateY(-50%)'
+          left: `${rect.left - 480}px`,
+          top: `${rect.top + window.scrollY - 100}px`,
+          transform: 'none'
         };
       }
     } else if (currentTooltip === 5) {
@@ -210,7 +218,7 @@ export default function Step8MessagesPage() {
         const rect = feedbackButton.getBoundingClientRect();
         position = {
           left: `${rect.left + rect.width / 2}px`,
-          top: `${rect.top + window.scrollY - 220}px`,
+          top: `${rect.top + window.scrollY - 260}px`,
           transform: 'translateX(-50%)'
         };
       }
@@ -441,7 +449,7 @@ export default function Step8MessagesPage() {
                             Generate with AI
                           </button>
                         ) : (
-                          <div id="ai-assist-button" className="flex gap-2 flex-wrap">
+                          <div id="ai-assist-button" className="flex gap-2 flex-wrap ring-[3px] ring-purple-600 ring-offset-2 rounded-lg p-1">
                             <button
                               onClick={() => handleAiAssistDemoOption('rewrite')}
                               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -609,7 +617,19 @@ export default function Step8MessagesPage() {
                 }}
               />
             )}
-            {!tooltipPosition && currentTooltip !== 4 && currentTooltip !== 6 && (
+            {!tooltipPosition && currentTooltip === 5 && (
+              <div 
+                className="absolute left-1/2 -translate-x-1/2 -top-3"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '10px solid transparent',
+                  borderRight: '10px solid transparent',
+                  borderBottom: '10px solid #9333EA',
+                }}
+              />
+            )}
+            {!tooltipPosition && currentTooltip !== 4 && currentTooltip !== 5 && currentTooltip !== 6 && (
               <div 
                 className="absolute left-1/2 -translate-x-1/2 -top-3"
                 style={{
