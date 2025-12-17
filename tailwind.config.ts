@@ -160,10 +160,12 @@ export default {
         },
         "ring-pulse": {
           "0%, 100%": {
-            boxShadow: "0 0 0 3px rgba(147, 51, 234, 0.6)"
+            boxShadow: "0 0 0 4px rgba(147, 51, 234, 0.9), 0 0 20px rgba(147, 51, 234, 0.6)",
+            transform: "scale(1)"
           },
           "50%": {
-            boxShadow: "0 0 0 6px rgba(147, 51, 234, 0.3)"
+            boxShadow: "0 0 0 8px rgba(147, 51, 234, 0.2), 0 0 0px rgba(147, 51, 234, 0)",
+            transform: "scale(1.02)"
           }
         }
       },
@@ -180,7 +182,7 @@ export default {
         "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out",
         "bounce-vertical": "bounce-vertical 1s ease-in-out infinite",
         "bounce-horizontal": "bounce-horizontal 1s ease-in-out infinite",
-        "ring-pulse": "ring-pulse 1.5s ease-in-out infinite"
+        "ring-pulse": "ring-pulse 0.8s ease-in-out infinite"
       },
     },
   },
