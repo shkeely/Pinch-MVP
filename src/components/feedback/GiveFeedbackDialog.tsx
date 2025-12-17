@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { MessageSquare, Sparkles, Check, X, Edit3 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -16,11 +16,20 @@ interface GiveFeedbackDialogProps {
 }
 
 export default function GiveFeedbackDialog({ open, onOpenChange, messageContext, tourMode = false, onRecommendationsGenerated }: GiveFeedbackDialogProps) {
-  const [feedback, setFeedback] = useState(tourMode ? "We are planning to accommodate children under 1" : '');
+  const [feedback, setFeedback] = useState('');
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editText, setEditText] = useState('');
+
+  // Reset and prefill feedback when dialog opens in tour mode
+  useEffect(() => {
+    if (open && tourMode) {
+      setFeedback("We are planning to accommodate children under 1");
+      setShowRecommendations(false);
+      setRecommendations([]);
+    }
+  }, [open, tourMode]);
 
   const generateRecommendations = () => {
     if (!feedback.trim()) {
