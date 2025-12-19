@@ -232,7 +232,7 @@ export default function Step5NavigationBar() {
         {/* Purple circle highlight around nav item */}
         {highlightRect && (
           <div 
-            className="fixed pointer-events-none z-50 transition-all duration-500 rounded-full animate-pulse"
+            className="fixed pointer-events-none z-50 transition-all duration-500 rounded-full"
             style={{
               left: `${highlightRect.left}px`,
               top: `${highlightRect.top}px`,
