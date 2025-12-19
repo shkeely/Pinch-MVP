@@ -160,11 +160,11 @@ export default {
         },
         "ring-pulse": {
           "0%, 100%": {
-            boxShadow: "0 0 0 4px rgba(147, 51, 234, 0.9), 0 0 20px rgba(147, 51, 234, 0.6)",
+            boxShadow: "0 0 0 4px rgba(147, 51, 234, 0.4), 0 0 20px rgba(147, 51, 234, 0.24)",
             transform: "scale(1)"
           },
           "50%": {
-            boxShadow: "0 0 0 8px rgba(147, 51, 234, 0.2), 0 0 0px rgba(147, 51, 234, 0)",
+            boxShadow: "0 0 0 8px rgba(147, 51, 234, 0.08), 0 0 0px rgba(147, 51, 234, 0)",
             transform: "scale(1.02)"
           }
         }
