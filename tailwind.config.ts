@@ -182,7 +182,7 @@ export default {
         "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out",
         "bounce-vertical": "bounce-vertical 1s ease-in-out infinite",
         "bounce-horizontal": "bounce-horizontal 1s ease-in-out infinite",
-        "ring-pulse": "ring-pulse 0.8s ease-in-out infinite"
+        "ring-pulse": "ring-pulse 2.5s ease-in-out infinite"
       },
     },
   },
