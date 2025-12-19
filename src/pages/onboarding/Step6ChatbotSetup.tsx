@@ -817,7 +817,7 @@ export default function Step6ChatbotSetup() {
         
         return (
           <div
-            className={`fixed pointer-events-none transition-all duration-500 rounded-lg animate-pulse ${highlightZIndex}`}
+            className={`fixed pointer-events-none transition-all duration-500 rounded-lg ${highlightZIndex}`}
           style={{
             left: `${highlightRect.left}px`,
             top: `${highlightRect.top}px`,
