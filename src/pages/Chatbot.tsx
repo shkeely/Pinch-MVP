@@ -185,7 +185,7 @@ export default function Chatbot() {
       <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
         <div className="mb-8 flex items-center justify-between" data-tour-id="chatbot-overview">
           <div>
-            <h1 className="text-4xl font-serif font-bold mb-2">AI Concierge Configuration</h1>
+            <h1 className="text-4xl font-serif font-bold mb-2">Concierge</h1>
             <p className="text-muted-foreground">
               Customize how your AI concierge responds to guest questions
             </p>
