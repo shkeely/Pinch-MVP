@@ -7,7 +7,7 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UserPlus, Upload, Pencil, Settings, GripVertical } from 'lucide-react';
+import { UserPlus, Upload, Pencil, Settings, GripVertical, Plus, X } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -16,6 +16,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
 
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
@@ -30,8 +33,18 @@ interface Guest {
 
 export default function Step7GuestPageTour() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
-  
   const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  
+  const segments: Segment[] = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
+  const [segmentsList, setSegmentsList] = useState<Segment[]>(segments);
+  const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
+  const [newSegmentName, setNewSegmentName] = useState('');
+  const [editingSegment, setEditingSegment] = useState<{
+    old: Segment;
+    new: string;
+  } | null>(null);
+  
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
 
@@ -39,9 +52,6 @@ export default function Step7GuestPageTour() {
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-
-  const segments: Segment[] = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
-  const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
   
   const guestsList: Guest[] = [
     { id: 1, name: 'Emily Thompson', phone: '+1 555-0101', segment: 'Wedding Party', status: 'Active' },
@@ -120,6 +130,47 @@ export default function Step7GuestPageTour() {
   const handleImportGuests = (guests: Omit<Guest, 'id'>[]) => {
     console.log('Importing guests:', guests);
     setImportDialogOpen(false);
+  };
+
+  const handleAddSegment = () => {
+    if (!newSegmentName.trim()) {
+      toast.error("Segment name cannot be empty");
+      return;
+    }
+    if (segmentsList.includes(newSegmentName as Segment)) {
+      toast.error("Segment already exists");
+      return;
+    }
+    setSegmentsList([...segmentsList, newSegmentName as Segment]);
+    setNewSegmentName('');
+    toast.success(`Added segment: ${newSegmentName}`);
+  };
+
+  const handleRemoveSegment = (segment: Segment) => {
+    if (segment === 'All') {
+      toast.error("Cannot remove 'All' segment");
+      return;
+    }
+    setSegmentsList(segmentsList.filter(s => s !== segment));
+    toast.success(`Removed segment: ${segment}`);
+  };
+
+  const handleRenameSegment = () => {
+    if (!editingSegment || !editingSegment.new.trim()) {
+      toast.error("Segment name cannot be empty");
+      return;
+    }
+    if (editingSegment.old === 'All') {
+      toast.error("Cannot rename 'All' segment");
+      return;
+    }
+    if (segmentsList.includes(editingSegment.new as Segment) && editingSegment.new !== editingSegment.old) {
+      toast.error("Segment name already exists");
+      return;
+    }
+    setSegmentsList(segmentsList.map(s => s === editingSegment.old ? editingSegment.new as Segment : s));
+    toast.success(`Renamed segment from "${editingSegment.old}" to "${editingSegment.new}"`);
+    setEditingSegment(null);
   };
 
   // Drag handlers for tooltip
@@ -273,14 +324,104 @@ export default function Step7GuestPageTour() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Segments</h3>
-                <Button variant="ghost" size="sm" id="tour-edit-segments-btn">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Edit Segments
-                </Button>
+                <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" size="sm" id="tour-edit-segments-btn">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Edit Segments
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px] bg-card">
+                    <DialogHeader>
+                      <DialogTitle>Manage Segments</DialogTitle>
+                      <DialogDescription>
+                        Add, remove, or rename guest segments
+                      </DialogDescription>
+                    </DialogHeader>
+                    
+                    <div className="space-y-6 py-4">
+                      {/* Add New Segment */}
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Add New Segment</label>
+                        <div className="flex gap-2">
+                          <Input 
+                            placeholder="Enter segment name" 
+                            value={newSegmentName} 
+                            onChange={e => setNewSegmentName(e.target.value)} 
+                            onKeyDown={e => e.key === 'Enter' && handleAddSegment()} 
+                          />
+                          <Button onClick={handleAddSegment} size="sm">
+                            <Plus className="w-4 h-4 mr-1" />
+                            Add
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Existing Segments */}
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Existing Segments</label>
+                        <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                          {segmentsList.map(segment => (
+                            <div key={segment} className="flex items-center gap-2 p-2 rounded-md border bg-background">
+                              {editingSegment?.old === segment ? (
+                                <>
+                                  <Input 
+                                    value={editingSegment.new} 
+                                    onChange={e => setEditingSegment({
+                                      old: segment,
+                                      new: e.target.value
+                                    })} 
+                                    onKeyDown={e => {
+                                      if (e.key === 'Enter') handleRenameSegment();
+                                      if (e.key === 'Escape') setEditingSegment(null);
+                                    }} 
+                                    className="flex-1" 
+                                    autoFocus 
+                                  />
+                                  <Button size="sm" onClick={handleRenameSegment}>
+                                    Save
+                                  </Button>
+                                  <Button size="sm" variant="ghost" onClick={() => setEditingSegment(null)}>
+                                    Cancel
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="flex-1 font-medium">{segment}</span>
+                                  {segment !== 'All' && (
+                                    <>
+                                      <Button 
+                                        size="sm" 
+                                        variant="ghost" 
+                                        onClick={() => setEditingSegment({
+                                          old: segment,
+                                          new: segment
+                                        })}
+                                      >
+                                        <Pencil className="w-4 h-4" />
+                                      </Button>
+                                      <Button 
+                                        size="sm" 
+                                        variant="ghost" 
+                                        onClick={() => handleRemoveSegment(segment)}
+                                      >
+                                        <X className="w-4 h-4" />
+                                      </Button>
+                                    </>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
               
               <div className="flex flex-wrap gap-2 relative" id="tour-segments">
-                {segments.map((segment) => (
+                {segmentsList.map((segment) => (
                   <Button
                     key={segment}
                     variant={selectedSegment === segment ? "default" : "outline"}
