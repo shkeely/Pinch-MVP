@@ -2,7 +2,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Send, Users, Sparkles } from "lucide-react";
@@ -19,25 +20,11 @@ interface SendMessageDialogProps {
 
 export default function SendMessageDialog({ open, onOpenChange, segments, tourMode = false }: SendMessageDialogProps) {
   const [message, setMessage] = useState('');
-  const [selectedSegment, setSelectedSegment] = useState<Segment>('All');
-  const [recipientCount, setRecipientCount] = useState(150);
+  const [selectedSegments, setSelectedSegments] = useState<Segment[]>([]);
   const [showRefinementButtons, setShowRefinementButtons] = useState(false);
 
-  const handleSend = () => {
-    if (!message.trim()) {
-      toast.error("Message cannot be empty");
-      return;
-    }
-
-    toast.success(`Message sent to ${recipientCount} guests in "${selectedSegment}" segment`);
-    setMessage('');
-    setSelectedSegment('All');
-    onOpenChange(false);
-  };
-
-  const handleSegmentChange = (segment: Segment) => {
-    setSelectedSegment(segment);
-    // Simulate different recipient counts based on segment
+  // Calculate recipient count based on selected segments
+  const getRecipientCount = () => {
     const counts: Record<string, number> = {
       'All': 150,
       'Wedding Party': 12,
@@ -45,7 +32,39 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
       'Parents': 8,
       'Vendors': 15
     };
-    setRecipientCount(counts[segment] || 20);
+    
+    if (selectedSegments.includes('All')) return 150;
+    
+    return selectedSegments.reduce((total, segment) => {
+      return total + (counts[segment] || 20);
+    }, 0);
+  };
+
+  const recipientCount = getRecipientCount();
+
+  const handleSend = () => {
+    if (!message.trim()) {
+      toast.error("Message cannot be empty");
+      return;
+    }
+
+    if (selectedSegments.length === 0) {
+      toast.error("Please select at least one segment");
+      return;
+    }
+
+    toast.success(`Message sent to ${selectedSegments.length} segment${selectedSegments.length !== 1 ? 's' : ''}`);
+    setMessage('');
+    setSelectedSegments([]);
+    onOpenChange(false);
+  };
+
+  const handleSegmentToggle = (segment: Segment, checked: boolean) => {
+    if (checked) {
+      setSelectedSegments([...selectedSegments, segment]);
+    } else {
+      setSelectedSegments(selectedSegments.filter(s => s !== segment));
+    }
   };
 
   const handleAIGenerate = (text: string) => {
@@ -83,34 +102,54 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
           </DialogTitle>
           <DialogDescription>
             {tourMode 
-              ? "Segments let you target specific groups of guests. Try selecting different segments below to see how many recipients are in each group!"
-              : "Compose and send a message to your selected guest segment"
+              ? "Segments let you target specific groups of guests. Try selecting multiple segments below to send to different groups at once!"
+              : "Compose and send a message to one or more guest segments"
             }
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="segment">Select Segment</Label>
-            <Select value={selectedSegment} onValueChange={handleSegmentChange}>
-              <SelectTrigger id="segment" className={tourMode ? 'ring-2 ring-purple-500 ring-offset-2 ring-offset-white animate-pulse' : ''}>
-                <SelectValue placeholder="Choose guest segment" />
-              </SelectTrigger>
-              <SelectContent>
-                {segments.map((segment) => (
-                  <SelectItem key={segment} value={segment}>
+          <div className="space-y-3">
+            <Label className="text-sm font-medium">Send To</Label>
+            <p className="text-xs text-muted-foreground">Select one or more segments</p>
+            <div className={`space-y-2 bg-muted/30 p-3 rounded-md max-h-[200px] overflow-y-auto ${tourMode ? 'ring-2 ring-purple-500 ring-offset-2 animate-pulse' : ''}`}>
+              {segments.map((segment) => (
+                <div key={segment} className="flex items-center gap-2">
+                  <Checkbox
+                    id={`send-segment-${segment}`}
+                    checked={selectedSegments.includes(segment)}
+                    onCheckedChange={(checked) => handleSegmentToggle(segment, checked as boolean)}
+                  />
+                  <label
+                    htmlFor={`send-segment-${segment}`}
+                    className="text-sm font-medium cursor-pointer flex-1"
+                  >
                     {segment}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  </label>
+                </div>
+              ))}
+            </div>
+            
+            {selectedSegments.length > 0 && (
+              <div className="bg-purple-50 border border-purple-200 rounded-md p-3 text-sm">
+                <p className="font-medium text-purple-900 mb-2">Selected Segments:</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedSegments.map((segment) => (
+                    <Badge key={segment} className="bg-purple-600 text-white">
+                      {segment}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Users className="w-4 h-4" />
               <span>{recipientCount} recipients will receive this message</span>
             </div>
             {tourMode && (
               <p className="text-xs text-purple-600 font-medium">
-                👆 Try selecting different segments to see how targeting works!
+                👆 Try selecting multiple segments to see how multi-targeting works!
               </p>
             )}
           </div>
@@ -153,7 +192,7 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
                 <AIAssistButton 
                   currentText={message}
                   onAIGenerate={handleAIGenerate}
-                  context={`for ${selectedSegment} guests`}
+                  context={`for ${selectedSegments.length > 0 ? selectedSegments.join(', ') : 'selected'} guests`}
                 />
               </div>
             </div>
@@ -174,9 +213,13 @@ export default function SendMessageDialog({ open, onOpenChange, segments, tourMo
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSend} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+          <Button 
+            onClick={handleSend} 
+            disabled={!message.trim() || selectedSegments.length === 0}
+            className="bg-accent hover:bg-accent/90 text-accent-foreground"
+          >
             <Send className="w-4 h-4 mr-2" />
-            Send Message
+            Send to {selectedSegments.length} {selectedSegments.length === 1 ? 'Segment' : 'Segments'}
           </Button>
         </div>
       </DialogContent>
