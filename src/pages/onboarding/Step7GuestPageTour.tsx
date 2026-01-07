@@ -334,8 +334,10 @@ export default function Step7GuestPageTour() {
                   Edit Segments
                 </Button>
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                  <DialogContent className="sm:max-w-[500px] bg-card !z-[200]" style={{ zIndex: 200 }}>
-                    <DialogHeader>
+                  <DialogPortal>
+                    <DialogOverlay className="!z-[199]" style={{ zIndex: 199 }} />
+                    <DialogContent className="sm:max-w-[500px] bg-card !z-[200]" style={{ zIndex: 200 }}>
+                      <DialogHeader>
                       <DialogTitle>Manage Segments</DialogTitle>
                       <DialogDescription>
                         Add, remove, or rename guest segments
@@ -419,7 +421,8 @@ export default function Step7GuestPageTour() {
                         </div>
                       </div>
                     </div>
-                  </DialogContent>
+                    </DialogContent>
+                  </DialogPortal>
                 </Dialog>
               </div>
               
