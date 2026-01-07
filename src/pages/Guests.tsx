@@ -16,7 +16,7 @@ interface Guest {
   id: number;
   name: string;
   phone: string;
-  segment: Segment;
+  segments: string[];
   status: string;
 }
 
@@ -37,40 +37,42 @@ export default function Guests() {
     id: 1,
     name: 'Emily Thompson',
     phone: '+1 555-0101',
-    segment: 'Wedding Party',
+    segments: ['Wedding Party'],
     status: 'Active'
   }, {
     id: 2,
     name: 'Michael Chen',
     phone: '+1 555-0102',
-    segment: 'Out-of-Towners',
+    segments: ['Out-of-Towners'],
     status: 'Active'
   }, {
     id: 3,
     name: 'Jessica Martinez',
     phone: '+1 555-0103',
-    segment: 'All',
+    segments: ['Wedding Party', 'Out-of-Towners'],
     status: 'Active'
   }, {
     id: 4,
     name: 'David Park',
     phone: '+1 555-0104',
-    segment: 'Wedding Party',
+    segments: ['Wedding Party'],
     status: 'Active'
   }, {
     id: 5,
     name: 'Rachel Green',
     phone: '+1 555-0105',
-    segment: 'Out-of-Towners',
+    segments: ['Out-of-Towners'],
     status: 'Active'
   }, {
     id: 6,
     name: 'Tom Anderson',
     phone: '+1 555-0106',
-    segment: 'Parents',
+    segments: ['Parents'],
     status: 'Active'
   }]);
-  const filteredGuests = selectedSegment === 'All' ? guestsList : guestsList.filter(g => g.segment === selectedSegment);
+  const filteredGuests = selectedSegment === 'All' 
+    ? guestsList 
+    : guestsList.filter(g => g.segments.includes(selectedSegment));
   const handleAddSegment = () => {
     if (!newSegmentName.trim()) {
       toast.error("Segment name cannot be empty");
@@ -116,7 +118,7 @@ export default function Guests() {
     setEditingSegment(null);
   };
   const handleExportCSV = () => {
-    const csvContent = [['Name', 'Phone', 'Segment', 'Status'], ...filteredGuests.map(g => [g.name, g.phone, g.segment, g.status])].map(row => row.join(',')).join('\n');
+    const csvContent = [['Name', 'Phone', 'Segments', 'Status'], ...filteredGuests.map(g => [g.name, g.phone, g.segments.join('; '), g.status])].map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], {
       type: 'text/csv;charset=utf-8;'
     });
@@ -270,7 +272,7 @@ export default function Guests() {
                 <tr className="border-b">
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Name</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Phone</th>
-                  <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Segment</th>
+                  <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Segments</th>
                   <th className="text-left py-4 px-4 font-semibold text-muted-foreground bg-[#f7f5f3]">Status</th>
                   <th className="w-16 bg-[#f7f5f3]"></th>
                 </tr>
@@ -280,9 +282,13 @@ export default function Guests() {
                     <td className="py-4 px-4 font-medium">{guest.name}</td>
                     <td className="py-4 px-4 text-muted-foreground">{guest.phone}</td>
                     <td className="py-4 px-4">
-                      <Badge variant="secondary" className="bg-muted">
-                        {guest.segment}
-                      </Badge>
+                      <div className="flex flex-wrap gap-1">
+                        {guest.segments.map((segment) => (
+                          <Badge key={segment} variant="secondary" className="bg-muted">
+                            {segment}
+                          </Badge>
+                        ))}
+                      </div>
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-2">

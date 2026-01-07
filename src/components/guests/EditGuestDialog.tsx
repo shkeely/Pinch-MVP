@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -12,7 +13,7 @@ interface Guest {
   id: number;
   name: string;
   phone: string;
-  segment: Segment;
+  segments: string[];
   status: string;
 }
 
@@ -46,9 +47,24 @@ export default function EditGuestDialog({ open, onOpenChange, guest, segments, o
       return;
     }
 
+    if (!formData.segments || formData.segments.length === 0) {
+      toast.error("Please select at least one segment");
+      return;
+    }
+
     onSave(formData);
     onOpenChange(false);
     toast.success("Guest updated successfully");
+  };
+
+  const handleSegmentToggle = (segment: string, checked: boolean) => {
+    if (!formData) return;
+    
+    const newSegments = checked
+      ? [...formData.segments, segment]
+      : formData.segments.filter(s => s !== segment);
+    
+    setFormData({ ...formData, segments: newSegments });
   };
 
   if (!formData) return null;
@@ -84,23 +100,26 @@ export default function EditGuestDialog({ open, onOpenChange, guest, segments, o
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="segment">Segment</Label>
-            <Select 
-              value={formData.segment} 
-              onValueChange={(value) => setFormData({ ...formData, segment: value as Segment })}
-            >
-              <SelectTrigger id="segment">
-                <SelectValue placeholder="Select segment" />
-              </SelectTrigger>
-              <SelectContent>
-                {segments.filter(s => s !== 'All').map((segment) => (
-                  <SelectItem key={segment} value={segment}>
+          <div className="space-y-3">
+            <Label className="text-sm font-medium">Segments</Label>
+            <p className="text-xs text-muted-foreground">Select all segments this guest belongs to</p>
+            <div className="space-y-2 bg-muted/30 p-3 rounded-md max-h-[200px] overflow-y-auto">
+              {segments.filter(s => s !== 'All').map((segment) => (
+                <div key={segment} className="flex items-center gap-2">
+                  <Checkbox
+                    id={`segment-${segment}`}
+                    checked={formData.segments?.includes(segment) || false}
+                    onCheckedChange={(checked) => handleSegmentToggle(segment, checked === true)}
+                  />
+                  <label
+                    htmlFor={`segment-${segment}`}
+                    className="text-sm font-medium cursor-pointer flex-1"
+                  >
                     {segment}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-2">
