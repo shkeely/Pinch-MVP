@@ -7,8 +7,6 @@ import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { UserPlus, Upload, Pencil, Settings, GripVertical } from 'lucide-react';
 import {
   Table,
@@ -32,7 +30,7 @@ interface Guest {
 
 export default function Step7GuestPageTour() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
-  const [multiSegmentMode, setMultiSegmentMode] = useState(false);
+  
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { updateWedding } = useWedding();
@@ -296,29 +294,6 @@ export default function Step7GuestPageTour() {
             </div>
           </Card>
 
-          {/* Action Buttons with Multi-Segment Toggle */}
-          <div className="mb-4 space-y-3" id="tour-send-message-area">
-            <div className="flex flex-wrap gap-2">
-              <Button variant="outline" size="sm">
-                Send Message to Guests
-              </Button>
-              <Button variant="outline" size="sm">
-                Copy Chatbot Link
-              </Button>
-            </div>
-
-            {/* Multi-Segment Toggle */}
-            <div className="flex items-center space-x-2 relative" id="tour-multi-segment-toggle">
-              <Switch 
-                id="multi-segment"
-                checked={multiSegmentMode}
-                onCheckedChange={setMultiSegmentMode}
-              />
-              <Label htmlFor="multi-segment" className="text-sm cursor-pointer">
-                Send to Multiple Segments
-              </Label>
-            </div>
-          </div>
 
           {/* Guests Table */}
           <Card>
