@@ -12,7 +12,7 @@ interface Guest {
   id: number;
   name: string;
   phone: string;
-  segment: Segment;
+  segments: string[];
   status: string;
 }
 
@@ -71,10 +71,13 @@ export default function ImportGuestsDialog({ open, onOpenChange, onImport }: Imp
     
     return dataLines.map(line => {
       const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+      // Parse segments - support semicolon-separated list or single value
+      const segmentValue = values[2] || '';
+      const segments = segmentValue ? segmentValue.split(';').map(s => s.trim()).filter(Boolean) : [];
       return {
         name: values[0] || '',
         phone: values[1] || '',
-        segment: (values[2] || 'All') as Segment,
+        segments: segments.length > 0 ? segments : ['Wedding Party'],
         status: values[3] || 'Active'
       };
     }).filter(guest => guest.name && guest.phone);
@@ -174,10 +177,13 @@ export default function ImportGuestsDialog({ open, onOpenChange, onImport }: Imp
           <div className="space-y-2 p-4 bg-muted/50 rounded-lg">
             <Label className="text-sm font-medium">Expected CSV Format:</Label>
             <code className="block text-xs bg-background p-2 rounded border">
-              Name, Phone, Segment, Status<br />
+              Name, Phone, Segments, Status<br />
               John Doe, +1 555-0100, Wedding Party, Active<br />
-              Jane Smith, +1 555-0101, Out-of-Towners, Invited
+              Jane Smith, +1 555-0101, Wedding Party; Out-of-Towners, Active
             </code>
+            <p className="text-xs text-muted-foreground mt-2">
+              Multiple segments can be separated with semicolons (;)
+            </p>
           </div>
         </div>
 

@@ -28,7 +28,7 @@ interface Guest {
   id: number;
   name: string;
   phone: string;
-  segment: Segment;
+  segments: string[];
   status: string;
 }
 
@@ -57,15 +57,17 @@ export default function Step7GuestPageTour() {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   
   const guestsList: Guest[] = [
-    { id: 1, name: 'Emily Thompson', phone: '+1 555-0101', segment: 'Wedding Party', status: 'Active' },
-    { id: 2, name: 'Michael Chen', phone: '+1 555-0102', segment: 'Out-of-Towners', status: 'Active' },
-    { id: 3, name: 'Jessica Martinez', phone: '+1 555-0103', segment: 'All', status: 'Active' },
-    { id: 4, name: 'David Park', phone: '+1 555-0104', segment: 'Wedding Party', status: 'Active' },
-    { id: 5, name: 'Rachel Green', phone: '+1 555-0105', segment: 'Out-of-Towners', status: 'Active' },
-    { id: 6, name: 'Tom Anderson', phone: '+1 555-0106', segment: 'Parents', status: 'Active' },
+    { id: 1, name: 'Emily Thompson', phone: '+1 555-0101', segments: ['Wedding Party'], status: 'Active' },
+    { id: 2, name: 'Michael Chen', phone: '+1 555-0102', segments: ['Out-of-Towners'], status: 'Active' },
+    { id: 3, name: 'Jessica Martinez', phone: '+1 555-0103', segments: ['Wedding Party', 'Out-of-Towners'], status: 'Active' },
+    { id: 4, name: 'David Park', phone: '+1 555-0104', segments: ['Wedding Party'], status: 'Active' },
+    { id: 5, name: 'Rachel Green', phone: '+1 555-0105', segments: ['Out-of-Towners'], status: 'Active' },
+    { id: 6, name: 'Tom Anderson', phone: '+1 555-0106', segments: ['Parents'], status: 'Active' },
   ];
 
-  const filteredGuests = selectedSegment === 'All' ? guestsList : guestsList.filter(g => g.segment === selectedSegment);
+  const filteredGuests = selectedSegment === 'All' 
+    ? guestsList 
+    : guestsList.filter(g => g.segments.includes(selectedSegment));
 
   // Set preferred preview route
   useEffect(() => {
@@ -378,7 +380,7 @@ export default function Step7GuestPageTour() {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Phone</TableHead>
-                      <TableHead>Segment</TableHead>
+                      <TableHead>Segments</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
@@ -393,7 +395,11 @@ export default function Step7GuestPageTour() {
                         <TableCell className="font-medium">{guest.name}</TableCell>
                         <TableCell>{guest.phone}</TableCell>
                         <TableCell>
-                          <Badge variant="outline">{guest.segment}</Badge>
+                          <div className="flex flex-wrap gap-1">
+                            {guest.segments.map((segment) => (
+                              <Badge key={segment} variant="outline">{segment}</Badge>
+                            ))}
+                          </div>
                         </TableCell>
                         <TableCell>
                           <Badge variant={guest.status === 'Active' ? 'default' : 'secondary'}>
