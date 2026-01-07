@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogPortal, DialogOverlay, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
@@ -334,7 +334,7 @@ export default function Step7GuestPageTour() {
                   Edit Segments
                 </Button>
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                  <DialogContent className="sm:max-w-[500px] bg-card z-[100]">
+                  <DialogContent className="sm:max-w-[500px] bg-card !z-[200]" style={{ zIndex: 200 }}>
                     <DialogHeader>
                       <DialogTitle>Manage Segments</DialogTitle>
                       <DialogDescription>
@@ -494,7 +494,7 @@ export default function Step7GuestPageTour() {
 
         {/* Centered Draggable Tooltip */}
         <div 
-          className="fixed z-50 pointer-events-none"
+          className={`fixed pointer-events-none ${isEditDialogOpen ? 'z-40' : 'z-50'}`}
           style={{
             ...getTooltipPosition(),
             transition: isDragging ? 'none' : 'all 0.3s ease-out'
