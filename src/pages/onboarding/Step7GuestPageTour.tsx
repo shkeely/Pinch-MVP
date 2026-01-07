@@ -20,6 +20,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
+import EditGuestDialog from '@/components/guests/EditGuestDialog';
 
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
 
@@ -35,6 +36,8 @@ export default function Step7GuestPageTour() {
   const [currentTooltip, setCurrentTooltip] = useState(1);
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isEditGuestDialogOpen, setIsEditGuestDialogOpen] = useState(false);
+  const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null);
   
   const segments: Segment[] = ['All', 'Wedding Party', 'Out-of-Towners', 'Parents', 'Vendors'];
   const [segmentsList, setSegmentsList] = useState<Segment[]>(segments);
@@ -171,6 +174,17 @@ export default function Step7GuestPageTour() {
     setSegmentsList(segmentsList.map(s => s === editingSegment.old ? editingSegment.new as Segment : s));
     toast.success(`Renamed segment from "${editingSegment.old}" to "${editingSegment.new}"`);
     setEditingSegment(null);
+  };
+
+  const handleEditGuest = (guest: Guest) => {
+    setSelectedGuest(guest);
+    setIsEditGuestDialogOpen(true);
+  };
+
+  const handleSaveGuest = (updatedGuest: Guest) => {
+    console.log('Guest updated:', updatedGuest);
+    setIsEditGuestDialogOpen(false);
+    setSelectedGuest(null);
   };
 
   // Drag handlers for tooltip
@@ -391,6 +405,8 @@ export default function Step7GuestPageTour() {
                             variant="ghost" 
                             size="sm"
                             id={index === 0 ? 'tour-edit-guest-btn' : undefined}
+                            onClick={() => handleEditGuest(guest)}
+                            className={currentTooltip === 5 && index === 0 ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -588,6 +604,15 @@ export default function Step7GuestPageTour() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Edit Guest Dialog */}
+      <EditGuestDialog
+        open={isEditGuestDialogOpen}
+        onOpenChange={setIsEditGuestDialogOpen}
+        guest={selectedGuest}
+        segments={segmentsList.filter(s => s !== 'All')}
+        onSave={handleSaveGuest}
+      />
     </TourPage>
   );
 }
