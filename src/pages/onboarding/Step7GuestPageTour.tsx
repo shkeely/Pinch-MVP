@@ -16,7 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Dialog, DialogPortal, DialogOverlay, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Dialog, DialogPortal, DialogOverlay, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
@@ -336,92 +337,100 @@ export default function Step7GuestPageTour() {
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                   <DialogPortal>
                     <DialogOverlay className="!z-[199]" style={{ zIndex: 199 }} />
-                    <DialogContent className="sm:max-w-[500px] bg-card !z-[200]" style={{ zIndex: 200 }}>
+                    <DialogPrimitive.Content
+                      className="fixed left-[50%] top-[50%] z-[200] grid w-full max-w-[500px] translate-x-[-50%] translate-y-[-50%] gap-4 border bg-card p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg"
+                      style={{ zIndex: 200 }}
+                    >
                       <DialogHeader>
-                      <DialogTitle>Manage Segments</DialogTitle>
-                      <DialogDescription>
-                        Add, remove, or rename guest segments
-                      </DialogDescription>
-                    </DialogHeader>
+                        <DialogTitle>Manage Segments</DialogTitle>
+                        <DialogDescription>
+                          Add, remove, or rename guest segments
+                        </DialogDescription>
+                      </DialogHeader>
                     
-                    <div className="space-y-6 py-4">
-                      {/* Add New Segment */}
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Add New Segment</label>
-                        <div className="flex gap-2">
-                          <Input 
-                            placeholder="Enter segment name" 
-                            value={newSegmentName} 
-                            onChange={e => setNewSegmentName(e.target.value)} 
-                            onKeyDown={e => e.key === 'Enter' && handleAddSegment()} 
-                          />
-                          <Button onClick={handleAddSegment} size="sm">
-                            <Plus className="w-4 h-4 mr-1" />
-                            Add
-                          </Button>
+                      <div className="space-y-6 py-4">
+                        {/* Add New Segment */}
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Add New Segment</label>
+                          <div className="flex gap-2">
+                            <Input 
+                              placeholder="Enter segment name" 
+                              value={newSegmentName} 
+                              onChange={e => setNewSegmentName(e.target.value)} 
+                              onKeyDown={e => e.key === 'Enter' && handleAddSegment()} 
+                            />
+                            <Button onClick={handleAddSegment} size="sm">
+                              <Plus className="w-4 h-4 mr-1" />
+                              Add
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Existing Segments */}
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Existing Segments</label>
+                          <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                            {segmentsList.map(segment => (
+                              <div key={segment} className="flex items-center gap-2 p-2 rounded-md border bg-background">
+                                {editingSegment?.old === segment ? (
+                                  <>
+                                    <Input 
+                                      value={editingSegment.new} 
+                                      onChange={e => setEditingSegment({
+                                        old: segment,
+                                        new: e.target.value
+                                      })} 
+                                      onKeyDown={e => {
+                                        if (e.key === 'Enter') handleRenameSegment();
+                                        if (e.key === 'Escape') setEditingSegment(null);
+                                      }} 
+                                      className="flex-1" 
+                                      autoFocus 
+                                    />
+                                    <Button size="sm" onClick={handleRenameSegment}>
+                                      Save
+                                    </Button>
+                                    <Button size="sm" variant="ghost" onClick={() => setEditingSegment(null)}>
+                                      Cancel
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="flex-1 font-medium">{segment}</span>
+                                    {segment !== 'All' && (
+                                      <>
+                                        <Button 
+                                          size="sm" 
+                                          variant="ghost" 
+                                          onClick={() => setEditingSegment({
+                                            old: segment,
+                                            new: segment
+                                          })}
+                                        >
+                                          <Pencil className="w-4 h-4" />
+                                        </Button>
+                                        <Button 
+                                          size="sm" 
+                                          variant="ghost" 
+                                          onClick={() => handleRemoveSegment(segment)}
+                                        >
+                                          <X className="w-4 h-4" />
+                                        </Button>
+                                      </>
+                                    )}
+                                  </>
+                                )}
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
 
-                      {/* Existing Segments */}
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Existing Segments</label>
-                        <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                          {segmentsList.map(segment => (
-                            <div key={segment} className="flex items-center gap-2 p-2 rounded-md border bg-background">
-                              {editingSegment?.old === segment ? (
-                                <>
-                                  <Input 
-                                    value={editingSegment.new} 
-                                    onChange={e => setEditingSegment({
-                                      old: segment,
-                                      new: e.target.value
-                                    })} 
-                                    onKeyDown={e => {
-                                      if (e.key === 'Enter') handleRenameSegment();
-                                      if (e.key === 'Escape') setEditingSegment(null);
-                                    }} 
-                                    className="flex-1" 
-                                    autoFocus 
-                                  />
-                                  <Button size="sm" onClick={handleRenameSegment}>
-                                    Save
-                                  </Button>
-                                  <Button size="sm" variant="ghost" onClick={() => setEditingSegment(null)}>
-                                    Cancel
-                                  </Button>
-                                </>
-                              ) : (
-                                <>
-                                  <span className="flex-1 font-medium">{segment}</span>
-                                  {segment !== 'All' && (
-                                    <>
-                                      <Button 
-                                        size="sm" 
-                                        variant="ghost" 
-                                        onClick={() => setEditingSegment({
-                                          old: segment,
-                                          new: segment
-                                        })}
-                                      >
-                                        <Pencil className="w-4 h-4" />
-                                      </Button>
-                                      <Button 
-                                        size="sm" 
-                                        variant="ghost" 
-                                        onClick={() => handleRemoveSegment(segment)}
-                                      >
-                                        <X className="w-4 h-4" />
-                                      </Button>
-                                    </>
-                                  )}
-                                </>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    </DialogContent>
+                      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                        <X className="h-4 w-4" />
+                        <span className="sr-only">Close</span>
+                      </DialogPrimitive.Close>
+                    </DialogPrimitive.Content>
                   </DialogPortal>
                 </Dialog>
               </div>
