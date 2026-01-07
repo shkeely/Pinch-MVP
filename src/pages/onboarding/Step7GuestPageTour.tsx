@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import ImportGuestsDialog from '@/components/guests/ImportGuestsDialog';
@@ -324,14 +324,17 @@ export default function Step7GuestPageTour() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Segments</h3>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  id="tour-edit-segments-btn"
+                  onClick={() => setIsEditDialogOpen(true)}
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  Edit Segments
+                </Button>
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" size="sm" id="tour-edit-segments-btn">
-                      <Settings className="mr-2 h-4 w-4" />
-                      Edit Segments
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px] bg-card">
+                  <DialogContent className="sm:max-w-[500px] bg-card z-[100]">
                     <DialogHeader>
                       <DialogTitle>Manage Segments</DialogTitle>
                       <DialogDescription>
