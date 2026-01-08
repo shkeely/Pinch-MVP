@@ -180,18 +180,6 @@ export default function HelpSupport() {
               </div>
             </Card>
 
-            <Card className="p-6 bg-accent/5 border-accent/20">
-              <h3 className="text-lg font-semibold mb-2">Need urgent help?</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                For time-sensitive issues during your event, contact our emergency support line.
-              </p>
-              <Button 
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                onClick={() => toast.info('Emergency support: +1 (555) 999-0000')}
-              >
-                Emergency Support
-              </Button>
-            </Card>
           </div>
         </div>
       </main>
