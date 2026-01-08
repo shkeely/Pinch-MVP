@@ -492,7 +492,7 @@ export default function Step6ChatbotSetup() {
     },
     '3b': {
       title: "Partner Notifications",
-      description: "Select which partners receive notifications when guests message. You can have up to 4 partners, and you can update their names anytime in the Profile section.",
+      description: "Select which partners receive notifications when guests message. You can have up to 4 partners. You can update their names and contact info anytime in the Profile section.",
       position: 'left' as const
     },
     4: {
