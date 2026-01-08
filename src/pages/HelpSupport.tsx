@@ -121,30 +121,6 @@ export default function HelpSupport() {
 
           {/* Quick Links & Contact Info */}
           <div className="space-y-6">
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <div className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => toast.info('Documentation coming soon')}
-                >
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Documentation
-                  <ExternalLink className="w-3 h-3 ml-auto" />
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => toast.info('Video tutorials coming soon')}
-                >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Video Tutorials
-                  <ExternalLink className="w-3 h-3 ml-auto" />
-                </Button>
-              </div>
-            </Card>
 
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
