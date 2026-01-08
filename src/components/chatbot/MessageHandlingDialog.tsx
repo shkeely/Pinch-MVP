@@ -1,6 +1,5 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Save } from "lucide-react";
@@ -13,10 +12,14 @@ interface MessageHandlingDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+interface PartnerNotification {
+  enabled: boolean;
+  email: boolean;
+  sms: boolean;
+}
+
 export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDialogProps) {
   const { wedding } = useWedding();
-  const [emailEnabled, setEmailEnabled] = useState(true);
-  const [smsEnabled, setSmsEnabled] = useState(false);
   
   // Get partners from context
   const partners = wedding.partners?.length > 0 
@@ -26,11 +29,23 @@ export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDia
         { id: '2', name: wedding.couple2 }
       ].filter(p => p.name);
 
-  const [notifyPartners, setNotifyPartners] = useState<Record<string, boolean>>(() => {
-    const initial: Record<string, boolean> = {};
-    partners.forEach(p => { initial[p.id] = true; });
+  const [partnerPreferences, setPartnerPreferences] = useState<Record<string, PartnerNotification>>(() => {
+    const initial: Record<string, PartnerNotification> = {};
+    partners.forEach(p => { 
+      initial[p.id] = { enabled: true, email: true, sms: false }; 
+    });
     return initial;
   });
+
+  const updatePartnerPref = (partnerId: string, field: keyof PartnerNotification, value: boolean) => {
+    setPartnerPreferences(prev => ({
+      ...prev,
+      [partnerId]: {
+        ...prev[partnerId],
+        [field]: value
+      }
+    }));
+  };
 
   const handleSave = () => {
     toast.success('Message handling preferences updated');
@@ -48,52 +63,62 @@ export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDia
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {/* Notification Method */}
+          {/* Partner Notifications */}
           <div className="space-y-4">
-            <Label className="text-base font-semibold">Notification Method</Label>
-            
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="msg-email" className="cursor-pointer">Email Notifications</Label>
-              </div>
-              <Switch
-                id="msg-email"
-                checked={emailEnabled}
-                onCheckedChange={setEmailEnabled}
-              />
-            </div>
-
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="msg-sms" className="cursor-pointer">SMS Notifications</Label>
-              </div>
-              <Switch
-                id="msg-sms"
-                checked={smsEnabled}
-                onCheckedChange={setSmsEnabled}
-              />
-            </div>
-          </div>
-
-          {/* Recipients */}
-          <div className="space-y-4">
-            <Label className="text-base font-semibold">Send Notifications To</Label>
+            <Label className="text-base font-semibold">Partner Notifications</Label>
             
             <div className="space-y-3">
-              {partners.map((partner) => (
-                <div key={partner.id} className="flex items-center space-x-3 p-3 rounded-lg bg-muted/30">
-                  <Checkbox
-                    id={`msg-partner-${partner.id}`}
-                    checked={notifyPartners[partner.id] ?? true}
-                    onCheckedChange={(checked) => 
-                      setNotifyPartners(prev => ({ ...prev, [partner.id]: checked as boolean }))
-                    }
-                  />
-                  <Label htmlFor={`msg-partner-${partner.id}`} className="cursor-pointer flex-1">
-                    {partner.name || `Partner ${partner.id}`}
-                  </Label>
-                </div>
-              ))}
+              {partners.map((partner) => {
+                const prefs = partnerPreferences[partner.id] || { enabled: true, email: true, sms: false };
+                return (
+                  <div key={partner.id} className="p-4 rounded-lg bg-muted/30 space-y-3">
+                    {/* Partner enable/disable checkbox */}
+                    <div className="flex items-center space-x-3">
+                      <Checkbox
+                        id={`partner-${partner.id}`}
+                        checked={prefs.enabled}
+                        onCheckedChange={(checked) => 
+                          updatePartnerPref(partner.id, 'enabled', checked as boolean)
+                        }
+                      />
+                      <Label htmlFor={`partner-${partner.id}`} className="cursor-pointer font-medium">
+                        {partner.name || `Partner ${partner.id}`}
+                      </Label>
+                    </div>
+                    
+                    {/* Individual notification method toggles */}
+                    {prefs.enabled && (
+                      <div className="flex gap-4 ml-7">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id={`partner-${partner.id}-email`}
+                            checked={prefs.email}
+                            onCheckedChange={(checked) => 
+                              updatePartnerPref(partner.id, 'email', checked as boolean)
+                            }
+                          />
+                          <Label htmlFor={`partner-${partner.id}-email`} className="text-sm cursor-pointer">
+                            Email
+                          </Label>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id={`partner-${partner.id}-sms`}
+                            checked={prefs.sms}
+                            onCheckedChange={(checked) => 
+                              updatePartnerPref(partner.id, 'sms', checked as boolean)
+                            }
+                          />
+                          <Label htmlFor={`partner-${partner.id}-sms`} className="text-sm cursor-pointer">
+                            SMS
+                          </Label>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
