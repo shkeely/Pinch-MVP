@@ -39,7 +39,7 @@ export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDia
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px]" data-tour-id="message-handling-dialog">
         <DialogHeader>
           <DialogTitle>Message Handling Preferences</DialogTitle>
           <DialogDescription>
