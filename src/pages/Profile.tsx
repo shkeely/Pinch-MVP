@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Save, Upload, Mail, Phone, Plus, Trash2 } from 'lucide-react';
 import { useWedding } from '@/contexts/WeddingContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 interface PartnerAccount {
@@ -18,7 +18,7 @@ interface PartnerAccount {
 }
 
 export default function Profile() {
-  const { wedding } = useWedding();
+  const { wedding, updateWedding } = useWedding();
   const [partnerAccounts, setPartnerAccounts] = useState<PartnerAccount[]>([
     {
       id: '1',
@@ -36,6 +36,14 @@ export default function Profile() {
     }
   ]);
 
+  // Sync partner accounts when wedding context changes
+  useEffect(() => {
+    setPartnerAccounts(prev => [
+      { ...prev[0], name: wedding.couple1 || prev[0]?.name || '' },
+      { ...prev[1], name: wedding.couple2 || prev[1]?.name || '' }
+    ]);
+  }, [wedding.couple1, wedding.couple2]);
+
   const getInitials = () => {
     const first = wedding.couple1.charAt(0).toUpperCase();
     const second = wedding.couple2.charAt(0).toUpperCase();
@@ -43,6 +51,10 @@ export default function Profile() {
   };
 
   const handleSaveChanges = () => {
+    updateWedding({
+      couple1: partnerAccounts[0]?.name || wedding.couple1,
+      couple2: partnerAccounts[1]?.name || wedding.couple2,
+    });
     toast.success('Profile updated successfully');
   };
 
