@@ -17,8 +17,20 @@ export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDia
   const { wedding } = useWedding();
   const [emailEnabled, setEmailEnabled] = useState(true);
   const [smsEnabled, setSmsEnabled] = useState(false);
-  const [notifyPartner1, setNotifyPartner1] = useState(true);
-  const [notifyPartner2, setNotifyPartner2] = useState(true);
+  
+  // Get partners from context
+  const partners = wedding.partners?.length > 0 
+    ? wedding.partners 
+    : [
+        { id: '1', name: wedding.couple1 },
+        { id: '2', name: wedding.couple2 }
+      ].filter(p => p.name);
+
+  const [notifyPartners, setNotifyPartners] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    partners.forEach(p => { initial[p.id] = true; });
+    return initial;
+  });
 
   const handleSave = () => {
     toast.success('Message handling preferences updated');
@@ -68,27 +80,20 @@ export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDia
             <Label className="text-base font-semibold">Send Notifications To</Label>
             
             <div className="space-y-3">
-              <div className="flex items-center space-x-3 p-3 rounded-lg bg-muted/30">
-                <Checkbox
-                  id="msg-partner1"
-                  checked={notifyPartner1}
-                  onCheckedChange={(checked) => setNotifyPartner1(checked as boolean)}
-                />
-                <Label htmlFor="msg-partner1" className="cursor-pointer flex-1">
-                  {wedding.couple1}
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-3 p-3 rounded-lg bg-muted/30">
-                <Checkbox
-                  id="msg-partner2"
-                  checked={notifyPartner2}
-                  onCheckedChange={(checked) => setNotifyPartner2(checked as boolean)}
-                />
-                <Label htmlFor="msg-partner2" className="cursor-pointer flex-1">
-                  {wedding.couple2}
-                </Label>
-              </div>
+              {partners.map((partner) => (
+                <div key={partner.id} className="flex items-center space-x-3 p-3 rounded-lg bg-muted/30">
+                  <Checkbox
+                    id={`msg-partner-${partner.id}`}
+                    checked={notifyPartners[partner.id] ?? true}
+                    onCheckedChange={(checked) => 
+                      setNotifyPartners(prev => ({ ...prev, [partner.id]: checked as boolean }))
+                    }
+                  />
+                  <Label htmlFor={`msg-partner-${partner.id}`} className="cursor-pointer flex-1">
+                    {partner.name || `Partner ${partner.id}`}
+                  </Label>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -6,6 +6,13 @@ export type NotificationFrequency = 'realtime' | 'daily' | 'weekly';
 
 export type Confidence = 'high' | 'medium' | 'low';
 
+export interface Partner {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export interface FAQ {
   question: string;
   answer: string;
@@ -31,6 +38,7 @@ export interface Wedding {
   id: string;
   couple1: string;
   couple2: string;
+  partners: Partner[];
   date: string;
   time: string;
   venue: string;
