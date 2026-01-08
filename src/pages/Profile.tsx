@@ -17,32 +17,52 @@ interface PartnerAccount {
   plannerAccess: boolean;
 }
 
-export default function Profile() {
-  const { wedding, updateWedding } = useWedding();
-  const [partnerAccounts, setPartnerAccounts] = useState<PartnerAccount[]>([
+const getInitialPartners = (wedding: any): PartnerAccount[] => {
+  if (wedding.partners && wedding.partners.length > 0) {
+    return wedding.partners.map((p: any, index: number) => ({
+      id: p.id,
+      name: p.name,
+      email: p.email || '',
+      phone: p.phone || '',
+      plannerAccess: index === 0,
+    }));
+  }
+  return [
     {
       id: '1',
-      name: wedding.couple1,
-      email: `${wedding.couple1.toLowerCase().replace(' ', '.')}@wedding.app`,
-      phone: '+1 (555) 123-4567',
+      name: wedding.couple1 || '',
+      email: '',
+      phone: '',
       plannerAccess: true
     },
     {
       id: '2',
-      name: wedding.couple2,
-      email: `${wedding.couple2.toLowerCase().replace(' ', '.')}@wedding.app`,
-      phone: '+1 (555) 987-6543',
+      name: wedding.couple2 || '',
+      email: '',
+      phone: '',
       plannerAccess: false
     }
-  ]);
+  ];
+};
+
+export default function Profile() {
+  const { wedding, updateWedding } = useWedding();
+  const [partnerAccounts, setPartnerAccounts] = useState<PartnerAccount[]>(() => 
+    getInitialPartners(wedding)
+  );
 
   // Sync partner accounts when wedding context changes
   useEffect(() => {
-    setPartnerAccounts(prev => [
-      { ...prev[0], name: wedding.couple1 || prev[0]?.name || '' },
-      { ...prev[1], name: wedding.couple2 || prev[1]?.name || '' }
-    ]);
-  }, [wedding.couple1, wedding.couple2]);
+    if (wedding.partners && wedding.partners.length > 0) {
+      setPartnerAccounts(wedding.partners.map((p, index) => ({
+        id: p.id,
+        name: p.name,
+        email: p.email || '',
+        phone: p.phone || '',
+        plannerAccess: index === 0,
+      })));
+    }
+  }, [wedding.partners]);
 
   const getInitials = () => {
     const first = wedding.couple1.charAt(0).toUpperCase();
@@ -54,6 +74,12 @@ export default function Profile() {
     updateWedding({
       couple1: partnerAccounts[0]?.name || wedding.couple1,
       couple2: partnerAccounts[1]?.name || wedding.couple2,
+      partners: partnerAccounts.map(p => ({
+        id: p.id,
+        name: p.name,
+        email: p.email,
+        phone: p.phone,
+      })),
     });
     toast.success('Profile updated successfully');
   };
@@ -140,9 +166,10 @@ export default function Profile() {
                 onClick={handleAddPartner}
                 variant="outline"
                 size="sm"
+                disabled={partnerAccounts.length >= 4}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add Partner
+                Add Partner ({partnerAccounts.length}/4)
               </Button>
             </div>
             
