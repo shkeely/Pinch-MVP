@@ -44,14 +44,30 @@ const defaultWedding: Wedding = {
   },
 };
 
+const getInitialWedding = (): Wedding => {
+  const saved = localStorage.getItem('wedding');
+  if (saved) {
+    try {
+      return { ...defaultWedding, ...JSON.parse(saved) };
+    } catch {
+      return defaultWedding;
+    }
+  }
+  return defaultWedding;
+};
+
 const WeddingContext = createContext<WeddingContextType | undefined>(undefined);
 
 export function WeddingProvider({ children }: { children: ReactNode }) {
-  const [wedding, setWedding] = useState<Wedding>(defaultWedding);
+  const [wedding, setWedding] = useState<Wedding>(getInitialWedding);
   const [conversations, setConversations] = useState<SimulatedMessage[]>([]);
 
   const updateWedding = (updates: Partial<Wedding>) => {
-    setWedding(prev => ({ ...prev, ...updates }));
+    setWedding(prev => {
+      const updated = { ...prev, ...updates };
+      localStorage.setItem('wedding', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const addConversation = (message: SimulatedMessage) => {
