@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown, GripVertical } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
+import { MessageHandlingDialog } from '@/components/chatbot/MessageHandlingDialog';
 
 const tones = [
   {
@@ -83,6 +84,7 @@ export default function Step6ChatbotSetup() {
   const [restrictedQuestionsOpen, setRestrictedQuestionsOpen] = useState(false);
   const [escalationCategoriesOpen, setEscalationCategoriesOpen] = useState(false);
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
+  const [messageHandlingOpen, setMessageHandlingOpen] = useState(false);
   
   // Draggable tooltip state
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
@@ -121,6 +123,8 @@ export default function Step6ChatbotSetup() {
         1: 'response-tone',
         2: 'chatbot-name',
         3: 'message-handling',
+        '3a': 'message-handling-edit-button',
+        '3b': 'message-handling-dialog',
         4: 'restricted-questions',
         5: 'escalation-categories',
         6: 'chatbot-brain',
@@ -163,7 +167,14 @@ export default function Step6ChatbotSetup() {
       window.removeEventListener('resize', updateRect);
       window.removeEventListener('scroll', updateRect, true);
     };
-  }, [currentTooltip, knowledgeBaseOpen]);
+  }, [currentTooltip, knowledgeBaseOpen, messageHandlingOpen]);
+
+  // Watch for message handling dialog opening to advance from 3a to 3b
+  useEffect(() => {
+    if (messageHandlingOpen && currentTooltip === '3a') {
+      setTimeout(() => setCurrentTooltip('3b'), 500);
+    }
+  }, [messageHandlingOpen, currentTooltip]);
 
   // Watch for dialog opening to advance from 7a to 7b (Knowledge Categories)
   useEffect(() => {
@@ -181,10 +192,22 @@ export default function Step6ChatbotSetup() {
 
   const handleNext = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, '3a', '3b', 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
     
     // Prevent auto-advance for steps that require user interaction
+    if (currentTooltip === '3a') {
+      // User must click "Edit" button to open message handling dialog
+      return;
+    }
+    if (currentTooltip === '3b') {
+      // Close dialog and advance to step 4
+      setMessageHandlingOpen(false);
+      setTimeout(() => {
+        setCurrentTooltip(4);
+      }, 300);
+      return;
+    }
     if (currentTooltip === '7a') {
       // User must click "Update Concierge Brain" button
       return;
@@ -243,8 +266,13 @@ export default function Step6ChatbotSetup() {
 
   const handlePrevious = () => {
     // Define step sequence including sub-steps
-    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
+    const stepSequence: (number | string)[] = [1, 2, 3, '3a', '3b', 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
     const currentIndex = stepSequence.indexOf(currentTooltip);
+    
+    // Close dialogs when going back from dialog steps
+    if (currentTooltip === '3b') {
+      setMessageHandlingOpen(false);
+    }
     
     if (currentIndex > 0) {
       setCurrentTooltip(stepSequence[currentIndex - 1]);
@@ -457,6 +485,16 @@ export default function Step6ChatbotSetup() {
       description: "Auto-Reply sends responses instantly. Choose 'Notify Me' if you want to review messages before they go to guests.",
       position: 'right' as const
     },
+    '3a': {
+      title: "Configure Notifications",
+      description: "Click 'Edit' to set up who receives message notifications. You can select up to 4 partners!",
+      position: 'right' as const
+    },
+    '3b': {
+      title: "Partner Notifications",
+      description: "Select which partners receive notifications when guests message. You can have up to 4 partners, and you can update their names anytime in the Profile section.",
+      position: 'left' as const
+    },
     4: {
       title: "Set Question Boundaries",
       description: "Tell Pinch what questions to avoid answering. Add topics like budget questions or anything you'd rather handle personally.",
@@ -518,7 +556,10 @@ export default function Step6ChatbotSetup() {
   
   // Helper function to get display step number
   const getDisplayStep = (step: number | string): number => {
-    if (typeof step === 'string' && step.startsWith('7')) return 7;
+    if (typeof step === 'string') {
+      if (step.startsWith('3')) return 3;
+      if (step.startsWith('7')) return 7;
+    }
     return typeof step === 'number' ? step : parseInt(step);
   };
 
@@ -618,7 +659,14 @@ export default function Step6ChatbotSetup() {
             <Card className="p-6 bg-white dark:bg-card" data-tour-id="message-handling">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium">Message Handling</h4>
-                <Button variant="ghost" size="sm" disabled>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  disabled={currentTooltip !== '3a'}
+                  data-tour-id="message-handling-edit-button"
+                  onClick={() => setMessageHandlingOpen(true)}
+                  className={currentTooltip === '3a' ? 'ring-[3px] ring-purple-600 ring-offset-2' : ''}
+                >
                   <Settings2 className="w-4 h-4 mr-2" />
                   Edit
                 </Button>
@@ -812,7 +860,7 @@ export default function Step6ChatbotSetup() {
 
       {/* Purple highlight circle */}
       {highlightRect && (() => {
-        const isInDialog = ['7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
+        const isInDialog = ['3b', '7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
         const highlightZIndex = isInDialog ? 'z-[90]' : 'z-50';
         
         return (
@@ -833,7 +881,7 @@ export default function Step6ChatbotSetup() {
 
       {/* Centered tooltip */}
       {(() => {
-        const isInDialog = ['7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
+        const isInDialog = ['3b', '7b', '7c', '7d', '7e', '7f'].includes(String(currentTooltip));
         const tooltipZIndex = isInDialog ? 'z-[100]' : 'z-50';
         
         return (
@@ -905,7 +953,7 @@ export default function Step6ChatbotSetup() {
               </div>
               <div className="flex gap-2">
                 {(() => {
-                  const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7d', '7b', '7c', '7e', 8, 9];
+                  const stepSequence: (number | string)[] = [1, 2, 3, '3a', '3b', 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
                   const currentIndex = stepSequence.indexOf(currentTooltip);
                   return currentIndex > 0 && (
                     <button
@@ -921,7 +969,7 @@ export default function Step6ChatbotSetup() {
                   className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                 >
                   {(() => {
-                    const stepSequence: (number | string)[] = [1, 2, 3, 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
+                    const stepSequence: (number | string)[] = [1, 2, 3, '3a', '3b', 4, 5, 6, '7a', '7b', '7c', '7d', '7e', '7f', 8, 9];
                     const currentIndex = stepSequence.indexOf(currentTooltip);
                     return currentIndex < stepSequence.length - 1 ? 'Next' : 'Continue';
                   })()}
@@ -942,6 +990,17 @@ export default function Step6ChatbotSetup() {
       </div>
         );
       })()}
+
+      {/* Message Handling Dialog */}
+      <MessageHandlingDialog
+        open={messageHandlingOpen}
+        onOpenChange={(open) => {
+          // Keep dialog open during tour step 3b
+          if (currentTooltip !== '3b' || open) {
+            setMessageHandlingOpen(open);
+          }
+        }}
+      />
 
       {/* Knowledge Source Dialog */}
       <KnowledgeBaseDialog
