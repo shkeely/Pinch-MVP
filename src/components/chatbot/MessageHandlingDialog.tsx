@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Save } from "lucide-react";
 import { useState } from "react";
+import { useWedding } from "@/contexts/WeddingContext";
 import { toast } from "sonner";
 
 interface MessageHandlingDialogProps {
@@ -13,6 +14,7 @@ interface MessageHandlingDialogProps {
 }
 
 export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDialogProps) {
+  const { wedding } = useWedding();
   const [emailEnabled, setEmailEnabled] = useState(true);
   const [smsEnabled, setSmsEnabled] = useState(false);
   const [notifyPartner1, setNotifyPartner1] = useState(true);
@@ -73,7 +75,7 @@ export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDia
                   onCheckedChange={(checked) => setNotifyPartner1(checked as boolean)}
                 />
                 <Label htmlFor="msg-partner1" className="cursor-pointer flex-1">
-                  Partner 1
+                  {wedding.couple1}
                 </Label>
               </div>
 
@@ -84,7 +86,7 @@ export function MessageHandlingDialog({ open, onOpenChange }: MessageHandlingDia
                   onCheckedChange={(checked) => setNotifyPartner2(checked as boolean)}
                 />
                 <Label htmlFor="msg-partner2" className="cursor-pointer flex-1">
-                  Partner 2
+                  {wedding.couple2}
                 </Label>
               </div>
             </div>
