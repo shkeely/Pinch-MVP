@@ -63,7 +63,7 @@ export default function Step1C() {
     setCustomFAQs(updated);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate required fields
@@ -76,7 +76,8 @@ export default function Step1C() {
       return;
     }
 
-    updateWedding({ ...formData, customFAQs });
+    // Save wedding via API
+    await updateWedding({ ...formData, customFAQs, onboardingStep: 2 });
     navigate('/onboarding/step-2');
   };
 
