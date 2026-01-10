@@ -14,10 +14,10 @@ export default function WeddingDetails() {
   const { wedding, updateWedding } = useWedding();
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
   
-  const [coupleNames, setCoupleNames] = useState(`${wedding.couple1} & ${wedding.couple2}` || '');
-  const [weddingDate, setWeddingDate] = useState(wedding.date || '');
-  const [venueName, setVenueName] = useState(wedding.venue || '');
-  const [venueAddress, setVenueAddress] = useState(wedding.venueAddress || '');
+  const [coupleNames, setCoupleNames] = useState(`${wedding?.couple1 || ''} & ${wedding?.couple2 || ''}`.trim() || '');
+  const [weddingDate, setWeddingDate] = useState(wedding?.date || '');
+  const [venueName, setVenueName] = useState(wedding?.venue || '');
+  const [venueAddress, setVenueAddress] = useState(wedding?.venueAddress || '');
   const [guestCount, setGuestCount] = useState('150');
   const [budget, setBudget] = useState('$50,000');
   const [theme, setTheme] = useState('Rustic Garden');

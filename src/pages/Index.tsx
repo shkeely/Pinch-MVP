@@ -2,17 +2,39 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Sparkles, Clock } from "lucide-react";
 import landingBg from "@/assets/landing-bg.png";
+import { useAuth } from "@/contexts/AuthContext";
+
 export default function Index() {
   const navigate = useNavigate();
-  return <div className="min-h-screen bg-cover bg-no-repeat" style={{
-    backgroundImage: `url(${landingBg})`,
-    backgroundPosition: "center calc(30% - 20px)"
-  }}>
-      {/* Logo */}
-      <div className="absolute top-6 left-6 md:top-8 md:left-8">
+  const { user } = useAuth();
+
+  return (
+    <div className="min-h-screen bg-cover bg-no-repeat" style={{
+      backgroundImage: `url(${landingBg})`,
+      backgroundPosition: "center calc(30% - 20px)"
+    }}>
+      {/* Logo + Auth */}
+      <div className="absolute top-6 left-6 md:top-8 md:left-8 flex items-center justify-between w-[calc(100%-3rem)] md:w-[calc(100%-4rem)]">
         <h1 className="text-2xl md:text-3xl font-serif font-bold tracking-[0.3em] text-white">
           PINCH.
         </h1>
+        {user ? (
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate("/homepage")}
+            className="text-white hover:bg-white/10"
+          >
+            Go to Dashboard
+          </Button>
+        ) : (
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate("/auth")}
+            className="text-white hover:bg-white/10"
+          >
+            Sign In
+          </Button>
+        )}
       </div>
 
       {/* Hero Section */}
