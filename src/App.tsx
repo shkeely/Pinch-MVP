@@ -4,10 +4,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { WeddingProvider } from "@/contexts/WeddingContext";
 import { FakeDataProvider } from "@/contexts/FakeDataContext";
 import Index from "./pages/Index";
 import Homepage from "./pages/Homepage";
+import Auth from "./pages/Auth";
 import Step1A from "./pages/onboarding/Step1A";
 import Step1B from "./pages/onboarding/Step1B";
 import Step1C from "./pages/onboarding/Step1C";
@@ -35,6 +37,26 @@ import HelpSupport from "./pages/HelpSupport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+// Protected route wrapper
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" state={{ from: location }} replace />;
+  }
+
+  return <>{children}</>;
+}
 
 // Cookie helper for debugging
 const getRouteCookie = (): string | null => {
@@ -75,6 +97,7 @@ const getDefaultRoute = () => {
       /\b(\/landing)\b/i,
       /\b(\/settings)\b/i,
       /\b(\/profile)\b/i,
+      /\b(\/auth)\b/i,
       
       // Hyphenated pages
       /\b(\/wedding-details)\b/i,
@@ -131,46 +154,54 @@ const DefaultRouteNavigator = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <WeddingProvider>
-      <FakeDataProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<DefaultRouteNavigator />} />
-            <Route path="/landing" element={<Index />} />
-            <Route path="/homepage" element={<Homepage />} />
-            <Route path="/onboarding/step-1a" element={<Step1A />} />
-            <Route path="/onboarding/step-1b" element={<Step1B />} />
-            <Route path="/onboarding/step-1c" element={<Step1C />} />
-            <Route path="/onboarding/step-2" element={<Step2 />} />
-            <Route path="/onboarding/step-3" element={<Step3 />} />
-            <Route path="/onboarding/step-4" element={<Step4 />} />
-            <Route path="/onboarding/step-5" element={<Step5NavigationBar />} />
-            <Route path="/onboarding/step-6" element={<Step6ChatbotSetup />} />
-            <Route path="/onboarding/step-7" element={<Step7GuestPageTour />} />
-            <Route path="/onboarding/step-8" element={<Step8MessagesPage />} />
-            <Route path="/onboarding/step-9" element={<Step9Homepage />} />
-            <Route path="/onboarding/step-10" element={<Step10Finish />} />
-            <Route path="/dashboard1" element={<Dashboard1 />} />
-            <Route path="/dashboard1-alt" element={<Dashboard1Alt />} />
-            <Route path="/dashboard-alt" element={<DashboardAlt />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/reminders" element={<Reminders />} />
-            <Route path="/chatbot" element={<Chatbot />} />
-            <Route path="/guests" element={<Guests />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/wedding-details" element={<WeddingDetails />} />
-            <Route path="/help-support" element={<HelpSupport />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-      </FakeDataProvider>
-    </WeddingProvider>
+    <AuthProvider>
+      <WeddingProvider>
+        <FakeDataProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<DefaultRouteNavigator />} />
+              <Route path="/landing" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              
+              {/* Onboarding - protected */}
+              <Route path="/onboarding/step-1a" element={<ProtectedRoute><Step1A /></ProtectedRoute>} />
+              <Route path="/onboarding/step-1b" element={<ProtectedRoute><Step1B /></ProtectedRoute>} />
+              <Route path="/onboarding/step-1c" element={<ProtectedRoute><Step1C /></ProtectedRoute>} />
+              <Route path="/onboarding/step-2" element={<ProtectedRoute><Step2 /></ProtectedRoute>} />
+              <Route path="/onboarding/step-3" element={<ProtectedRoute><Step3 /></ProtectedRoute>} />
+              <Route path="/onboarding/step-4" element={<ProtectedRoute><Step4 /></ProtectedRoute>} />
+              <Route path="/onboarding/step-5" element={<ProtectedRoute><Step5NavigationBar /></ProtectedRoute>} />
+              <Route path="/onboarding/step-6" element={<ProtectedRoute><Step6ChatbotSetup /></ProtectedRoute>} />
+              <Route path="/onboarding/step-7" element={<ProtectedRoute><Step7GuestPageTour /></ProtectedRoute>} />
+              <Route path="/onboarding/step-8" element={<ProtectedRoute><Step8MessagesPage /></ProtectedRoute>} />
+              <Route path="/onboarding/step-9" element={<ProtectedRoute><Step9Homepage /></ProtectedRoute>} />
+              <Route path="/onboarding/step-10" element={<ProtectedRoute><Step10Finish /></ProtectedRoute>} />
+              
+              {/* Main app - protected */}
+              <Route path="/homepage" element={<ProtectedRoute><Homepage /></ProtectedRoute>} />
+              <Route path="/dashboard1" element={<ProtectedRoute><Dashboard1 /></ProtectedRoute>} />
+              <Route path="/dashboard1-alt" element={<ProtectedRoute><Dashboard1Alt /></ProtectedRoute>} />
+              <Route path="/dashboard-alt" element={<ProtectedRoute><DashboardAlt /></ProtectedRoute>} />
+              <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+              <Route path="/reminders" element={<ProtectedRoute><Reminders /></ProtectedRoute>} />
+              <Route path="/chatbot" element={<ProtectedRoute><Chatbot /></ProtectedRoute>} />
+              <Route path="/guests" element={<ProtectedRoute><Guests /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/wedding-details" element={<ProtectedRoute><WeddingDetails /></ProtectedRoute>} />
+              <Route path="/help-support" element={<ProtectedRoute><HelpSupport /></ProtectedRoute>} />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+        </FakeDataProvider>
+      </WeddingProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
