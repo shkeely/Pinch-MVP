@@ -17,12 +17,14 @@ export default function AccountPopover() {
   const { wedding } = useWedding();
 
   const getInitials = () => {
-    const first = wedding.couple1.charAt(0).toUpperCase();
-    const second = wedding.couple2.charAt(0).toUpperCase();
+    if (!wedding) return "SP";
+    const first = (wedding.couple1 || '').charAt(0).toUpperCase();
+    const second = (wedding.couple2 || '').charAt(0).toUpperCase();
     return first && second ? `${first}${second}` : "SP";
   };
 
   const getDisplayName = () => {
+    if (!wedding) return "Your Account";
     if (wedding.couple1 && wedding.couple2) {
       return `${wedding.couple1} & ${wedding.couple2}`;
     }
