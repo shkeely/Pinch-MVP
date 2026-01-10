@@ -18,6 +18,12 @@ interface PartnerAccount {
 }
 
 const getInitialPartners = (wedding: any): PartnerAccount[] => {
+  if (!wedding) {
+    return [
+      { id: '1', name: '', email: '', phone: '', plannerAccess: true },
+      { id: '2', name: '', email: '', phone: '', plannerAccess: false }
+    ];
+  }
   if (wedding.partners && wedding.partners.length > 0) {
     return wedding.partners.map((p: any, index: number) => ({
       id: p.id,
@@ -53,7 +59,7 @@ export default function Profile() {
 
   // Sync partner accounts when wedding context changes
   useEffect(() => {
-    if (wedding.partners && wedding.partners.length > 0) {
+    if (wedding?.partners && wedding.partners.length > 0) {
       setPartnerAccounts(wedding.partners.map((p, index) => ({
         id: p.id,
         name: p.name,
@@ -62,18 +68,18 @@ export default function Profile() {
         plannerAccess: index === 0,
       })));
     }
-  }, [wedding.partners]);
+  }, [wedding?.partners]);
 
   const getInitials = () => {
-    const first = wedding.couple1.charAt(0).toUpperCase();
-    const second = wedding.couple2.charAt(0).toUpperCase();
+    const first = (wedding?.couple1 || '').charAt(0).toUpperCase();
+    const second = (wedding?.couple2 || '').charAt(0).toUpperCase();
     return first && second ? `${first}${second}` : "SP";
   };
 
   const handleSaveChanges = () => {
     updateWedding({
-      couple1: partnerAccounts[0]?.name || wedding.couple1,
-      couple2: partnerAccounts[1]?.name || wedding.couple2,
+      couple1: partnerAccounts[0]?.name || wedding?.couple1 || '',
+      couple2: partnerAccounts[1]?.name || wedding?.couple2 || '',
       partners: partnerAccounts.map(p => ({
         id: p.id,
         name: p.name,

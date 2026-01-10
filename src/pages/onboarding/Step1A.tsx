@@ -4,21 +4,50 @@ import { OnboardingStepper } from '@/components/onboarding/OnboardingStepper';
 import { ImportMethodSelection } from '@/components/onboarding/ImportMethodSelection';
 import { Button } from '@/components/ui/button';
 import { useWedding } from '@/contexts/WeddingContext';
+import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Step1A() {
   const [selectedMethod, setSelectedMethod] = useState<'website' | 'manual' | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
-  const { updateWedding } = useWedding();
+  const { createWedding, weddingId, updateWedding } = useWedding();
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!selectedMethod) return;
     
-    updateWedding({ onboardingStep: 1 });
+    setIsCreating(true);
     
-    if (selectedMethod === 'website') {
-      navigate('/onboarding/step-1b');
-    } else {
-      navigate('/onboarding/step-1c');
+    try {
+      // If no wedding exists yet, create one
+      if (!weddingId) {
+        const wedding = await createWedding({
+          couple1: '',
+          couple2: '',
+          onboardingStep: 1,
+          onboardingComplete: false,
+        });
+        
+        if (!wedding) {
+          toast.error('Failed to create wedding. Please try again.');
+          setIsCreating(false);
+          return;
+        }
+      } else {
+        // Update existing wedding
+        await updateWedding({ onboardingStep: 1 });
+      }
+      
+      if (selectedMethod === 'website') {
+        navigate('/onboarding/step-1b');
+      } else {
+        navigate('/onboarding/step-1c');
+      }
+    } catch (error) {
+      console.error('Error creating wedding:', error);
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsCreating(false);
     }
   };
 
@@ -45,14 +74,21 @@ export default function Step1A() {
           <Button
             size="lg"
             onClick={handleContinue}
-            disabled={!selectedMethod}
+            disabled={!selectedMethod || isCreating}
             className="rounded-xl h-11 px-8 font-medium [&:not(:disabled)]:hover:!bg-accent"
             style={{
               backgroundColor: '#5b6850',
               color: 'white'
             }}
           >
-            Continue
+            {isCreating ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              'Continue'
+            )}
           </Button>
         </div>
       </div>

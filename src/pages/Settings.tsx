@@ -17,10 +17,10 @@ export default function Settings() {
   const [notificationDialogOpen, setNotificationDialogOpen] = useState(false);
   const [selectedNotificationType, setSelectedNotificationType] = useState<'escalated' | 'daily' | 'reminders'>('escalated');
   
-  const [coupleNames, setCoupleNames] = useState(`${wedding.couple1} & ${wedding.couple2}` || '');
-  const [weddingDate, setWeddingDate] = useState(wedding.date || '');
-  const [venueName, setVenueName] = useState(wedding.venue || '');
-  const [location, setLocation] = useState(wedding.venueAddress || '');
+  const [coupleNames, setCoupleNames] = useState(`${wedding?.couple1 || ''} & ${wedding?.couple2 || ''}`.trim() || '');
+  const [weddingDate, setWeddingDate] = useState(wedding?.date || '');
+  const [venueName, setVenueName] = useState(wedding?.venue || '');
+  const [location, setLocation] = useState(wedding?.venueAddress || '');
   const [plannerEmail, setPlannerEmail] = useState('planner@example.com');
   
   const [plannerAccessEnabled, setPlannerAccessEnabled] = useState(false);

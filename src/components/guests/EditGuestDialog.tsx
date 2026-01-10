@@ -6,10 +6,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors' | string;
+type Segment = 'All' | string;
 
 interface Guest {
-  id: number;
+  id: string;
   name: string;
   phone: string;
   segments: string[];
@@ -41,19 +41,8 @@ export default function EditGuestDialog({ open, onOpenChange, guest, segments, o
       return;
     }
 
-    if (!formData.phone.trim()) {
-      toast.error("Phone cannot be empty");
-      return;
-    }
-
-    if (!formData.segments || formData.segments.length === 0) {
-      toast.error("Please select at least one segment");
-      return;
-    }
-
     onSave(formData);
     onOpenChange(false);
-    toast.success("Guest updated successfully");
   };
 
   const handleSegmentToggle = (segment: string, checked: boolean) => {

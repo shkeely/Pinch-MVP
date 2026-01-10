@@ -17,20 +17,20 @@ export default function Step1C() {
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
-    couple1: wedding.couple1,
-    couple2: wedding.couple2,
-    date: wedding.date,
-    time: wedding.time,
-    venue: wedding.venue,
-    venueAddress: wedding.venueAddress,
-    dressCode: wedding.dressCode,
-    parking: wedding.parking,
-    hotels: wedding.hotels,
-    registry: wedding.registry,
-    kidsPolicy: wedding.kidsPolicy,
+    couple1: wedding?.couple1 || '',
+    couple2: wedding?.couple2 || '',
+    date: wedding?.date || '',
+    time: wedding?.time || '',
+    venue: wedding?.venue || '',
+    venueAddress: wedding?.venueAddress || '',
+    dressCode: wedding?.dressCode || '',
+    parking: wedding?.parking || '',
+    hotels: wedding?.hotels || '',
+    registry: wedding?.registry || '',
+    kidsPolicy: wedding?.kidsPolicy || '',
   });
 
-  const [customFAQs, setCustomFAQs] = useState<FAQ[]>(wedding.customFAQs);
+  const [customFAQs, setCustomFAQs] = useState<FAQ[]>(wedding?.customFAQs || []);
 
   // Auto-save every 30 seconds
   useEffect(() => {

@@ -39,17 +39,43 @@ const toneOptions = [
 export default function Step2() {
   const navigate = useNavigate();
   const { wedding, updateWedding } = useWedding();
-  const [selectedTone, setSelectedTone] = useState<Tone>(wedding.chatbotSettings.tone);
+  const [selectedTone, setSelectedTone] = useState<Tone>(wedding?.chatbotSettings?.tone || 'warm');
 
   const exampleQuestion = "What time does the ceremony start?";
+  
+  // Create a default wedding for preview if none exists
+  const previewWedding = wedding || {
+    id: '',
+    couple1: '',
+    couple2: '',
+    partners: [],
+    date: '',
+    time: '',
+    venue: '',
+    venueAddress: '',
+    dressCode: '',
+    parking: '',
+    hotels: '',
+    registry: '',
+    kidsPolicy: '',
+    customFAQs: [],
+    websiteUrl: '',
+    chatbotSettings: { name: 'Concierge', tone: selectedTone, unknownAnswer: 'escalate' as const, notifications: 'daily' as const },
+    onboardingStep: 2 as const,
+    onboardingComplete: false,
+    tourMode: false,
+    canGoBack: false,
+    tourProgress: { homepage: false, conversations: false, guestPage: false, weddingInfo: false, chatbotSettings: false, analytics: false },
+  };
+  
   const exampleResponse = mockAIResponse(exampleQuestion, {
-    ...wedding,
-    chatbotSettings: { ...wedding.chatbotSettings, tone: selectedTone }
+    ...previewWedding,
+    chatbotSettings: { ...previewWedding.chatbotSettings, tone: selectedTone }
   });
 
   const handleContinue = () => {
     updateWedding({
-      chatbotSettings: { ...wedding.chatbotSettings, tone: selectedTone },
+      chatbotSettings: { ...(wedding?.chatbotSettings || previewWedding.chatbotSettings), tone: selectedTone },
       onboardingStep: 2,
     });
     navigate('/onboarding/step-3');

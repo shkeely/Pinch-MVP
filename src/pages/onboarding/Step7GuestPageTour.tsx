@@ -25,7 +25,7 @@ import EditGuestDialog from '@/components/guests/EditGuestDialog';
 type Segment = 'All' | 'Wedding Party' | 'Out-of-Towners' | 'Parents' | 'Vendors';
 
 interface Guest {
-  id: number;
+  id: string;
   name: string;
   phone: string;
   segments: string[];
@@ -57,12 +57,12 @@ export default function Step7GuestPageTour() {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   
   const guestsList: Guest[] = [
-    { id: 1, name: 'Emily Thompson', phone: '+1 555-0101', segments: ['Wedding Party'], status: 'Active' },
-    { id: 2, name: 'Michael Chen', phone: '+1 555-0102', segments: ['Out-of-Towners'], status: 'Active' },
-    { id: 3, name: 'Jessica Martinez', phone: '+1 555-0103', segments: ['Wedding Party', 'Out-of-Towners'], status: 'Active' },
-    { id: 4, name: 'David Park', phone: '+1 555-0104', segments: ['Wedding Party'], status: 'Active' },
-    { id: 5, name: 'Rachel Green', phone: '+1 555-0105', segments: ['Out-of-Towners'], status: 'Active' },
-    { id: 6, name: 'Tom Anderson', phone: '+1 555-0106', segments: ['Parents'], status: 'Active' },
+    { id: '1', name: 'Emily Thompson', phone: '+1 555-0101', segments: ['Wedding Party'], status: 'Active' },
+    { id: '2', name: 'Michael Chen', phone: '+1 555-0102', segments: ['Out-of-Towners'], status: 'Active' },
+    { id: '3', name: 'Jessica Martinez', phone: '+1 555-0103', segments: ['Wedding Party', 'Out-of-Towners'], status: 'Active' },
+    { id: '4', name: 'David Park', phone: '+1 555-0104', segments: ['Wedding Party'], status: 'Active' },
+    { id: '5', name: 'Rachel Green', phone: '+1 555-0105', segments: ['Out-of-Towners'], status: 'Active' },
+    { id: '6', name: 'Tom Anderson', phone: '+1 555-0106', segments: ['Parents'], status: 'Active' },
   ];
 
   const filteredGuests = selectedSegment === 'All' 
