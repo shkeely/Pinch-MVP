@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TopNav from '@/components/navigation/TopNav';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,11 +8,15 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown } from 'lucide-react';
+import { MessageSquare, Zap, Sparkles, Heart, Briefcase, Smile, Send, Share2, Settings2, ChevronDown, Loader2 } from 'lucide-react';
 import { KnowledgeBaseDialog } from '@/components/chatbot/KnowledgeBaseDialog';
 import { ShareChatbotDialog } from '@/components/chatbot/ShareChatbotDialog';
 import { MessageHandlingDialog } from '@/components/chatbot/MessageHandlingDialog';
 import { FeedbackDialog } from '@/components/chatbot/FeedbackDialog';
+import { useWedding } from '@/contexts/WeddingContext';
+import { useChatbotSettings, useUpdateChatbotSettings } from '@/hooks/useChatbotApi';
+import { toast } from 'sonner';
+
 const tones = [{
   id: 'warm',
   name: 'Warm',
@@ -32,7 +36,12 @@ const tones = [{
   icon: Smile,
   example: "Party starts at 4! Can't wait to celebrate with you! 🎉"
 }];
+
 export default function Chatbot() {
+  const { weddingId } = useWedding();
+  const { data: apiSettings, isLoading } = useChatbotSettings(weddingId);
+  const updateSettings = useUpdateChatbotSettings();
+
   const [selectedTone, setSelectedTone] = useState('warm');
   const [chatbotName, setChatbotName] = useState('Concierge');
   const [replyMode, setReplyMode] = useState<'auto' | 'approval'>('auto');
@@ -72,6 +81,16 @@ export default function Chatbot() {
     name: "Budget or cost questions",
     enabled: true
   }]);
+
+  // Load settings from API
+  useEffect(() => {
+    if (apiSettings) {
+      setSelectedTone(apiSettings.tone || 'warm');
+      setChatbotName(apiSettings.name || 'Concierge');
+      setReplyMode(apiSettings.reply_mode === 'approval' ? 'approval' : 'auto');
+      setChatbotActive(apiSettings.active ?? true);
+    }
+  }, [apiSettings]);
   const toneExamples = {
     warm: [{
       q: "Where can I park?",
@@ -362,8 +381,34 @@ export default function Chatbot() {
               </Button>
             </Card>
 
-            <Button className="w-full" size="lg">
-              Save Changes
+            <Button 
+              className="w-full" 
+              size="lg"
+              disabled={updateSettings.isPending || !weddingId}
+              onClick={async () => {
+                if (!weddingId) return;
+                try {
+                  await updateSettings.mutateAsync({
+                    weddingId,
+                    data: {
+                      name: chatbotName,
+                      tone: selectedTone as 'warm' | 'formal' | 'fun',
+                      reply_mode: replyMode,
+                      active: chatbotActive,
+                    }
+                  });
+                  toast.success('Settings saved successfully');
+                } catch (error) {
+                  toast.error('Failed to save settings');
+                }
+              }}
+            >
+              {updateSettings.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : 'Save Changes'}
             </Button>
           </div>
 
