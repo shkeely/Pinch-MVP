@@ -1,64 +1,64 @@
-import { useState, useCallback } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, ApiWedding, ApiResponse } from '@/lib/api';
+// STUBBED - Backend moved to separate Lovable project
+// These hooks return empty/null data instead of making API calls
 
-// Query keys
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiWedding } from '@/lib/api';
+
+// Query keys (kept for reference)
 export const weddingKeys = {
   all: ['weddings'] as const,
   detail: (id: string) => ['weddings', id] as const,
 };
 
-// Hook for fetching a wedding by ID
+// Hook for fetching a wedding by ID - STUBBED
 export function useWedding(weddingId: string | null) {
   return useQuery({
     queryKey: weddingKeys.detail(weddingId || ''),
     queryFn: async () => {
-      if (!weddingId) return null;
-      const response = await apiClient.get<ApiWedding>(`/api/weddings/${weddingId}`);
-      return response.data || null;
+      console.log('[API STUB] useWedding - returning null');
+      return null;
     },
     enabled: !!weddingId,
   });
 }
 
-// Hook for creating a wedding
+// Hook for creating a wedding - STUBBED
 export function useCreateWedding() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: Partial<ApiWedding>) => {
-      const response = await apiClient.post<ApiWedding>('/api/weddings', data);
-      return response.data!;
+    mutationFn: async (_data: Partial<ApiWedding>) => {
+      console.log('[API STUB] useCreateWedding - no-op');
+      return {} as ApiWedding;
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData(weddingKeys.detail(data.id), data);
-      queryClient.invalidateQueries({ queryKey: weddingKeys.all });
+    onSuccess: () => {
+      // No-op
     },
   });
 }
 
-// Hook for updating a wedding
+// Hook for updating a wedding - STUBBED
 export function useUpdateWedding() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<ApiWedding> }) => {
-      const response = await apiClient.patch<ApiWedding>(`/api/weddings/${id}`, data);
-      return response.data!;
+      console.log('[API STUB] useUpdateWedding - no-op');
+      return {} as ApiWedding;
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData(weddingKeys.detail(data.id), data);
+    onSuccess: () => {
+      // No-op
     },
   });
 }
 
-// Convert API wedding to local Wedding type
+// Convert API wedding to local Wedding type (kept for reference)
 export function apiToLocalWedding(api: ApiWedding): LocalWedding {
   return {
     id: api.id,
     couple1: api.couple1,
     couple2: api.couple2,
-    partners: [], // Loaded separately
+    partners: [],
     date: api.date || '',
     time: api.time || '',
     venue: api.venue || '',
@@ -68,7 +68,7 @@ export function apiToLocalWedding(api: ApiWedding): LocalWedding {
     hotels: api.hotels || '',
     registry: api.registry || '',
     kidsPolicy: api.kids_policy || '',
-    customFAQs: [], // Loaded separately from brain entries
+    customFAQs: [],
     websiteUrl: api.website_url || '',
     chatbotSettings: {
       name: 'Concierge',
@@ -91,7 +91,7 @@ export function apiToLocalWedding(api: ApiWedding): LocalWedding {
   };
 }
 
-// Convert local Wedding to API format
+// Convert local Wedding to API format (kept for reference)
 export function localToApiWedding(local: Partial<LocalWedding>): Partial<ApiWedding> {
   const api: Partial<ApiWedding> = {};
 
@@ -113,7 +113,7 @@ export function localToApiWedding(local: Partial<LocalWedding>): Partial<ApiWedd
   return api;
 }
 
-// Type that matches the existing Wedding type structure
+// Type that matches the existing Wedding type structure (kept for reference)
 interface LocalWedding {
   id: string;
   couple1: string;

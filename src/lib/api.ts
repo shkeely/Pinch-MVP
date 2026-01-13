@@ -1,7 +1,6 @@
-// API Client for backend communication
-// All requests go to the external API with JWT authentication
-
-const API_BASE_URL = 'https://project-handoff--skhhackett.replit.app';
+// API Client - STUBBED
+// Backend moved to separate Lovable project
+// Original URL: https://project-handoff--skhhackett.replit.app
 
 export interface ApiResponse<T> {
   status: 'success' | 'error';
@@ -25,188 +24,36 @@ export interface ApiError {
 }
 
 class ApiClient {
-  private baseUrl: string;
-  private getToken: (() => Promise<string | null>) | null = null;
-
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  // STUBBED - No actual API calls
+  
+  setTokenProvider(_provider: () => Promise<string | null>) {
+    console.log('[API STUB] Token provider set (no-op)');
   }
 
-  setTokenProvider(provider: () => Promise<string | null>) {
-    console.log('[API] Token provider set');
-    this.getToken = provider;
+  async get<T>(path: string, _params?: Record<string, string | number | undefined>): Promise<ApiResponse<T>> {
+    console.log('[API STUB] GET request to:', path, '- returning empty response');
+    return { status: 'success', data: undefined as T };
   }
 
-  private async getHeaders(): Promise<HeadersInit> {
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-    };
-
-    if (this.getToken) {
-      console.log('[API] Getting token from provider...');
-      const token = await this.getToken();
-      console.log('[API] Token available:', !!token, token ? `(${token.substring(0, 20)}...)` : '');
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      } else {
-        console.warn('[API] No auth token available - request may fail');
-      }
-    } else {
-      console.warn('[API] No token provider set up');
-    }
-
-    return headers;
+  async post<T>(path: string, _body?: unknown): Promise<ApiResponse<T>> {
+    console.log('[API STUB] POST request to:', path, '- returning empty response');
+    return { status: 'success', data: undefined as T };
   }
 
-  async get<T>(path: string, params?: Record<string, string | number | undefined>): Promise<ApiResponse<T>> {
-    const url = new URL(`${this.baseUrl}${path}`);
-    
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined) {
-          url.searchParams.append(key, String(value));
-        }
-      });
-    }
-
-    try {
-      console.log('[API] GET request to:', path);
-      const headers = await this.getHeaders();
-      
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers,
-      });
-
-      return this.handleResponse<T>(response);
-    } catch (error: any) {
-      console.error('[API] Network error during GET:', error);
-      throw {
-        status: 'error',
-        code: 'NETWORK_ERROR',
-        message: error.message || 'Unable to connect to server',
-      };
-    }
-  }
-
-  async post<T>(path: string, body?: unknown): Promise<ApiResponse<T>> {
-    try {
-      console.log('[API] POST request to:', path);
-      console.log('[API] POST body:', JSON.stringify(body));
-      const headers = await this.getHeaders();
-      console.log('[API] Request headers keys:', Object.keys(headers));
-      
-      const response = await fetch(`${this.baseUrl}${path}`, {
-        method: 'POST',
-        headers,
-        body: body ? JSON.stringify(body) : undefined,
-      });
-
-      return this.handleResponse<T>(response);
-    } catch (error: any) {
-      console.error('[API] Network error during POST:', error);
-      throw {
-        status: 'error',
-        code: 'NETWORK_ERROR',
-        message: error.message || 'Unable to connect to server',
-      };
-    }
-  }
-
-  async patch<T>(path: string, body?: unknown): Promise<ApiResponse<T>> {
-    try {
-      console.log('[API] PATCH request to:', path);
-      const headers = await this.getHeaders();
-      
-      const response = await fetch(`${this.baseUrl}${path}`, {
-        method: 'PATCH',
-        headers,
-        body: body ? JSON.stringify(body) : undefined,
-      });
-
-      return this.handleResponse<T>(response);
-    } catch (error: any) {
-      console.error('[API] Network error during PATCH:', error);
-      throw {
-        status: 'error',
-        code: 'NETWORK_ERROR',
-        message: error.message || 'Unable to connect to server',
-      };
-    }
+  async patch<T>(path: string, _body?: unknown): Promise<ApiResponse<T>> {
+    console.log('[API STUB] PATCH request to:', path, '- returning empty response');
+    return { status: 'success', data: undefined as T };
   }
 
   async delete<T>(path: string): Promise<ApiResponse<T>> {
-    try {
-      console.log('[API] DELETE request to:', path);
-      const headers = await this.getHeaders();
-      
-      const response = await fetch(`${this.baseUrl}${path}`, {
-        method: 'DELETE',
-        headers,
-      });
-
-      return this.handleResponse<T>(response);
-    } catch (error: any) {
-      console.error('[API] Network error during DELETE:', error);
-      throw {
-        status: 'error',
-        code: 'NETWORK_ERROR',
-        message: error.message || 'Unable to connect to server',
-      };
-    }
-  }
-
-  private async handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
-    // First get the text to handle empty responses
-    const text = await response.text();
-    console.log('[API] Response status:', response.status, 'Body length:', text.length);
-    
-    // Handle empty response
-    if (!text) {
-      if (response.ok) {
-        return { status: 'success', data: undefined as T };
-      }
-      throw {
-        status: 'error',
-        code: `HTTP_${response.status}`,
-        message: response.statusText || 'Empty response from server',
-      };
-    }
-
-    // Try to parse as JSON
-    let json;
-    try {
-      json = JSON.parse(text);
-    } catch {
-      console.error('[API] Failed to parse response as JSON:', text.substring(0, 200));
-      throw {
-        status: 'error',
-        code: 'PARSE_ERROR',
-        message: `Server returned non-JSON response: ${text.substring(0, 100)}`,
-      };
-    }
-
-    if (!response.ok) {
-      // Handle error responses
-      console.error('[API] Error response:', json);
-      const error: ApiError = {
-        status: 'error',
-        code: json.code || `HTTP_${response.status}`,
-        message: json.message || response.statusText,
-        details: json.details,
-      };
-      throw error;
-    }
-
-    console.log('[API] Success response:', json);
-    // Return the full response object (includes status, data, pagination)
-    return json as ApiResponse<T>;
+    console.log('[API STUB] DELETE request to:', path, '- returning empty response');
+    return { status: 'success', data: undefined as T };
   }
 }
 
-export const apiClient = new ApiClient(API_BASE_URL);
+export const apiClient = new ApiClient();
 
-// Type exports for API entities
+// Type exports for API entities (kept for reference)
 export interface ApiWedding {
   id: string;
   user_id: string;

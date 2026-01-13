@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
-import { apiClient } from '@/lib/api';
 
 interface AuthContextType {
   user: User | null;
@@ -20,15 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set up the token provider for the API client
-    console.log('[AuthContext] Setting up token provider');
-    apiClient.setTokenProvider(async () => {
-      console.log('[AuthContext] Token provider called');
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token ?? null;
-      console.log('[AuthContext] Token from getSession:', token ? `${token.substring(0, 20)}...` : 'null');
-      return token;
-    });
+    // STUBBED: Removed apiClient.setTokenProvider() - backend moved to separate project
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(

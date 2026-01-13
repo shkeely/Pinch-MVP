@@ -1,67 +1,63 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, ApiSegment } from '@/lib/api';
+// STUBBED - Backend moved to separate Lovable project
+// These hooks return empty data instead of making API calls
 
-// Query keys
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiSegment } from '@/lib/api';
+
+// Query keys (kept for reference)
 export const segmentKeys = {
   all: ['segments'] as const,
   list: (weddingId: string) => ['segments', 'list', weddingId] as const,
   detail: (id: string) => ['segments', id] as const,
 };
 
-// Hook for fetching segments
+// Hook for fetching segments - STUBBED
 export function useSegments(weddingId: string | null) {
   return useQuery({
     queryKey: segmentKeys.list(weddingId || ''),
     queryFn: async () => {
-      if (!weddingId) return [];
-      const response = await apiClient.get<ApiSegment[]>('/api/segments', { wedding_id: weddingId });
-      return response.data || [];
+      console.log('[API STUB] useSegments - returning empty array');
+      return [];
     },
     enabled: !!weddingId,
   });
 }
 
-// Hook for creating a segment
+// Hook for creating a segment - STUBBED
 export function useCreateSegment() {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async (data: { wedding_id: string; name: string }) => {
-      const response = await apiClient.post<ApiSegment>('/api/segments', data);
-      return response.data!;
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: segmentKeys.list(variables.wedding_id) });
-    },
-  });
-}
-
-// Hook for updating a segment
-export function useUpdateSegment() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<ApiSegment> }) => {
-      const response = await apiClient.patch<ApiSegment>(`/api/segments/${id}`, data);
-      return response.data!;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['segments', 'list'] });
-    },
-  });
-}
-
-// Hook for deleting a segment
-export function useDeleteSegment() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      const response = await apiClient.delete<{ deleted_at: string }>(`/api/segments/${id}`);
-      return response.data!;
+    mutationFn: async (_data: { wedding_id: string; name: string }) => {
+      console.log('[API STUB] useCreateSegment - no-op');
+      return {} as ApiSegment;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['segments', 'list'] });
+      // No-op
+    },
+  });
+}
+
+// Hook for updating a segment - STUBBED
+export function useUpdateSegment() {
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<ApiSegment> }) => {
+      console.log('[API STUB] useUpdateSegment - no-op');
+      return {} as ApiSegment;
+    },
+    onSuccess: () => {
+      // No-op
+    },
+  });
+}
+
+// Hook for deleting a segment - STUBBED
+export function useDeleteSegment() {
+  return useMutation({
+    mutationFn: async (_id: string) => {
+      console.log('[API STUB] useDeleteSegment - no-op');
+      return { deleted_at: new Date().toISOString() };
+    },
+    onSuccess: () => {
+      // No-op
     },
   });
 }
