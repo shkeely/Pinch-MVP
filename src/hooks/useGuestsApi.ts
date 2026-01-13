@@ -1,7 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, ApiGuest, ApiResponse } from '@/lib/api';
+// STUBBED - Backend moved to separate Lovable project
+// These hooks return empty data instead of making API calls
 
-// Query keys
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiGuest } from '@/lib/api';
+
+// Query keys (kept for reference)
 export const guestKeys = {
   all: ['guests'] as const,
   list: (weddingId: string, page?: number, segment?: string) => 
@@ -26,77 +29,61 @@ interface GuestListResponse {
   };
 }
 
-// Hook for fetching guests with pagination
+// Hook for fetching guests with pagination - STUBBED
 export function useGuests({ weddingId, page = 1, pageSize = 50, segment }: GuestListParams) {
   return useQuery({
     queryKey: guestKeys.list(weddingId, page, segment),
     queryFn: async (): Promise<GuestListResponse> => {
-      const params: Record<string, string | number | undefined> = {
-        wedding_id: weddingId,
-        page,
-        page_size: pageSize,
-      };
-      if (segment && segment !== 'All') {
-        params.segment = segment;
-      }
-      
-      const response = await apiClient.get<ApiGuest[]>('/api/guests', params);
+      console.log('[API STUB] useGuests - returning empty array');
       return {
-        guests: response.data || [],
-        pagination: response.pagination || { page: 1, pageSize, total: 0, totalPages: 0 },
+        guests: [],
+        pagination: { page: 1, pageSize, total: 0, totalPages: 0 },
       };
     },
     enabled: !!weddingId,
   });
 }
 
-// Hook for creating a guest
+// Hook for creating a guest - STUBBED
 export function useCreateGuest() {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async (data: Omit<ApiGuest, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>) => {
-      const response = await apiClient.post<ApiGuest>('/api/guests', data);
-      return response.data!;
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['guests', 'list', variables.wedding_id] });
-    },
-  });
-}
-
-// Hook for updating a guest
-export function useUpdateGuest() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<ApiGuest> }) => {
-      const response = await apiClient.patch<ApiGuest>(`/api/guests/${id}`, data);
-      return response.data!;
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(guestKeys.detail(data.id), data);
-      queryClient.invalidateQueries({ queryKey: ['guests', 'list'] });
-    },
-  });
-}
-
-// Hook for deleting a guest (soft delete)
-export function useDeleteGuest() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      const response = await apiClient.delete<{ deleted_at: string }>(`/api/guests/${id}`);
-      return response.data!;
+    mutationFn: async (_data: Omit<ApiGuest, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>) => {
+      console.log('[API STUB] useCreateGuest - no-op');
+      return {} as ApiGuest;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['guests', 'list'] });
+      // No-op
     },
   });
 }
 
-// Convert API guest to local format
+// Hook for updating a guest - STUBBED
+export function useUpdateGuest() {
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<ApiGuest> }) => {
+      console.log('[API STUB] useUpdateGuest - no-op');
+      return {} as ApiGuest;
+    },
+    onSuccess: () => {
+      // No-op
+    },
+  });
+}
+
+// Hook for deleting a guest - STUBBED
+export function useDeleteGuest() {
+  return useMutation({
+    mutationFn: async (_id: string) => {
+      console.log('[API STUB] useDeleteGuest - no-op');
+      return { deleted_at: new Date().toISOString() };
+    },
+    onSuccess: () => {
+      // No-op
+    },
+  });
+}
+
+// Convert API guest to local format (kept for reference)
 export function apiToLocalGuest(api: ApiGuest) {
   return {
     id: api.id,
@@ -109,7 +96,7 @@ export function apiToLocalGuest(api: ApiGuest) {
   };
 }
 
-// Convert local guest to API format
+// Convert local guest to API format (kept for reference)
 export function localToApiGuest(local: { 
   name: string; 
   phone?: string; 

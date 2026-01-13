@@ -1,101 +1,92 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiClient, ApiChatbotSettings, ApiBrainEntry } from '@/lib/api';
+// STUBBED - Backend moved to separate Lovable project
+// These hooks return empty/null data instead of making API calls
 
-// Query keys
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiChatbotSettings, ApiBrainEntry } from '@/lib/api';
+
+// Query keys (kept for reference)
 export const chatbotKeys = {
   settings: (weddingId: string) => ['chatbot-settings', weddingId] as const,
   brain: (weddingId: string) => ['concierge-brain', weddingId] as const,
 };
 
-// Hook for fetching chatbot settings
+// Hook for fetching chatbot settings - STUBBED
 export function useChatbotSettings(weddingId: string | null) {
   return useQuery({
     queryKey: chatbotKeys.settings(weddingId || ''),
     queryFn: async () => {
-      if (!weddingId) return null;
-      const response = await apiClient.get<ApiChatbotSettings>(`/api/chatbot-settings/${weddingId}`);
-      return response.data || null;
+      console.log('[API STUB] useChatbotSettings - returning null');
+      return null;
     },
     enabled: !!weddingId,
   });
 }
 
-// Hook for updating chatbot settings
+// Hook for updating chatbot settings - STUBBED
 export function useUpdateChatbotSettings() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async ({ weddingId, data }: { weddingId: string; data: Partial<ApiChatbotSettings> }) => {
-      const response = await apiClient.patch<ApiChatbotSettings>(`/api/chatbot-settings/${weddingId}`, data);
-      return response.data!;
+      console.log('[API STUB] useUpdateChatbotSettings - no-op');
+      return {} as ApiChatbotSettings;
     },
-    onSuccess: (data, variables) => {
-      queryClient.setQueryData(chatbotKeys.settings(variables.weddingId), data);
+    onSuccess: () => {
+      // No-op
     },
   });
 }
 
-// Hook for fetching brain entries (FAQs, instructions, etc.)
+// Hook for fetching brain entries - STUBBED
 export function useBrainEntries(weddingId: string | null, type?: string) {
   return useQuery({
     queryKey: [...chatbotKeys.brain(weddingId || ''), type],
     queryFn: async () => {
-      if (!weddingId) return [];
-      const params: Record<string, string | number | undefined> = { wedding_id: weddingId };
-      if (type) params.type = type;
-      const response = await apiClient.get<ApiBrainEntry[]>('/api/concierge-brain', params);
-      return response.data || [];
+      console.log('[API STUB] useBrainEntries - returning empty array');
+      return [];
     },
     enabled: !!weddingId,
   });
 }
 
-// Hook for creating a brain entry
+// Hook for creating a brain entry - STUBBED
 export function useCreateBrainEntry() {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async (data: Omit<ApiBrainEntry, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>) => {
-      const response = await apiClient.post<ApiBrainEntry>('/api/concierge-brain', data);
-      return response.data!;
+    mutationFn: async (_data: Omit<ApiBrainEntry, 'id' | 'created_at' | 'updated_at' | 'deleted_at'>) => {
+      console.log('[API STUB] useCreateBrainEntry - no-op');
+      return {} as ApiBrainEntry;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: chatbotKeys.brain(variables.wedding_id) });
+    onSuccess: () => {
+      // No-op
     },
   });
 }
 
-// Hook for updating a brain entry
+// Hook for updating a brain entry - STUBBED
 export function useUpdateBrainEntry() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<ApiBrainEntry> }) => {
-      const response = await apiClient.patch<ApiBrainEntry>(`/api/concierge-brain/${id}`, data);
-      return response.data!;
+      console.log('[API STUB] useUpdateBrainEntry - no-op');
+      return {} as ApiBrainEntry;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['concierge-brain'] });
+      // No-op
     },
   });
 }
 
-// Hook for deleting a brain entry
+// Hook for deleting a brain entry - STUBBED
 export function useDeleteBrainEntry() {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async (id: string) => {
-      const response = await apiClient.delete<{ deleted_at: string }>(`/api/concierge-brain/${id}`);
-      return response.data!;
+    mutationFn: async (_id: string) => {
+      console.log('[API STUB] useDeleteBrainEntry - no-op');
+      return { deleted_at: new Date().toISOString() };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['concierge-brain'] });
+      // No-op
     },
   });
 }
 
-// Convert API chatbot settings to local format
+// Convert API chatbot settings to local format (kept for reference)
 export function apiToLocalChatbotSettings(api: ApiChatbotSettings) {
   return {
     name: api.name,
